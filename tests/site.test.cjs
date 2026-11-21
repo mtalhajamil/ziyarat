@@ -186,6 +186,14 @@ test('displays image attribution and rejects unsafe credit links', async () => {
   );
 });
 
+test('shows the licensed Banu Unaif photo with its attribution', async () => {
+  const {content} = await loadPage('place', false, 'banu-unaif');
+  const view = content.children[0];
+  assert.equal(view.fields['[data-field="image"]'].src, 'assets/images/banu-unaif.jpg');
+  assert.equal(view.fields['[data-field="image-credit"]'].hidden, false);
+  assert.match(view.fields['[data-field="image-source"]'].textContent, /Ayman dhū alghiná/);
+});
+
 test('disables navigation for a single place', async () => {
   const {context} = await loadPage('place');
   context.places = [data['data/madinah.json'][0]];

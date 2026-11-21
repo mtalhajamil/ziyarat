@@ -153,6 +153,14 @@
   {
     "slug": "banu-unaif",
     "name": "Masjid Banu Unaif",
+    "image": {
+      "src": "assets/images/banu-unaif.jpg", "alt": "Masjid Banu Unaif in Madinah", "width": 1280, "height": 795,
+      "credit": {
+        "description": "مسجد بني أُنَيْف by Ayman dhū alghiná (resized)",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D9%85%D8%B3%D8%AC%D8%AF_%D8%A8%D9%86%D9%8A_%D8%A3%D9%8F%D9%86%D9%8E%D9%8A%D9%92%D9%81.jpg",
+        "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      }
+    },
     "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Banu%20Unaif%2C%20Madinah"
   },
   {
