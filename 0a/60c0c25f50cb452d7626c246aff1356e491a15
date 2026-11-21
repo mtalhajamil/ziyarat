@@ -1,0 +1,33 @@
+madinah.html
+  s_a70902b9386716::t_fed407d061c896 9
+madinah/index.html
+  s_a70902b9386716::t_fed407d061c896 10
+madinah/jummah/index.html
+  s_a70902b9386716::t_fed407d061c896 10
+madinah/qiblatain/index.html
+  s_a70902b9386716::t_fed407d061c896 10
+index.html
+  s_a70902b9386716::t_fed407d061c896 9
+madinah/ghamama/index.html
+  s_a70902b9386716::t_fed407d061c896 10
+tests/site.test.cjs
+  s_a70902b9386716::t_fed407d061c896 226
+madinah/quba/index.html
+  s_a70902b9386716::t_fed407d061c896 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "0a60c0c25f50cb452d7626c246aff1356e491a15",
+  "prompts": {},
+  "sessions": {
+    "s_a70902b9386716": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "311ba99e-a886-4d45-bf5f-e61a56b682ee",
+        "model": "unknown"
+      },
+      "human_author": "mtalhajamil <muhammad.jamil@hungerstation.com>"
+    }
+  }
+}
