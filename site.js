@@ -18,7 +18,7 @@ function requireText(value, field) {
 function validateImage(image) {
   if (!image || typeof image !== 'object' ||
       typeof image.src !== 'string' ||
-      !/^assets\/images\/[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp)$/.test(image.src) ||
+      !/^assets\/images\/[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp|svg)$/.test(image.src) ||
       !Number.isInteger(image.width) || image.width <= 0 ||
       !Number.isInteger(image.height) || image.height <= 0) {
     throw new Error('Invalid local image or image dimensions.');

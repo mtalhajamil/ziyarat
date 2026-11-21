@@ -107,28 +107,39 @@ test('available destination link covers the card and has a visible keyboard focu
   assert.match(css, /\.destination-card:focus-within\s*\{[^}]*outline:\s*2px solid/s);
 });
 
-test('renders one place and navigates when more places are supplied', async () => {
-  const {context, content, navigations} = await loadPage('place', false, 'quba');
-  const view = content.children[0];
-  assert.equal(view.fields['[data-field="name"]'].textContent, 'Quba Mosque');
-  assert.equal(view.fields['[data-field="image"]'].src, 'assets/images/quba.jpg');
-  assert.equal(view.fields['[data-action="next"]'].disabled, true);
-
-  context.places = [data['data/madinah.json'][0], {...data['data/madinah.json'][0], slug: 'second', name: 'Second example'}];
-  context.container = new Element();
-  context.container.dataset.placeSlug = 'second';
-  vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context);
-  const multiple = context.container.children[0];
-  const next = multiple.fields['[data-action="next"]'];
-  const previous = multiple.fields['[data-action="previous"]'];
-  assert.equal(next.disabled, false);
-  assert.equal(multiple.fields['[data-field="name"]'].textContent, 'Second example');
-  next.events.click();
-  previous.events.click();
-  assert.deepEqual(navigations, [
-    'https://example.com/ziyarat/madinah/quba/',
-    'https://example.com/ziyarat/madinah/quba/'
+test('renders each supplied place and navigates between clean URLs', async () => {
+  const places = data['data/madinah.json'];
+  assert.deepEqual(places.map(place => place.name), [
+    'Masjid Quba', 'Masjid Jummah', 'Masjid Qiblatain', 'Masjid Ghamama'
   ]);
+  for (const [index, place] of places.entries()) {
+    const {status, content, navigations} = await loadPage('place', false, place.slug);
+    const view = content.children[0];
+    assert.equal(status.textContent, '');
+    assert.equal(view.fields['[data-field="name"]'].textContent, place.name);
+    assert.equal(view.fields['[data-field="english"]'].textContent, place.english);
+    assert.equal(view.fields['[data-field="urdu"]'].textContent, place.urdu);
+    assert.equal(view.fields['[data-field="map"]'].href, place.mapUrl);
+    assert.equal(view.fields['[data-field="image"]'].src, place.image.src);
+    assert.ok(fs.existsSync(place.image.src));
+    assert.equal(view.fields['[data-action="next"]'].disabled, false);
+    view.fields['[data-action="previous"]'].events.click();
+    view.fields['[data-action="next"]'].events.click();
+    assert.deepEqual(navigations, [
+      `https://example.com/ziyarat/madinah/${places[(index + places.length - 1) % places.length].slug}/`,
+      `https://example.com/ziyarat/madinah/${places[(index + 1) % places.length].slug}/`
+    ]);
+  }
+});
+
+test('disables navigation for a single place', async () => {
+  const {context} = await loadPage('place');
+  context.places = [data['data/madinah.json'][0]];
+  context.container = new Element();
+  vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context);
+  const view = context.container.children[0];
+  assert.equal(view.fields['[data-action="previous"]'].disabled, true);
+  assert.equal(view.fields['[data-action="next"]'].disabled, true);
 });
 
 test('rejects unknown, unsafe or duplicate place slugs', async () => {
@@ -172,7 +183,8 @@ test('revalidates templates and data instead of using stale cached content', asy
 });
 
 test('all pages use the same versioned stylesheet and script', () => {
-  const pages = ['index.html', 'madinah.html', 'madinah/index.html', 'madinah/quba/index.html']
+  const pages = ['index.html', 'madinah.html', 'madinah/index.html',
+    ...data['data/madinah.json'].map(place => `madinah/${place.slug}/index.html`)]
     .map(path => fs.readFileSync(path, 'utf8'));
   for (const asset of ['styles.css', 'site.js']) {
     const versioned = pages.map(page => page.match(new RegExp(`${asset.replace('.', '\\.')}\\?v=[\\w-]+`))?.[0]);
@@ -186,7 +198,9 @@ test('all pages use the same versioned stylesheet and script', () => {
 test('directory pages resolve resources and navigation from the project root', () => {
   for (const [path, url, base] of [
     ['madinah/index.html', 'https://example.com/ziyarat/madinah/', '../'],
-    ['madinah/quba/index.html', 'https://example.com/ziyarat/madinah/quba/', '../../']
+    ...data['data/madinah.json'].map(place => [
+      `madinah/${place.slug}/index.html`, `https://example.com/ziyarat/madinah/${place.slug}/`, '../../'
+    ])
   ]) {
     const html = fs.readFileSync(path, 'utf8');
     assert.ok(html.includes(`<base href="${base}">`));
@@ -200,10 +214,27 @@ test('directory pages resolve resources and navigation from the project root', (
   assert.match(quba, /data-place-slug="quba"/);
   assert.match(quba, /href="madinah\/">Madinah<\/a>/);
   assert.match(quba, /aria-current="page">Quba/);
+  for (const place of data['data/madinah.json']) {
+    const page = fs.readFileSync(`madinah/${place.slug}/index.html`, 'utf8');
+    assert.ok(page.includes(`data-place-slug="${place.slug}"`));
+  }
 });
 
 test('place template announces its title without a preview label', () => {
   const template = fs.readFileSync('templates.html', 'utf8');
   assert.doesNotMatch(template, /Design preview|data-field="count"/i);
   assert.match(template, /data-field="name" aria-live="polite"/);
+});
+
+test('long bilingual descriptions preserve paragraphs and use a local Urdu font', () => {
+  for (const place of data['data/madinah.json']) {
+    assert.ok(place.english.includes('\n\n'));
+    assert.ok(place.urdu.includes('\n\n'));
+  }
+  const css = fs.readFileSync('styles.css', 'utf8');
+  const template = fs.readFileSync('templates.html', 'utf8');
+  assert.match(css, /white-space:\s*pre-line/);
+  assert.match(css, /assets\/fonts\/noto-naskh-arabic\.woff2/);
+  assert.match(template, /data-field="urdu" lang="ur" dir="rtl"/);
+  assert.equal(fs.readFileSync('assets/fonts/noto-naskh-arabic.woff2').subarray(0, 4).toString(), 'wOF2');
 });

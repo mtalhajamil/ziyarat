@@ -12,6 +12,8 @@ Run `node --test tests/site.test.cjs` to check content rendering and navigation.
 
 When changing `styles.css` or `site.js`, update the corresponding `?v=` value in every HTML page so visitors receive the new version without waiting for cached assets to expire.
 
+Urdu text uses a locally hosted Arabic subset of [Noto Naskh Arabic](https://fonts.google.com/noto/specimen/Noto+Naskh+Arabic) with system font fallbacks. Its SIL Open Font License is included at `assets/fonts/OFL.txt`.
+
 ## Image sources
 
 - Makkah: [Medineli / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Kaaba_at_night.jpg), CC0.
@@ -20,3 +22,5 @@ When changing `styles.css` or `site.js`, update the corresponding `?v=` value in
 - Quba Mosque: [Konevi / Pixabay](https://pixabay.com/photos/cuba-quba-cami-masjid-religion-3723174/), Pixabay Content License.
 - Taif: [Musaddek Sayek / Pexels](https://www.pexels.com/photo/scenic-view-of-taif-city-architecture-in-makkah-38048226/), Pexels License.
 - Turkiye: [Mustang Joe / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:The_Hagia_Sophia_Grand_Mosque,_Istanbul,_T%C3%BCrkiye_(53807697806).jpg), CC0.
+- Masjid Qiblatain (`assets/images/qiblatain.jpg`, 960 × 1280): [Saad Alkot / Pexels](https://www.pexels.com/photo/masjid-al-qiblatain-in-medina-19858725/), [Pexels License](https://www.pexels.com/license/) (attribution not required).
+- Jummah and Ghamama use an original generic mosque illustration until suitable photographs are available; it does not depict either mosque.
