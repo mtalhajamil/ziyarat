@@ -179,6 +179,8 @@ test('all pages use the same versioned stylesheet and script', () => {
     assert.ok(versioned[0]);
     assert.ok(versioned.every(version => version === versioned[0]));
   }
+  assert.ok(pages.every(page => page.includes('<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">')));
+  assert.match(fs.readFileSync('assets/favicon.svg', 'utf8'), /<svg\b/);
 });
 
 test('directory pages resolve resources and navigation from the project root', () => {
@@ -189,7 +191,7 @@ test('directory pages resolve resources and navigation from the project root', (
     const html = fs.readFileSync(path, 'utf8');
     assert.ok(html.includes(`<base href="${base}">`));
     const root = new URL(base, url);
-    for (const asset of ['styles.css', 'site.js', 'templates.html', 'data/madinah.json', 'assets/images/quba.jpg']) {
+    for (const asset of ['styles.css', 'site.js', 'templates.html', 'data/madinah.json', 'assets/images/quba.jpg', 'assets/favicon.svg']) {
       assert.equal(new URL(asset, root).href, `https://example.com/ziyarat/${asset}`);
     }
     assert.equal(new URL('./', root).href, 'https://example.com/ziyarat/');
