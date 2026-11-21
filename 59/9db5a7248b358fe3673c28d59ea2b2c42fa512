@@ -1,0 +1,21 @@
+madinah.html
+  s_a70902b9386716::t_bd43e31242f6bb 23-26,35
+styles.css
+  s_a70902b9386716::t_bd43e31242f6bb 167,174-182,221,234,267
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "599db5a7248b358fe3673c28d59ea2b2c42fa512",
+  "prompts": {},
+  "sessions": {
+    "s_a70902b9386716": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "311ba99e-a886-4d45-bf5f-e61a56b682ee",
+        "model": "unknown"
+      },
+      "human_author": "mtalhajamil <muhammad.jamil@hungerstation.com>"
+    }
+  }
+}
