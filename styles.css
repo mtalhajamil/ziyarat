@@ -156,25 +156,35 @@ h2 {
 }
 
 .place-page {
-  width: min(100%, 70rem);
+  width: min(100%, 60rem);
   margin: 0 auto;
   padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 6vw, 6rem) 6rem;
 }
 
 .place-preview {
-  margin-top: 3rem;
+  max-width: 48rem;
+  margin: 2rem auto 0;
+  overflow: hidden;
+  border: 1px solid #e1e4dc;
+  border-radius: 0.75rem;
+  background: #fffefa;
 }
 
 .place-slider {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
-  gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.place-slider > * {
+  grid-area: 1 / 1;
 }
 
 .slider-arrow {
+  z-index: 1;
   width: 3rem;
   height: 3rem;
+  margin: 0 1rem;
   border: 1px solid #cbd6c9;
   border-radius: 50%;
   background: #fffefa;
@@ -188,23 +198,28 @@ h2 {
   cursor: not-allowed;
 }
 
+.slider-arrow:first-child {
+  justify-self: start;
+}
+
+.slider-arrow:last-child {
+  justify-self: end;
+}
+
 .place-image-wrap {
-  position: relative;
   overflow: hidden;
-  border-radius: 0.75rem;
   background: #e1e9dd;
 }
 
 .place-image {
   display: block;
   width: 100%;
-  height: clamp(16rem, 38vw, 27rem);
+  height: clamp(12rem, 30vw, 20rem);
   object-fit: cover;
 }
 
 .place-details {
-  max-width: 48rem;
-  margin: 3rem auto 0;
+  padding: clamp(1.25rem, 4vw, 2rem);
 }
 
 .place-details .eyebrow {
@@ -214,15 +229,14 @@ h2 {
 .description-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .description-grid section {
-  padding: 1.5rem;
-  border: 1px solid #e1e4dc;
-  border-radius: 0.75rem;
-  background: #fffefa;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: #f7f8f3;
 }
 
 .description-grid h3 {
@@ -232,7 +246,7 @@ h2 {
 }
 
 .description-grid p {
-  margin: 1rem 0 0;
+  margin: 0.5rem 0 0;
   color: #57635a;
   line-height: 1.8;
 }
@@ -247,7 +261,7 @@ h2 {
   align-items: center;
   gap: 0.4rem;
   min-height: 44px;
-  margin: 2rem 0 0;
+  margin: 1.5rem 0 0;
   padding: 0.8rem 1rem;
   border: 1px solid #d5ded2;
   border-radius: 0.4rem;
@@ -257,6 +271,7 @@ h2 {
 }
 
 .preview-note {
+  margin: 1rem 0 0;
   color: #57635a;
   font-size: 0.875rem;
 }
@@ -287,7 +302,7 @@ h2 {
   }
 
   h1 {
-    font-size: clamp(2.5rem, 11vw, 3.5rem);
+    font-size: clamp(2.25rem, 9vw, 3rem);
   }
 
   .destination-grid {
@@ -297,51 +312,25 @@ h2 {
   }
 
   .card-image {
-    height: auto;
-    aspect-ratio: 16 / 9;
+    height: clamp(9rem, 42vw, 12rem);
   }
 
   .place-preview {
-    margin-top: 2rem;
-  }
-
-  .place-slider {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-  }
-
-  .place-slider > * {
-    grid-area: 1 / 1;
+    margin-top: 1.5rem;
   }
 
   .slider-arrow {
-    z-index: 1;
     width: 44px;
     height: 44px;
     margin: 0 0.5rem;
   }
 
-  .slider-arrow:first-child {
-    justify-self: start;
-  }
-
-  .slider-arrow:last-child {
-    justify-self: end;
-  }
-
   .place-image {
-    height: auto;
-    aspect-ratio: 4 / 3;
-  }
-
-  .place-details {
-    margin-top: 2rem;
+    height: clamp(11rem, 50vw, 15rem);
   }
 
   .description-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
-    margin-top: 1.5rem;
   }
 
   .map-link {
