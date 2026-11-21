@@ -10,7 +10,7 @@ The reusable markup lives in `templates.html`; `site.js` loads the templates and
 
 Run `node --test tests/site.test.cjs` to check content rendering and navigation.
 
-When changing `styles.css` or `site.js`, update the corresponding `?v=` value in every HTML page so visitors receive the new version without waiting for cached assets to expire.
+When changing `styles.css`, `site.js`, or the favicon, update the corresponding `?v=` value in every HTML page so visitors receive the new version without waiting for cached assets to expire.
 
 Urdu text uses a locally hosted Arabic subset of [Noto Naskh Arabic](https://fonts.google.com/noto/specimen/Noto+Naskh+Arabic) with system font fallbacks. Its SIL Open Font License is included at `assets/fonts/OFL.txt`.
 

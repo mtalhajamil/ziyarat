@@ -191,7 +191,7 @@ test('all pages use the same versioned stylesheet and script', () => {
     assert.ok(versioned[0]);
     assert.ok(versioned.every(version => version === versioned[0]));
   }
-  assert.ok(pages.every(page => page.includes('<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">')));
+  assert.ok(pages.every(page => page.includes('<link rel="icon" href="assets/favicon.svg?v=20261121-12" type="image/svg+xml">')));
   assert.match(fs.readFileSync('assets/favicon.svg', 'utf8'), /<svg\b/);
 });
 
