@@ -1,0 +1,42 @@
+templates.html
+  s_a70902b9386716::t_9813461ad0ad4e 1-18,20-45
+  s_a70902b9386716::t_5972be5bc972d4 19
+site.js
+  s_a70902b9386716::t_5972be5bc972d4 1-90,97-162
+  s_a70902b9386716::t_24b60d3fb2a585 91-96
+index.html
+  s_a70902b9386716::t_9813461ad0ad4e 9,23-25
+styles.css
+  s_a70902b9386716::t_537cf2a6aaf945 141,150-165
+  s_a70902b9386716::t_9813461ad0ad4e 197-201,264,266,269,328
+data/destinations.json
+  s_a70902b9386716::t_9813461ad0ad4e 1-23
+tests/site.test.cjs
+  s_a70902b9386716::t_2d1d053915ee10 1-109
+  s_a70902b9386716::t_fd25bc1aa48302 110-120
+madinah.html
+  s_a70902b9386716::t_537cf2a6aaf945 14-19
+  s_a70902b9386716::t_9813461ad0ad4e 9,23-26
+README.md
+  s_a70902b9386716::t_2d1d053915ee10 11
+  s_a70902b9386716::t_5972be5bc972d4 5,7-9
+  s_a70902b9386716::t_6e7403c3d419a9 10
+data/madinah.json
+  s_a70902b9386716::t_9813461ad0ad4e 1-9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b9772339d894ad2d2036ca42e67ffdcefc4f3589",
+  "prompts": {},
+  "sessions": {
+    "s_a70902b9386716": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "311ba99e-a886-4d45-bf5f-e61a56b682ee",
+        "model": "unknown"
+      },
+      "human_author": "mtalhajamil <muhammad.jamil@hungerstation.com>"
+    }
+  }
+}
