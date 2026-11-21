@@ -27,6 +27,9 @@ body {
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: inherit;
   font-family: Georgia, serif;
   font-size: 1.65rem;
@@ -136,8 +139,20 @@ h2 {
 
 .destination-link,
 .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
   color: #405d48;
   font-weight: 600;
+}
+
+.back-link {
+  text-align: right;
+}
+
+.destination-link {
+  font-size: 1rem;
 }
 
 .place-page {
@@ -222,8 +237,16 @@ h2 {
   line-height: 1.8;
 }
 
+.description-grid p[lang="ur"] {
+  font-size: 1.1rem;
+  line-height: 2;
+}
+
 .map-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
   margin: 2rem 0 0;
   padding: 0.8rem 1rem;
   border: 1px solid #d5ded2;
@@ -245,20 +268,84 @@ h2 {
 }
 
 @media (max-width: 700px) {
+  .site-header,
+  .site-footer {
+    padding: 1rem 1.25rem;
+  }
+
+  .site-footer {
+    flex-wrap: wrap;
+  }
+
   .header-note {
     display: none;
   }
 
+  .destinations,
+  .place-page {
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 11vw, 3.5rem);
+  }
+
   .destination-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .card-image {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .place-preview {
+    margin-top: 2rem;
+  }
+
+  .place-slider {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .place-slider > * {
+    grid-area: 1 / 1;
   }
 
   .slider-arrow {
-    width: 2.5rem;
-    height: 2.5rem;
+    z-index: 1;
+    width: 44px;
+    height: 44px;
+    margin: 0 0.5rem;
+  }
+
+  .slider-arrow:first-child {
+    justify-self: start;
+  }
+
+  .slider-arrow:last-child {
+    justify-self: end;
+  }
+
+  .place-image {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .place-details {
+    margin-top: 2rem;
   }
 
   .description-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .map-link {
+    justify-content: center;
+    width: 100%;
   }
 }
