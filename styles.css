@@ -164,10 +164,20 @@ h2 {
 .place-preview {
   max-width: 48rem;
   margin: 2rem auto 0;
+  padding: clamp(1.25rem, 4vw, 2rem);
   overflow: hidden;
   border: 1px solid #e1e4dc;
   border-radius: 0.75rem;
   background: #fffefa;
+}
+
+.place-heading {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.place-heading .eyebrow {
+  margin-bottom: 0.5rem;
 }
 
 .place-slider {
@@ -208,6 +218,7 @@ h2 {
 
 .place-image-wrap {
   overflow: hidden;
+  border-radius: 0.5rem;
   background: #e1e9dd;
 }
 
@@ -218,17 +229,9 @@ h2 {
   object-fit: cover;
 }
 
-.place-details {
-  padding: clamp(1.25rem, 4vw, 2rem);
-}
-
-.place-details .eyebrow {
-  margin-bottom: 0.75rem;
-}
-
 .description-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
   margin-top: 1.5rem;
 }
@@ -261,7 +264,7 @@ h2 {
   align-items: center;
   gap: 0.4rem;
   min-height: 44px;
-  margin: 1.5rem 0 0;
+  margin: 0.75rem 0 0;
   padding: 0.8rem 1rem;
   border: 1px solid #d5ded2;
   border-radius: 0.4rem;
@@ -327,10 +330,6 @@ h2 {
 
   .place-image {
     height: clamp(11rem, 50vw, 15rem);
-  }
-
-  .description-grid {
-    grid-template-columns: 1fr;
   }
 
   .map-link {
