@@ -113,9 +113,11 @@ function renderPlaces(container, template, places) {
     }
     slugs.add(place.slug);
     requireText(place.name, 'place name');
-    validateImage(place.image);
-    requireText(place.english, 'English description');
-    requireText(place.urdu, 'Urdu description');
+    if (place.image !== undefined) validateImage(place.image);
+    if (place.english !== undefined || place.urdu !== undefined) {
+      requireText(place.english, 'English description');
+      requireText(place.urdu, 'Urdu description');
+    }
     const map = new URL(requireText(place.mapUrl, 'map URL'));
     const isGoogleMaps = (
       (['google.com', 'www.google.com', 'goo.gl'].includes(map.hostname) &&
@@ -130,12 +132,15 @@ function renderPlaces(container, template, places) {
   const content = document.importNode(template.content, true);
   const name = field(content, 'name');
   const image = field(content, 'image');
+  const imagePlaceholder = field(content, 'image-placeholder');
   const credit = field(content, 'image-credit');
   const imageSource = field(content, 'image-source');
   const imageLicense = field(content, 'image-license');
   const map = field(content, 'map');
   const english = field(content, 'english');
   const urdu = field(content, 'urdu');
+  const descriptions = field(content, 'descriptions');
+  const descriptionEmpty = field(content, 'description-empty');
   const previous = content.querySelector('[data-action="previous"]');
   const next = content.querySelector('[data-action="next"]');
   if (!previous || !next) throw new Error('Missing place navigation controls.');
@@ -150,8 +155,13 @@ function renderPlaces(container, template, places) {
 
   const place = places[index];
   name.textContent = place.name;
-  setImage(image, place.image);
-  if (place.image.credit) {
+  if (place.image) {
+    setImage(image, place.image);
+  } else {
+    image.hidden = true;
+    imagePlaceholder.hidden = false;
+  }
+  if (place.image && place.image.credit) {
     imageSource.textContent = place.image.credit.description;
     imageSource.href = place.image.credit.sourceUrl;
     imageLicense.textContent = place.image.credit.license;
@@ -159,8 +169,13 @@ function renderPlaces(container, template, places) {
     credit.hidden = false;
   }
   map.href = place.mapUrl;
-  english.textContent = place.english;
-  urdu.textContent = place.urdu;
+  if (place.english !== undefined) {
+    english.textContent = place.english;
+    urdu.textContent = place.urdu;
+  } else {
+    descriptions.hidden = true;
+    descriptionEmpty.hidden = false;
+  }
   previous.disabled = places.length === 1;
   next.disabled = places.length === 1;
   previous.addEventListener('click', () => {

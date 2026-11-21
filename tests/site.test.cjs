@@ -28,10 +28,13 @@ function fragment(kind) {
   const node = new Element();
   const fields = kind === 'destination'
     ? ['name', 'image', 'status']
-    : ['name', 'image', 'map', 'english', 'urdu', 'image-credit', 'image-source', 'image-license'];
+    : ['name', 'image', 'map', 'english', 'urdu', 'image-credit', 'image-source', 'image-license',
+      'image-placeholder', 'descriptions', 'description-empty'];
   for (const name of fields) node.fields[`[data-field="${name}"]`] = new Element();
   if (kind === 'place') {
     node.fields['[data-field="image-credit"]'].hidden = true;
+    node.fields['[data-field="image-placeholder"]'].hidden = true;
+    node.fields['[data-field="description-empty"]'].hidden = true;
     for (const name of ['previous', 'next']) node.fields[`[data-action="${name}"]`] = new Element();
   }
   return node;
@@ -113,19 +116,36 @@ test('available destination link covers the card and has a visible keyboard focu
 test('renders each supplied place and navigates between clean URLs', async () => {
   const places = data['data/madinah.json'];
   assert.deepEqual(places.map(place => place.name), [
-    'Masjid Quba', 'Masjid Jummah', 'Masjid Qiblatain', 'Masjid Ghamama'
+    'Masjid Quba', 'Masjid Jummah', 'Masjid Qiblatain', 'Masjid Ghamama',
+    'Masjid al-Saqia', 'Masjid Umar (R.A)', "Ka'b bin Ashraf Ka Qila",
+    'Masjid-e-Shaykhain', 'Jabal-e-Uhud', 'Jabal-e-Ruma', 'Masjid Fasih',
+    'Masjid-e-Rayah', "Masjid-e-Sab'ah", 'Masjid-e-Fath',
+    'Masjid-e-Utban bin Malik (R.A)', 'Masjid Banu Unaif',
+    'Masjid Al-Mustarāh (Masjid Bani Harisa)'
   ]);
   for (const [index, place] of places.entries()) {
     const {status, content, navigations} = await loadPage('place', false, place.slug);
     const view = content.children[0];
     assert.equal(status.textContent, '');
     assert.equal(view.fields['[data-field="name"]'].textContent, place.name);
-    assert.equal(view.fields['[data-field="english"]'].textContent, place.english);
-    assert.equal(view.fields['[data-field="urdu"]'].textContent, place.urdu);
+    if (place.english !== undefined) {
+      assert.equal(view.fields['[data-field="english"]'].textContent, place.english);
+      assert.equal(view.fields['[data-field="urdu"]'].textContent, place.urdu);
+      assert.equal(view.fields['[data-field="description-empty"]'].hidden, true);
+    } else {
+      assert.equal(view.fields['[data-field="descriptions"]'].hidden, true);
+      assert.equal(view.fields['[data-field="description-empty"]'].hidden, false);
+    }
     assert.equal(view.fields['[data-field="map"]'].href, place.mapUrl);
-    assert.equal(view.fields['[data-field="image"]'].src, place.image.src);
-    assert.ok(fs.existsSync(place.image.src));
-    if (place.image.credit) {
+    if (place.image) {
+      assert.equal(view.fields['[data-field="image"]'].src, place.image.src);
+      assert.ok(fs.existsSync(place.image.src));
+      assert.equal(view.fields['[data-field="image-placeholder"]'].hidden, true);
+    } else {
+      assert.equal(view.fields['[data-field="image"]'].hidden, true);
+      assert.equal(view.fields['[data-field="image-placeholder"]'].hidden, false);
+    }
+    if (place.image?.credit) {
       assert.equal(view.fields['[data-field="image-credit"]'].hidden, false);
       assert.equal(view.fields['[data-field="image-source"]'].href, place.image.credit.sourceUrl);
       assert.equal(view.fields['[data-field="image-license"]'].href, place.image.credit.licenseUrl);
@@ -254,6 +274,36 @@ test('directory pages resolve resources and navigation from the project root', (
   }
 });
 
+test('requires both descriptions when either is provided', async () => {
+  const {context} = await loadPage('place');
+  context.container = new Element();
+  context.places = [{...data['data/madinah.json'][4], english: 'Example'}];
+  assert.throws(
+    () => vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context),
+    /Urdu description/
+  );
+});
+
+test('missing content messages remain visible without displaying empty fields', () => {
+  const template = fs.readFileSync('templates.html', 'utf8');
+  const css = fs.readFileSync('styles.css', 'utf8');
+  assert.match(template, /data-field="image-placeholder" hidden>Image coming soon/);
+  assert.match(template, /data-field="description-empty" hidden>Description coming soon/);
+  assert.match(css, /\.place-image\[hidden\],[\s\S]*?\.description-grid\[hidden\]\s*\{\s*display:\s*none/);
+});
+
+test('uses the supplied Google Maps searches for all places', () => {
+  const queries = [
+    'Masjid Quba, Madinah', 'Masjid Jummah, Madinah', 'Masjid Qiblatain, Madinah',
+    'Masjid Ghamama, Madinah', 'Masjid al-Saqia, Madinah', 'Masjid Umar (R.A), Madinah',
+    "Ka'b bin Ashraf Ka Qila, Madinah", 'Masjid-e-Shaykhain, Madinah', 'Jabal-e-Uhud, Madinah',
+    'Jabal-e-Ruma, Madinah', 'Masjid Fasih, Madinah', 'Masjid-e-Rayah, Madinah',
+    "Masjid-e-Sab'ah, Madinah", 'Masjid-e-Fath, Madinah', 'Masjid-e-Utban bin Malik (R.A), Madinah',
+    'Masjid Banu Unaif, Madinah', 'Masjid Al-Mustarāh (Masjid Bani Harisa), Madinah'
+  ];
+  assert.deepEqual(data['data/madinah.json'].map(place => new URL(place.mapUrl).searchParams.get('query')), queries);
+});
+
 test('place template announces its title without a preview label', () => {
   const template = fs.readFileSync('templates.html', 'utf8');
   assert.doesNotMatch(template, /Design preview|data-field="count"/i);
@@ -262,7 +312,7 @@ test('place template announces its title without a preview label', () => {
 });
 
 test('long bilingual descriptions preserve paragraphs and use a local Urdu font', () => {
-  for (const place of data['data/madinah.json']) {
+  for (const place of data['data/madinah.json'].filter(place => place.english !== undefined)) {
     assert.ok(place.english.includes('\n\n'));
     assert.ok(place.urdu.includes('\n\n'));
   }

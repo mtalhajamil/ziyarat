@@ -20,13 +20,14 @@
           <button class="slider-arrow" type="button" aria-label="Previous place" data-action="previous">&larr;</button>
           <div class="place-image-wrap">
             <img class="place-image" data-field="image" alt="">
+            <div class="image-placeholder" data-field="image-placeholder" hidden>Image coming soon</div>
           </div>
           <button class="slider-arrow" type="button" aria-label="Next place" data-action="next">&rarr;</button>
         </div>
         <a class="map-link" data-field="map">View on Google Maps <span aria-hidden="true">&rarr;</span></a>
         <div class="place-details">
           <p class="image-credit" data-field="image-credit" hidden>Photo: <a data-field="image-source"></a> · <a data-field="image-license"></a></p>
-          <div class="description-grid">
+          <div class="description-grid" data-field="descriptions">
             <section aria-labelledby="english-heading">
               <h2 id="english-heading">English</h2>
               <p data-field="english"></p>
@@ -36,6 +37,7 @@
               <p data-field="urdu" lang="ur" dir="rtl"></p>
             </section>
           </div>
+          <p class="description-empty" data-field="description-empty" hidden>Description coming soon</p>
         </div>
       </div>
     </template>
