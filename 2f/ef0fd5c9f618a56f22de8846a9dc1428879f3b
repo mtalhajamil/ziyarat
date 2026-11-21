@@ -1,0 +1,23 @@
+tests/site.test.cjs
+  s_a70902b9386716::t_135f1287f0c114 86-103
+README.md
+  s_a70902b9386716::t_135f1287f0c114 36-37,87
+index.html
+  s_a70902b9386716::t_135f1287f0c114 8-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2fef0fd5c9f618a56f22de8846a9dc1428879f3b",
+  "prompts": {},
+  "sessions": {
+    "s_a70902b9386716": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "311ba99e-a886-4d45-bf5f-e61a56b682ee",
+        "model": "unknown"
+      },
+      "human_author": "mtalhajamil <muhammad.jamil@hungerstation.com>"
+    }
+  }
+}
