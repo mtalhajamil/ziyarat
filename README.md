@@ -1,18 +1,67 @@
 # Ziyarat
 
-A minimal static website foundation for exploring places of ziyarat.
+A static, build-free website for exploring places of ziyarat. Read [AGENTS.md](AGENTS.md) for the repository's mobile-first, accessibility and content-separation guardrails. Do not invent historical descriptions, translations, locations, photo identities or licenses; use supplied or verified information and leave missing content marked as such.
 
-Run `python3 -m http.server 8000` from this directory and open `http://localhost:8000/`. JavaScript and an HTTP server are required to load the JSON and templates; opening the HTML files directly will not work. No build step or dependencies are required.
+## Run locally
 
-Destination cards are stored in `data/destinations.json`; Madinah places are in `data/madinah.json`. Add an entry using the existing fields, put its image in `assets/images/`, and use its local path, alt text, and dimensions in the JSON. A destination without a `page` is marked coming soon; a live destination may have a short `description`. Each Madinah place needs a unique lowercase, hyphen-separated `slug`, name, and HTTPS Google Maps URL. An image and both English and Urdu descriptions can be omitted until available; the page displays a coming-soon message instead. For images requiring attribution, provide `image.credit` with `description`, `sourceUrl`, `license`, and `licenseUrl` as in the Jummah entry; identify the creator and any changes. Create `madinah/<slug>/index.html` from the Quba page and update its title, breadcrumb, and `data-place-slug` to match the new entry. This static page makes the clean URL work on direct visits and refreshes. The navigation arrows are disabled for a single place and navigate between these URLs when more are added. Update the image sources below when adding photographs, and follow their license terms.
+From the repository root:
 
-The reusable markup lives in `templates.html`; `site.js` loads the templates and data. Directory index pages use a relative base URL so resources resolve under a GitHub Pages project URL. `/madinah/` shows the first place, `/madinah/quba/` opens Quba directly, and the old `madinah.html` link remains available.
+```sh
+python3 -m http.server 8000
+```
 
-Run `node --test tests/site.test.cjs` to check content rendering and navigation.
+Open `http://localhost:8000/`, or visit `http://localhost:8000/madinah/quba/` directly. The browser needs JavaScript and an HTTP server to fetch the templates and JSON; opening files using `file://` does not work. There is no build step, framework, package installation or server-side application. Node.js is needed only for the tests below.
 
-When changing `styles.css`, `site.js`, or the favicon, update the corresponding `?v=` value in every HTML page so visitors receive the new version without waiting for cached assets to expire.
+## How it works
 
-Urdu text uses a locally hosted Arabic subset of [Noto Naskh Arabic](https://fonts.google.com/noto/specimen/Noto+Naskh+Arabic) with system font fallbacks. Its SIL Open Font License is included at `assets/fonts/OFL.txt`.
+| Path | Responsibility |
+| --- | --- |
+| `index.html`, `madinah.html`, `madinah/**/index.html` | Static page shells, navigation, asset versions and content containers. Each place route has its own directory index. |
+| `data/destinations.json` | Homepage cards, images, optional descriptions and links. |
+| `data/madinah.json` | Ordered Madinah places, map links, optional images, credits and bilingual descriptions. |
+| `templates.html` | Reusable destination and place markup, including missing-content states. |
+| `site.js` | Fetches and validates the data and templates, renders the page, and handles place navigation. |
+| `styles.css` | Shared responsive styles, the Madinah theme and locally hosted Urdu font. |
+| `assets/images/`, `assets/fonts/`, `assets/favicon.svg` | Local site assets. The Noto Naskh Arabic font license is `assets/fonts/OFL.txt`. |
+| `tests/site.test.cjs` | Node tests for rendering, validation, routes and asset versions. |
+
+The page shell loads `site.js`, which fetches `templates.html` and the relevant JSON with `cache: 'no-cache'`, clones a template and inserts text as text rather than HTML. Invalid data or failed requests produce an error message instead of partial content; inspect the browser console for details. All place entries are validated before a place is shown, so one invalid entry can prevent every Madinah place from loading.
+
+The homepage links the Madinah tile to `/madinah/quba/`; other destination cards without a `page` show “Coming soon”. `/madinah/` and the legacy `madinah.html` display the first entry in `data/madinah.json`. Each `/madinah/<slug>/` page selects its entry through `data-place-slug`. The arrows navigate to the previous or next directory URL in JSON order and wrap around; both are disabled when there is only one entry. Adding JSON alone does **not** create a route.
+
+Only Madinah has a place-page implementation: `site.js` selects Madinah data for place pages and constructs Madinah slider URLs. A new destination's place pages need corresponding implementation and routes; adding a homepage link alone is not enough.
+
+Directory pages use a relative `<base>` so links, scripts, styles, data and images resolve under the GitHub Pages project path as well as at a local root. Keep the existing relative paths and test direct entry and refresh on nested pages; do not assume a server-side router or rewrite rules.
+
+## Add or update content
+
+1. Edit the appropriate JSON file, not the reusable markup or rendering logic. Destination entries require a name and image; `page` and `description` are optional. A live `page` must be a relative directory URL ending in `/` or a simple `.html` filename, as validated by `site.js`.
+2. A Madinah place requires a unique lowercase, hyphen-separated `slug`, `name` and an HTTPS Google Maps `mapUrl`. The accepted hosts and paths are checked in `site.js`. Omit `image` if no reliably identified, licensed image is available. Omit **both** `english` and `urdu` when no descriptions are supplied; the page then shows “Description coming soon”. If either description is present, both must be nonempty.
+3. Preserve supplied Urdu text and punctuation; only format it when requested. Put paragraph breaks in JSON as `\n\n`; the stylesheet preserves them and the template sets Urdu to `lang="ur"` and `dir="rtl"`. Translate supplied text faithfully rather than inventing additional content.
+4. For a new Madinah entry, copy `madinah/quba/index.html` to `madinah/<slug>/index.html` and update its title, breadcrumb and `data-place-slug`. Keep its `<base href="../../">` and the current asset versions. The slider links to that directory, so every entry needs its matching file.
+5. If adding a photograph, put it in `assets/images/` and set `image.src`, `alt`, `width` and `height` to its actual local path and dimensions. Image filenames may contain letters, digits, `_` and `-`; supported extensions are `jpg`, `jpeg`, `png` and `webp`. Verify the subject and reuse license; never substitute a photo of a different place.
+6. Record the source, creator, license and modifications below. Where a place photo requires visible attribution, add `image.credit` with `description`, `sourceUrl`, `license` and `licenseUrl`, following the Jummah entry. Credit URLs must be HTTPS; the place template renders the source and license links. Destination cards do not currently render image credits, so do not use an image requiring visible attribution there without implementing that support.
+
+## Validate and deploy
+
+```sh
+node --test tests/site.test.cjs
+git diff --check
+```
+
+The tests exercise the JSON renderer with a simulated DOM, validation, navigation and route files; they are not rendered browser or visual tests. When intentionally adding places, update the expected place names and map searches in `tests/site.test.cjs`. For UI changes, also check 320px and 375px mobile widths and desktop, including Urdu, image alignment, links and keyboard focus, when browser access is permitted. Report explicitly if visual checks cannot be performed.
+
+When changing `styles.css`, `site.js` or `assets/favicon.svg`, update that asset's `?v=` value in **every** HTML page, including all place directory indexes. JSON and templates are fetched with revalidation; HTML and static assets may still be cached.
+
+GitHub Pages is configured to publish the repository's `main` branch from `/` at [mtalhajamil.github.io/ziyarat/](https://mtalhajamil.github.io/ziyarat/). Follow the owner's instructions and repository protections when publishing; do not merge on the owner's behalf. With an authorized `gh` session, check the latest build with:
+
+```sh
+gh api repos/mtalhajamil/ziyarat/pages/builds/latest --jq '{status,commit}'
+```
+
+After the intended commit is built, check the live homepage, changed nested routes, data and assets. Allow for GitHub Pages cache propagation; a successful Git push alone does not establish that the updated site is live.
+
+Urdu text uses a locally hosted Arabic subset of [Noto Naskh Arabic](https://fonts.google.com/noto/specimen/Noto+Naskh+Arabic) with system font fallbacks, not a font CDN.
 
 ## Image sources
 
