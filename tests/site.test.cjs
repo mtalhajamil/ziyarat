@@ -28,9 +28,10 @@ function fragment(kind) {
   const node = new Element();
   const fields = kind === 'destination'
     ? ['name', 'image', 'status']
-    : ['name', 'image', 'map', 'english', 'urdu'];
+    : ['name', 'image', 'map', 'english', 'urdu', 'image-credit', 'image-source', 'image-license'];
   for (const name of fields) node.fields[`[data-field="${name}"]`] = new Element();
   if (kind === 'place') {
+    node.fields['[data-field="image-credit"]'].hidden = true;
     for (const name of ['previous', 'next']) node.fields[`[data-action="${name}"]`] = new Element();
   }
   return node;
@@ -102,6 +103,8 @@ test('renders destination data and links only available pages', async () => {
 
 test('available destination link covers the card and has a visible keyboard focus', () => {
   const css = fs.readFileSync('styles.css', 'utf8');
+  const template = fs.readFileSync('templates.html', 'utf8');
+  assert.doesNotMatch(template, /class="card-label"/);
   assert.match(css, /\.destination-card\s*\{[^}]*position:\s*relative/s);
   assert.match(css, /\.destination-link::after\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0/s);
   assert.match(css, /\.destination-card:focus-within\s*\{[^}]*outline:\s*2px solid/s);
@@ -122,6 +125,13 @@ test('renders each supplied place and navigates between clean URLs', async () =>
     assert.equal(view.fields['[data-field="map"]'].href, place.mapUrl);
     assert.equal(view.fields['[data-field="image"]'].src, place.image.src);
     assert.ok(fs.existsSync(place.image.src));
+    if (place.image.credit) {
+      assert.equal(view.fields['[data-field="image-credit"]'].hidden, false);
+      assert.equal(view.fields['[data-field="image-source"]'].href, place.image.credit.sourceUrl);
+      assert.equal(view.fields['[data-field="image-license"]'].href, place.image.credit.licenseUrl);
+    } else {
+      assert.equal(view.fields['[data-field="image-credit"]'].hidden, true);
+    }
     assert.equal(view.fields['[data-action="next"]'].disabled, false);
     view.fields['[data-action="previous"]'].events.click();
     view.fields['[data-action="next"]'].events.click();
@@ -130,6 +140,30 @@ test('renders each supplied place and navigates between clean URLs', async () =>
       `https://example.com/ziyarat/madinah/${places[(index + 1) % places.length].slug}/`
     ]);
   }
+});
+
+test('displays image attribution and rejects unsafe credit links', async () => {
+  const {context} = await loadPage('place');
+  const credit = {
+    description: 'Example image by Photographer (resized)',
+    sourceUrl: 'https://commons.wikimedia.org/example',
+    license: 'CC BY 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/4.0/'
+  };
+  context.container = new Element();
+  context.places = [{...data['data/madinah.json'][0], image: {...data['data/madinah.json'][0].image, credit}}];
+  vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context);
+  const view = context.container.children[0];
+  assert.equal(view.fields['[data-field="image-credit"]'].hidden, false);
+  assert.equal(view.fields['[data-field="image-source"]'].textContent, credit.description);
+  assert.equal(view.fields['[data-field="image-source"]'].href, credit.sourceUrl);
+  assert.equal(view.fields['[data-field="image-license"]'].textContent, credit.license);
+  assert.equal(view.fields['[data-field="image-license"]'].href, credit.licenseUrl);
+  context.places[0].image.credit.licenseUrl = 'javascript:alert(1)';
+  assert.throws(
+    () => vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context),
+    /Invalid image license URL/
+  );
 });
 
 test('disables navigation for a single place', async () => {
@@ -191,7 +225,7 @@ test('all pages use the same versioned stylesheet and script', () => {
     assert.ok(versioned[0]);
     assert.ok(versioned.every(version => version === versioned[0]));
   }
-  assert.ok(pages.every(page => page.includes('<link rel="icon" href="assets/favicon.svg?v=20261121-12" type="image/svg+xml">')));
+  assert.ok(pages.every(page => page.includes('<link rel="icon" href="assets/favicon.svg?v=20261121-14" type="image/svg+xml">')));
   assert.match(fs.readFileSync('assets/favicon.svg', 'utf8'), /<svg\b/);
 });
 

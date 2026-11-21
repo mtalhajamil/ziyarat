@@ -18,12 +18,25 @@ function requireText(value, field) {
 function validateImage(image) {
   if (!image || typeof image !== 'object' ||
       typeof image.src !== 'string' ||
-      !/^assets\/images\/[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp|svg)$/.test(image.src) ||
+      !/^assets\/images\/[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp)$/.test(image.src) ||
       !Number.isInteger(image.width) || image.width <= 0 ||
       !Number.isInteger(image.height) || image.height <= 0) {
     throw new Error('Invalid local image or image dimensions.');
   }
   requireText(image.alt, 'image alt text');
+  if (image.credit !== undefined) {
+    if (!image.credit || typeof image.credit !== 'object') {
+      throw new Error('Invalid image credit.');
+    }
+    requireText(image.credit.description, 'image credit description');
+    requireText(image.credit.license, 'image license');
+    for (const [label, value] of [['image source URL', image.credit.sourceUrl], ['image license URL', image.credit.licenseUrl]]) {
+      const url = new URL(requireText(value, label));
+      if (url.protocol !== 'https:' || url.username || url.password) {
+        throw new Error(`Invalid ${label}.`);
+      }
+    }
+  }
 }
 
 function setImage(element, image) {
@@ -110,6 +123,9 @@ function renderPlaces(container, template, places) {
   const content = document.importNode(template.content, true);
   const name = field(content, 'name');
   const image = field(content, 'image');
+  const credit = field(content, 'image-credit');
+  const imageSource = field(content, 'image-source');
+  const imageLicense = field(content, 'image-license');
   const map = field(content, 'map');
   const english = field(content, 'english');
   const urdu = field(content, 'urdu');
@@ -128,6 +144,13 @@ function renderPlaces(container, template, places) {
   const place = places[index];
   name.textContent = place.name;
   setImage(image, place.image);
+  if (place.image.credit) {
+    imageSource.textContent = place.image.credit.description;
+    imageSource.href = place.image.credit.sourceUrl;
+    imageLicense.textContent = place.image.credit.license;
+    imageLicense.href = place.image.credit.licenseUrl;
+    credit.hidden = false;
+  }
   map.href = place.mapUrl;
   english.textContent = place.english;
   urdu.textContent = place.urdu;
