@@ -33,6 +33,21 @@ Only Madinah has a place-page implementation: `site.js` selects Madinah data for
 
 Directory pages use a relative `<base>` so links, scripts, styles, data and images resolve under the GitHub Pages project path as well as at a local root. Keep the existing relative paths and test direct entry and refresh on nested pages; do not assume a server-side router or rewrite rules.
 
+## Destination theme guide
+
+The homepage has its own existing warm-neutral theme (`#f7f6f0` background, `#242d26` text). Madinah is the only destination with implemented place pages and a distinct theme: light green (`#f2f8ef` background), deep green (`#1c4935` text and `#245c3e` map button), muted gold accents, softly translucent cards and rounded images. All places within Madinah share that theme. See `styles.css` for the actual gradients, colors and responsive layout.
+
+The other destinations are currently coming soon. The following are **proposed starting palettes**, not implemented themes; confirm the direction with the owner before introducing a new destination design:
+
+| Destination | Background | Main text | Dark control | Direction |
+| --- | --- | --- | --- | --- |
+| Makkah | `#faf7ef` | `#302b26` | `#51432f` | Warm ivory, charcoal and restrained gold. |
+| Badr | `#f8f3e8` | `#403b2e` | `#56523a` | Sand and muted olive. |
+| Taif | `#faf3f1` | `#443436` | `#6c4046` | Soft rose and warm neutrals. |
+| Turkiye | `#f2f6f7` | `#293e45` | `#305764` | Pale blue-gray and muted teal. |
+
+Keep the existing light, calm visual language: centered place heading, proportionate local image, full-width map link, readable bilingual descriptions and compact breadcrumb. Use dark text on light surfaces and white text on dark controls; check the actual rendered colors, including translucent layers, for at least 4.5:1 normal-text contrast and visible focus. Preserve the existing system/Georgia typography and local Noto Naskh Arabic for Urdu unless a different design is requested. Apply the mobile, touch-target and accessibility requirements in `AGENTS.md`; never assume a proposed palette or a place-specific design already exists.
+
 ## Add or update content
 
 1. Edit the appropriate JSON file, not the reusable markup or rendering logic. Destination entries require a name and image; `page` and `description` are optional. A live `page` must be a relative directory URL ending in `/` or a simple `.html` filename, as validated by `site.js`.
