@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8"><title>Page templates</title></head>
+  <body>
+    <template id="destination-template">
+      <article class="destination-card">
+        <img class="card-image" data-field="image" alt="">
+        <div class="card-content">
+          <p class="card-label">Ziyarat</p>
+          <h2 data-field="name"></h2>
+          <p class="card-status" data-field="status"></p>
+        </div>
+      </article>
+    </template>
+    <template id="place-template">
+      <div class="place-preview" role="region" aria-label="Madinah place preview">
+        <div class="place-heading">
+          <p class="eyebrow">Design preview &middot; <span data-field="count"></span></p>
+          <h1 class="place-title" data-field="name" aria-live="polite"></h1>
+        </div>
+        <div class="place-slider">
+          <button class="slider-arrow" type="button" aria-label="Previous place" data-action="previous">&larr;</button>
+          <div class="place-image-wrap">
+            <img class="place-image" data-field="image" alt="">
+          </div>
+          <button class="slider-arrow" type="button" aria-label="Next place" data-action="next">&rarr;</button>
+        </div>
+        <a class="map-link" data-field="map">View on Google Maps <span aria-hidden="true">&rarr;</span></a>
+        <div class="place-details">
+          <div class="description-grid">
+            <section aria-labelledby="english-heading">
+              <h2 id="english-heading">English</h2>
+              <p data-field="english"></p>
+            </section>
+            <section aria-labelledby="urdu-heading">
+              <h2 id="urdu-heading">Urdu <span lang="ur" dir="rtl">اردو</span></h2>
+              <p data-field="urdu" lang="ur" dir="rtl"></p>
+            </section>
+          </div>
+          <p class="preview-note">More places will be added later.</p>
+        </div>
+      </div>
+    </template>
+  </body>
+</html>

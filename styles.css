@@ -138,7 +138,7 @@ h2 {
 }
 
 .destination-link,
-.back-link {
+.breadcrumbs a {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -147,8 +147,22 @@ h2 {
   font-weight: 600;
 }
 
-.back-link {
-  text-align: right;
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.875rem;
+}
+
+.breadcrumbs li + li::before {
+  content: "/";
+  margin-right: 0.5rem;
+  color: #68756a;
 }
 
 .destination-link {
@@ -178,6 +192,11 @@ h2 {
 
 .place-heading .eyebrow {
   margin-bottom: 0.5rem;
+}
+
+.place-title {
+  font-size: 2rem;
+  letter-spacing: normal;
 }
 
 .place-slider {
@@ -242,10 +261,12 @@ h2 {
   background: #f7f8f3;
 }
 
-.description-grid h3 {
+.description-grid h2 {
   margin: 0;
+  font-family: inherit;
   color: #405d48;
   font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .description-grid p {
@@ -304,7 +325,7 @@ h2 {
     padding: 2.5rem 1.25rem 4rem;
   }
 
-  h1 {
+  .destinations h1 {
     font-size: clamp(2.25rem, 9vw, 3rem);
   }
 

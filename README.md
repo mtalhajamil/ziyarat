@@ -2,9 +2,13 @@
 
 A minimal static website foundation for exploring places of ziyarat.
 
-Open `index.html` in a browser to view the site. No build step or dependencies are required.
+Run `python3 -m http.server 8000` from this directory and open `http://localhost:8000/`. JavaScript and an HTTP server are required to load the JSON and templates; opening the HTML files directly will not work. No build step or dependencies are required.
 
-The Madinah page previews Quba Mosque. The navigation arrows are disabled until more places are available.
+Destination cards are stored in `data/destinations.json`; Madinah places are in `data/madinah.json`. Add an entry using the existing fields, put its image in `assets/images/`, and use its local path, alt text, and dimensions in the JSON. A destination without a `page` is marked coming soon. Each Madinah place needs a name, image, English and Urdu descriptions, and an HTTPS Google Maps URL. The navigation arrows are disabled for a single place and navigate between entries when more are added. Update the image sources below when adding photographs, and follow their license terms.
+
+The reusable markup lives in `templates.html`; `site.js` loads the templates and data. Paths are relative so the site also works under a GitHub Pages project URL.
+
+Run `node --test tests/site.test.cjs` to check content rendering and navigation.
 
 ## Image sources
 

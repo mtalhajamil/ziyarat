@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Quba Mosque",
+    "image": { "src": "assets/images/quba.jpg", "alt": "Quba Mosque in Madinah", "width": 1280, "height": 1013 },
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Quba+Mosque+Madinah",
+    "english": "Quba Mosque is a mosque in Madinah, Saudi Arabia.",
+    "urdu": "مسجد قباء مدینہ، سعودی عرب میں واقع ایک مسجد ہے۔"
+  }
+]

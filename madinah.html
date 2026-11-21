@@ -6,47 +6,24 @@
     <meta name="description" content="A design preview for places of ziyarat in Madinah.">
     <title>Madinah | Ziyarat</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="site.js" defer></script>
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="./" aria-label="Ziyarat home">Ziyarat<span aria-hidden="true">.</span></a>
-      <a class="back-link" href="./">&larr; All destinations</a>
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="./">Home</a></li>
+          <li aria-current="page">Madinah</li>
+        </ol>
+      </nav>
     </header>
 
     <main>
-      <section class="place-page" aria-labelledby="page-title">
-        <p class="eyebrow">Places of ziyarat</p>
-        <h1 id="page-title">Madinah</h1>
-        <p class="intro-text">A preview of how places will be presented. More details will be added later.</p>
-
-        <div class="place-preview" role="region" aria-label="Madinah place preview">
-          <div class="place-heading">
-            <p class="eyebrow">Design preview &middot; 1 place</p>
-            <h2>Quba Mosque</h2>
-          </div>
-          <div class="place-slider">
-            <button class="slider-arrow" type="button" aria-label="Previous place" disabled>&larr;</button>
-            <div class="place-image-wrap">
-              <img class="place-image" src="images/quba.jpg" alt="Quba Mosque in Madinah" width="1280" height="1013">
-            </div>
-            <button class="slider-arrow" type="button" aria-label="Next place" disabled>&rarr;</button>
-          </div>
-
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Quba+Mosque+Madinah">View on Google Maps <span aria-hidden="true">&rarr;</span></a>
-          <div class="place-details">
-            <div class="description-grid">
-              <section aria-labelledby="english-heading">
-                <h3 id="english-heading">English</h3>
-                <p>Quba Mosque is a mosque in Madinah, Saudi Arabia.</p>
-              </section>
-              <section aria-labelledby="urdu-heading">
-                <h3 id="urdu-heading">Urdu <span lang="ur" dir="rtl">اردو</span></h3>
-                <p lang="ur" dir="rtl">مسجد قباء مدینہ، سعودی عرب میں واقع ایک مسجد ہے۔</p>
-              </section>
-            </div>
-            <p class="preview-note">More places will be added later.</p>
-          </div>
-        </div>
+      <section class="place-page" aria-label="Madinah places">
+        <p id="load-status" role="status"></p>
+        <noscript><p>JavaScript is required to load places.</p></noscript>
+        <div id="place-content"></div>
       </section>
     </main>
 

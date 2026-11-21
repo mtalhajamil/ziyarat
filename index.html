@@ -6,6 +6,7 @@
     <meta name="description" content="A space for exploring places of ziyarat.">
     <title>Ziyarat</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="site.js" defer></script>
   </head>
   <body>
     <header class="site-header">
@@ -19,48 +20,9 @@
         <h1 id="page-title">Places of ziyarat</h1>
         <p class="intro-text">A space for exploring places of ziyarat, thoughtfully and at your own pace.</p>
 
-        <div class="destination-grid">
-          <article class="destination-card">
-            <img class="card-image" src="images/makkah.jpg" alt="The Kaaba in Makkah at night" width="960" height="720">
-            <div class="card-content">
-              <p class="card-label">Ziyarat</p>
-              <h2>Makkah</h2>
-              <p class="card-status">Coming soon</p>
-            </div>
-          </article>
-          <article class="destination-card">
-            <img class="card-image" src="images/madinah.jpg" alt="The Prophet's Mosque in Madinah" width="960" height="720">
-            <div class="card-content">
-              <p class="card-label">Ziyarat</p>
-              <h2>Madinah</h2>
-              <p class="card-status"><a class="destination-link" href="madinah.html">Explore Madinah <span aria-hidden="true">&rarr;</span></a></p>
-            </div>
-          </article>
-          <article class="destination-card">
-            <img class="card-image" src="images/badr.jpg" alt="A monument to the martyrs of Badr" width="1280" height="960">
-            <div class="card-content">
-              <p class="card-label">Ziyarat</p>
-              <h2>Badr</h2>
-              <p class="card-status">Coming soon</p>
-            </div>
-          </article>
-          <article class="destination-card">
-            <img class="card-image" src="images/taif.jpg" alt="Buildings in Taif, Saudi Arabia" width="960" height="540">
-            <div class="card-content">
-              <p class="card-label">Ziyarat</p>
-              <h2>Taif</h2>
-              <p class="card-status">Coming soon</p>
-            </div>
-          </article>
-          <article class="destination-card">
-            <img class="card-image" src="images/turkiye.jpg" alt="Hagia Sophia in Istanbul, Turkiye" width="960" height="641">
-            <div class="card-content">
-              <p class="card-label">Ziyarat</p>
-              <h2>Turkiye</h2>
-              <p class="card-status">Coming soon</p>
-            </div>
-          </article>
-        </div>
+        <p id="load-status" role="status"></p>
+        <noscript><p>JavaScript is required to load destinations.</p></noscript>
+        <div class="destination-grid" id="destination-list"></div>
       </section>
     </main>
 
