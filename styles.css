@@ -38,7 +38,8 @@ body {
   color: #a67149;
 }
 
-a:focus-visible {
+a:focus-visible,
+button:focus-visible {
   outline: 2px solid #455d4a;
   outline-offset: 5px;
 }
@@ -133,15 +134,108 @@ h2 {
   font-size: 0.875rem;
 }
 
-.photo-credit {
-  margin: 1rem 0 0;
-  color: #57635a;
-  font-size: 0.7rem;
-  line-height: 1.5;
+.destination-link,
+.back-link {
+  color: #405d48;
+  font-weight: 600;
 }
 
-.photo-credit a {
-  color: inherit;
+.place-page {
+  width: min(100%, 70rem);
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 6vw, 6rem) 6rem;
+}
+
+.place-preview {
+  margin-top: 3rem;
+}
+
+.place-slider {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.slider-arrow {
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid #cbd6c9;
+  border-radius: 50%;
+  background: #fffefa;
+  color: #405d48;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.slider-arrow:disabled {
+  color: #6f7d70;
+  cursor: not-allowed;
+}
+
+.place-image-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: #e1e9dd;
+}
+
+.place-image {
+  display: block;
+  width: 100%;
+  height: clamp(16rem, 38vw, 27rem);
+  object-fit: cover;
+}
+
+.place-details {
+  max-width: 48rem;
+  margin: 3rem auto 0;
+}
+
+.place-details .eyebrow {
+  margin-bottom: 0.75rem;
+}
+
+.description-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.description-grid section {
+  padding: 1.5rem;
+  border: 1px solid #e1e4dc;
+  border-radius: 0.75rem;
+  background: #fffefa;
+}
+
+.description-grid h3 {
+  margin: 0;
+  color: #405d48;
+  font-size: 0.9rem;
+}
+
+.description-grid p {
+  margin: 1rem 0 0;
+  color: #57635a;
+  line-height: 1.8;
+}
+
+.map-link {
+  display: inline-block;
+  margin: 2rem 0 0;
+  padding: 0.8rem 1rem;
+  border: 1px solid #d5ded2;
+  border-radius: 0.4rem;
+  color: #405d48;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.preview-note {
+  color: #57635a;
+  font-size: 0.875rem;
 }
 
 .site-footer {
@@ -156,6 +250,15 @@ h2 {
   }
 
   .destination-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .slider-arrow {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .description-grid {
     grid-template-columns: 1fr;
   }
 }
