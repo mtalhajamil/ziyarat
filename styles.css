@@ -104,6 +104,7 @@ h1 {
 }
 
 .destination-card {
+  position: relative;
   overflow: hidden;
   border: 1px solid #e1e4dc;
   border-radius: 0.75rem;
@@ -137,7 +138,6 @@ h2 {
   font-size: 0.875rem;
 }
 
-.destination-link,
 .breadcrumbs a {
   display: inline-flex;
   align-items: center;
@@ -180,15 +180,31 @@ h2 {
 }
 
 .destination-link {
-  font-size: 1rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.destination-link::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+.destination-card:focus-within {
+  outline: 2px solid #455d4a;
+  outline-offset: 5px;
+}
+
+.destination-link:focus-visible {
+  outline: none;
 }
 
 .place-body {
-  color: #234a47;
+  color: #1c4935;
   background:
-    radial-gradient(ellipse at 10% 20%, rgba(123, 158, 155, 0.18), transparent 40%),
-    radial-gradient(ellipse at 90% 55%, rgba(201, 166, 107, 0.13), transparent 42%),
-    #fdfbf7;
+    radial-gradient(ellipse at 10% 20%, rgba(151, 199, 157, 0.32), transparent 45%),
+    radial-gradient(ellipse at 90% 55%, rgba(203, 222, 181, 0.38), transparent 45%),
+    #f2f8ef;
 }
 
 .place-body .brand span {
@@ -196,7 +212,12 @@ h2 {
 }
 
 .place-body .breadcrumbs a {
-  color: #234a47;
+  color: #1c4935;
+}
+
+.place-body .breadcrumbs ol {
+  border-color: #d3e6d1;
+  background: rgba(248, 253, 247, 0.82);
 }
 
 .place-body .site-header {
@@ -223,8 +244,8 @@ h2 {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.9);
   border-radius: 1.75rem;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 1rem 2.5rem rgba(35, 74, 71, 0.1);
+  background: rgba(249, 253, 247, 0.78);
+  box-shadow: 0 1rem 2.5rem rgba(28, 73, 53, 0.1);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
 }
@@ -241,7 +262,7 @@ h2 {
 }
 
 .place-title {
-  color: #234a47;
+  color: #1c4935;
   font-size: clamp(2rem, 4vw, 3rem);
   letter-spacing: normal;
 }
@@ -255,16 +276,16 @@ h2 {
   width: 3rem;
   height: 3rem;
   margin: 0;
-  border: 1px solid #b7cac8;
+  border: 1px solid #b6d2b7;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.9);
-  color: #234a47;
+  color: #1c4935;
   font-size: 1.4rem;
   cursor: pointer;
 }
 
 .slider-arrow:disabled {
-  color: #647d7a;
+  color: #607966;
   cursor: not-allowed;
 }
 
@@ -285,8 +306,8 @@ h2 {
   grid-row: 2;
   overflow: hidden;
   border-radius: 1.25rem;
-  background: #e4edeb;
-  box-shadow: 0 0.75rem 1.5rem rgba(35, 74, 71, 0.16);
+  background: #e4f0e2;
+  box-shadow: 0 0.75rem 1.5rem rgba(28, 73, 53, 0.16);
 }
 
 .place-image {
@@ -301,8 +322,8 @@ h2 {
   padding: clamp(1rem, 3vw, 1.5rem);
   border: 1px solid rgba(255, 255, 255, 0.95);
   border-radius: 1.25rem;
-  background: rgba(255, 255, 255, 0.75);
-  box-shadow: 0 0.5rem 1.5rem rgba(35, 74, 71, 0.07);
+  background: rgba(246, 252, 243, 0.82);
+  box-shadow: 0 0.5rem 1.5rem rgba(28, 73, 53, 0.07);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
 }
@@ -317,21 +338,21 @@ h2 {
 .description-grid section {
   padding: 1rem;
   border-radius: 0.75rem;
-  background: rgba(240, 246, 244, 0.7);
+  background: rgba(227, 242, 224, 0.7);
   text-align: center;
 }
 
 .description-grid h2 {
   margin: 0;
   font-family: inherit;
-  color: #234a47;
+  color: #1c4935;
   font-size: 0.9rem;
   font-weight: 700;
 }
 
 .description-grid p {
   margin: 0.5rem 0 0;
-  color: #415653;
+  color: #344f3c;
   line-height: 1.8;
 }
 
@@ -349,9 +370,9 @@ h2 {
   min-height: 52px;
   margin: 0.75rem 0 0;
   padding: 0.8rem 1rem;
-  border: 1px solid #234a47;
+  border: 1px solid #245c3e;
   border-radius: 0.75rem;
-  background: #234a47;
+  background: #245c3e;
   color: #fffefa;
   font-weight: 600;
   font-size: 1rem;
@@ -359,12 +380,12 @@ h2 {
 }
 
 .map-link:hover {
-  background: #183a37;
+  background: #19452e;
 }
 
 .preview-note {
   margin: 1rem 0 0;
-  color: #415653;
+  color: #344f3c;
   font-size: 0.875rem;
   text-align: center;
 }

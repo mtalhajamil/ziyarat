@@ -6,7 +6,7 @@
   {
     "name": "Madinah",
     "image": { "src": "assets/images/madinah.jpg", "alt": "The Prophet's Mosque in Madinah", "width": 960, "height": 720 },
-    "page": "madinah.html"
+    "page": "madinah/quba/"
   },
   {
     "name": "Badr",

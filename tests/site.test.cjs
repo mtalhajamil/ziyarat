@@ -15,6 +15,7 @@ class Element {
     this.fields = {};
     this.events = {};
     this.textContent = '';
+    this.dataset = {};
   }
 
   querySelector(selector) { return this.fields[selector] || null; }
@@ -35,11 +36,14 @@ function fragment(kind) {
   return node;
 }
 
-async function loadPage(mode, fail = false) {
+async function loadPage(mode, fail = false, slug = '') {
   const status = new Element();
   const content = new Element();
+  content.dataset.placeSlug = slug;
   const requests = [];
+  const navigations = [];
   const document = {
+    baseURI: 'https://example.com/ziyarat/',
     getElementById(id) {
       if (id === 'load-status') return status;
       return id === (mode === 'home' ? 'destination-list' : 'place-content') ? content : null;
@@ -59,7 +63,8 @@ async function loadPage(mode, fail = false) {
     }
   }
   const context = vm.createContext({
-    document, DOMParser, URL, console: {error() {}},
+    document, DOMParser, URL, window: {location: {assign: url => navigations.push(url)}},
+    console: {error() {}},
     fetch: async (path, options) => {
       requests.push({path, cache: options.cache});
       return {
@@ -71,39 +76,76 @@ async function loadPage(mode, fail = false) {
   });
   vm.runInContext(script, context);
   await new Promise(resolve => setImmediate(resolve));
-  return {context, status, content, requests};
+  return {context, status, content, requests, navigations};
 }
 
 test('renders destination data and links only available pages', async () => {
   const {status, content} = await loadPage('home');
   const cards = content.children[0].children;
   assert.equal(status.textContent, '');
-  assert.deepEqual(cards.map(card => card.fields['[data-field="name"]'].textContent),
+  assert.deepEqual(cards.map(card => {
+    const name = card.fields['[data-field="name"]'];
+    return name.children[0]?.textContent || name.textContent;
+  }),
     ['Makkah', 'Madinah', 'Badr', 'Taif', 'Turkiye']);
-  assert.equal(cards[1].fields['[data-field="status"]'].children[0].href, 'madinah.html');
+  const link = cards[1].fields['[data-field="name"]'].children[0];
+  assert.equal(link.href, 'madinah/quba/');
+  assert.equal(link.textContent, 'Madinah');
+  assert.equal(cards[1].fields['[data-field="status"]'].hidden, true);
   assert.equal(cards[0].fields['[data-field="status"]'].textContent, 'Coming soon');
+  assert.equal(cards[0].fields['[data-field="name"]'].children.length, 0);
+  for (const card of [cards[2], cards[3], cards[4]]) {
+    assert.equal(card.fields['[data-field="status"]'].textContent, 'Coming soon');
+    assert.equal(card.fields['[data-field="name"]'].children.length, 0);
+  }
+});
+
+test('available destination link covers the card and has a visible keyboard focus', () => {
+  const css = fs.readFileSync('styles.css', 'utf8');
+  assert.match(css, /\.destination-card\s*\{[^}]*position:\s*relative/s);
+  assert.match(css, /\.destination-link::after\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0/s);
+  assert.match(css, /\.destination-card:focus-within\s*\{[^}]*outline:\s*2px solid/s);
 });
 
 test('renders one place and navigates when more places are supplied', async () => {
-  const {context, content} = await loadPage('place');
+  const {context, content, navigations} = await loadPage('place', false, 'quba');
   const view = content.children[0];
   assert.equal(view.fields['[data-field="name"]'].textContent, 'Quba Mosque');
   assert.equal(view.fields['[data-field="image"]'].src, 'assets/images/quba.jpg');
   assert.equal(view.fields['[data-action="next"]'].disabled, true);
 
-  context.places = [data['data/madinah.json'][0], {...data['data/madinah.json'][0], name: 'Second example'}];
+  context.places = [data['data/madinah.json'][0], {...data['data/madinah.json'][0], slug: 'second', name: 'Second example'}];
   context.container = new Element();
+  context.container.dataset.placeSlug = 'second';
   vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context);
   const multiple = context.container.children[0];
   const next = multiple.fields['[data-action="next"]'];
   const previous = multiple.fields['[data-action="previous"]'];
   assert.equal(next.disabled, false);
+  assert.equal(multiple.fields['[data-field="name"]'].textContent, 'Second example');
   next.events.click();
-  assert.equal(multiple.fields['[data-field="name"]'].textContent, 'Second example');
   previous.events.click();
-  assert.equal(multiple.fields['[data-field="name"]'].textContent, 'Quba Mosque');
-  previous.events.click();
-  assert.equal(multiple.fields['[data-field="name"]'].textContent, 'Second example');
+  assert.deepEqual(navigations, [
+    'https://example.com/ziyarat/madinah/quba/',
+    'https://example.com/ziyarat/madinah/quba/'
+  ]);
+});
+
+test('rejects unknown, unsafe or duplicate place slugs', async () => {
+  const {status} = await loadPage('place', false, 'missing');
+  assert.match(status.textContent, /Unable to load content/);
+  const {context} = await loadPage('place');
+  context.container = new Element();
+  for (const places of [
+    [{...data['data/madinah.json'][0], slug: '../quba'}],
+    [data['data/madinah.json'][0], data['data/madinah.json'][0]]
+  ]) {
+    context.places = places;
+    assert.throws(
+      () => vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context),
+      /Invalid or duplicate place slug/
+    );
+  }
 });
 
 test('shows an error when content cannot be loaded', async () => {
@@ -129,13 +171,33 @@ test('revalidates templates and data instead of using stale cached content', asy
   assert.ok(requests.every(request => request.cache === 'no-cache'));
 });
 
-test('both pages use the same versioned stylesheet and script', () => {
-  const pages = ['index.html', 'madinah.html'].map(path => fs.readFileSync(path, 'utf8'));
+test('all pages use the same versioned stylesheet and script', () => {
+  const pages = ['index.html', 'madinah.html', 'madinah/index.html', 'madinah/quba/index.html']
+    .map(path => fs.readFileSync(path, 'utf8'));
   for (const asset of ['styles.css', 'site.js']) {
     const versioned = pages.map(page => page.match(new RegExp(`${asset.replace('.', '\\.')}\\?v=[\\w-]+`))?.[0]);
     assert.ok(versioned[0]);
-    assert.equal(versioned[0], versioned[1]);
+    assert.ok(versioned.every(version => version === versioned[0]));
   }
+});
+
+test('directory pages resolve resources and navigation from the project root', () => {
+  for (const [path, url, base] of [
+    ['madinah/index.html', 'https://example.com/ziyarat/madinah/', '../'],
+    ['madinah/quba/index.html', 'https://example.com/ziyarat/madinah/quba/', '../../']
+  ]) {
+    const html = fs.readFileSync(path, 'utf8');
+    assert.ok(html.includes(`<base href="${base}">`));
+    const root = new URL(base, url);
+    for (const asset of ['styles.css', 'site.js', 'templates.html', 'data/madinah.json', 'assets/images/quba.jpg']) {
+      assert.equal(new URL(asset, root).href, `https://example.com/ziyarat/${asset}`);
+    }
+    assert.equal(new URL('./', root).href, 'https://example.com/ziyarat/');
+  }
+  const quba = fs.readFileSync('madinah/quba/index.html', 'utf8');
+  assert.match(quba, /data-place-slug="quba"/);
+  assert.match(quba, /href="madinah\/">Madinah<\/a>/);
+  assert.match(quba, /aria-current="page">Quba/);
 });
 
 test('place template announces its title without a preview label', () => {

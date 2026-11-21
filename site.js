@@ -56,20 +56,23 @@ function renderDestinations(container, template, destinations) {
     requireText(destination.name, 'destination name');
     validateImage(destination.image);
     if (destination.page !== undefined &&
-        (typeof destination.page !== 'string' || !/^[a-z0-9-]+\.html$/.test(destination.page))) {
+        (typeof destination.page !== 'string' ||
+          !/^(?:(?:[a-z0-9-]+\/)+|[a-z0-9-]+\.html)$/.test(destination.page))) {
       throw new Error('Invalid destination page.');
     }
 
     const card = document.importNode(template.content, true);
-    field(card, 'name').textContent = destination.name;
+    const name = field(card, 'name');
+    name.textContent = destination.name;
     setImage(field(card, 'image'), destination.image);
     const status = field(card, 'status');
     if (destination.page) {
       const link = document.createElement('a');
       link.className = 'destination-link';
       link.href = destination.page;
-      link.textContent = `Explore ${destination.name} →`;
-      status.append(link);
+      link.textContent = destination.name;
+      name.replaceChildren(link);
+      status.hidden = true;
     } else {
       status.textContent = 'Coming soon';
     }
@@ -82,7 +85,13 @@ function renderPlaces(container, template, places) {
   if (!Array.isArray(places) || places.length === 0) {
     throw new Error('Place data must contain at least one place.');
   }
+  const slugs = new Set();
   for (const place of places) {
+    if (typeof place.slug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(place.slug) ||
+        slugs.has(place.slug)) {
+      throw new Error('Invalid or duplicate place slug.');
+    }
+    slugs.add(place.slug);
     requireText(place.name, 'place name');
     validateImage(place.image);
     requireText(place.english, 'English description');
@@ -107,28 +116,29 @@ function renderPlaces(container, template, places) {
   const previous = content.querySelector('[data-action="previous"]');
   const next = content.querySelector('[data-action="next"]');
   if (!previous || !next) throw new Error('Missing place navigation controls.');
-  let index = 0;
+  const slug = container.dataset.placeSlug;
+  const index = slug ? places.findIndex(place => place.slug === slug) : 0;
+  if (index === -1) throw new Error(`Unknown place: ${slug}.`);
 
-  function showPlace() {
-    const place = places[index];
-    name.textContent = place.name;
-    setImage(image, place.image);
-    map.href = place.mapUrl;
-    english.textContent = place.english;
-    urdu.textContent = place.urdu;
+  function navigateTo(placeIndex) {
+    const path = `madinah/${places[placeIndex].slug}/`;
+    window.location.assign(new URL(path, document.baseURI).href);
   }
 
+  const place = places[index];
+  name.textContent = place.name;
+  setImage(image, place.image);
+  map.href = place.mapUrl;
+  english.textContent = place.english;
+  urdu.textContent = place.urdu;
   previous.disabled = places.length === 1;
   next.disabled = places.length === 1;
   previous.addEventListener('click', () => {
-    index = (index + places.length - 1) % places.length;
-    showPlace();
+    navigateTo((index + places.length - 1) % places.length);
   });
   next.addEventListener('click', () => {
-    index = (index + 1) % places.length;
-    showPlace();
+    navigateTo((index + 1) % places.length);
   });
-  showPlace();
   container.replaceChildren(content);
 }
 

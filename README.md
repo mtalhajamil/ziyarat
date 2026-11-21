@@ -4,13 +4,13 @@ A minimal static website foundation for exploring places of ziyarat.
 
 Run `python3 -m http.server 8000` from this directory and open `http://localhost:8000/`. JavaScript and an HTTP server are required to load the JSON and templates; opening the HTML files directly will not work. No build step or dependencies are required.
 
-Destination cards are stored in `data/destinations.json`; Madinah places are in `data/madinah.json`. Add an entry using the existing fields, put its image in `assets/images/`, and use its local path, alt text, and dimensions in the JSON. A destination without a `page` is marked coming soon. Each Madinah place needs a name, image, English and Urdu descriptions, and an HTTPS Google Maps URL. The navigation arrows are disabled for a single place and navigate between entries when more are added. Update the image sources below when adding photographs, and follow their license terms.
+Destination cards are stored in `data/destinations.json`; Madinah places are in `data/madinah.json`. Add an entry using the existing fields, put its image in `assets/images/`, and use its local path, alt text, and dimensions in the JSON. A destination without a `page` is marked coming soon. Each Madinah place needs a unique lowercase, hyphen-separated `slug`, name, image, English and Urdu descriptions, and an HTTPS Google Maps URL. Create `madinah/<slug>/index.html` from the Quba page and update its title, breadcrumb, and `data-place-slug` to match the new entry. This static page makes the clean URL work on direct visits and refreshes. The navigation arrows are disabled for a single place and navigate between these URLs when more are added. Update the image sources below when adding photographs, and follow their license terms.
 
-The reusable markup lives in `templates.html`; `site.js` loads the templates and data. Paths are relative so the site also works under a GitHub Pages project URL.
+The reusable markup lives in `templates.html`; `site.js` loads the templates and data. Directory index pages use a relative base URL so resources resolve under a GitHub Pages project URL. `/madinah/` shows the first place, `/madinah/quba/` opens Quba directly, and the old `madinah.html` link remains available.
 
 Run `node --test tests/site.test.cjs` to check content rendering and navigation.
 
-When changing `styles.css` or `site.js`, update the corresponding `?v=` value in both HTML pages so visitors receive the new version without waiting for cached assets to expire.
+When changing `styles.css` or `site.js`, update the corresponding `?v=` value in every HTML page so visitors receive the new version without waiting for cached assets to expire.
 
 ## Image sources
 
