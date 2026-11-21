@@ -1,0 +1,24 @@
+README.md
+  s_a70902b9386716::t_81efd663d43457 1-5
+styles.css
+  s_a70902b9386716::t_90e9ad7df0a19a 130,172
+  s_a70902b9386716::t_81efd663d43457 1-129,131-171,173-174
+index.html
+  s_a70902b9386716::t_81efd663d43457 1-39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "35de7aced4d195d8305a6951191e576573b37da0",
+  "prompts": {},
+  "sessions": {
+    "s_a70902b9386716": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "311ba99e-a886-4d45-bf5f-e61a56b682ee",
+        "model": "unknown"
+      },
+      "human_author": "mtalhajamil <muhammad.jamil@hungerstation.com>"
+    }
+  }
+}
