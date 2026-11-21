@@ -281,17 +281,25 @@ h2 {
 }
 
 .map-link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
-  min-height: 44px;
+  width: 100%;
+  min-height: 52px;
   margin: 0.75rem 0 0;
   padding: 0.8rem 1rem;
-  border: 1px solid #d5ded2;
+  border: 1px solid #405d48;
   border-radius: 0.4rem;
-  color: #405d48;
+  background: #405d48;
+  color: #fffefa;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.map-link:hover {
+  background: #304b38;
 }
 
 .preview-note {
@@ -351,10 +359,5 @@ h2 {
 
   .place-image {
     height: clamp(11rem, 50vw, 15rem);
-  }
-
-  .map-link {
-    justify-content: center;
-    width: 100%;
   }
 }
