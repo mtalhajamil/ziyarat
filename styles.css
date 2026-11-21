@@ -219,11 +219,6 @@ h2 {
   text-align: center;
 }
 
-.place-heading .eyebrow {
-  margin-bottom: 0.5rem;
-  color: #805c2b;
-}
-
 .place-title {
   color: #234a47;
   font-size: clamp(2rem, 4vw, 3rem);

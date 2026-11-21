@@ -100,7 +100,6 @@ function renderPlaces(container, template, places) {
 
   const content = document.importNode(template.content, true);
   const name = field(content, 'name');
-  const count = field(content, 'count');
   const image = field(content, 'image');
   const map = field(content, 'map');
   const english = field(content, 'english');
@@ -113,7 +112,6 @@ function renderPlaces(container, template, places) {
   function showPlace() {
     const place = places[index];
     name.textContent = place.name;
-    count.textContent = places.length === 1 ? '1 place' : `${index + 1} of ${places.length} places`;
     setImage(image, place.image);
     map.href = place.mapUrl;
     english.textContent = place.english;

@@ -27,7 +27,7 @@ function fragment(kind) {
   const node = new Element();
   const fields = kind === 'destination'
     ? ['name', 'image', 'status']
-    : ['name', 'count', 'image', 'map', 'english', 'urdu'];
+    : ['name', 'image', 'map', 'english', 'urdu'];
   for (const name of fields) node.fields[`[data-field="${name}"]`] = new Element();
   if (kind === 'place') {
     for (const name of ['previous', 'next']) node.fields[`[data-action="${name}"]`] = new Element();
@@ -136,4 +136,10 @@ test('both pages use the same versioned stylesheet and script', () => {
     assert.ok(versioned[0]);
     assert.equal(versioned[0], versioned[1]);
   }
+});
+
+test('place template announces its title without a preview label', () => {
+  const template = fs.readFileSync('templates.html', 'utf8');
+  assert.doesNotMatch(template, /Design preview|data-field="count"/i);
+  assert.match(template, /data-field="name" aria-live="polite"/);
 });
