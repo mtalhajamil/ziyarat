@@ -223,6 +223,7 @@ test('directory pages resolve resources and navigation from the project root', (
 test('place template announces its title without a preview label', () => {
   const template = fs.readFileSync('templates.html', 'utf8');
   assert.doesNotMatch(template, /Design preview|data-field="count"/i);
+  assert.doesNotMatch(template, /More places will be added later\./);
   assert.match(template, /data-field="name" aria-live="polite"/);
 });
 
