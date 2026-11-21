@@ -149,7 +149,7 @@ h2 {
 
 .breadcrumbs ol {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-end;
   gap: 0.5rem;
@@ -160,7 +160,7 @@ h2 {
 }
 
 .breadcrumbs li + li::before {
-  content: "/";
+  content: "\203A";
   margin-right: 0.5rem;
   color: #68756a;
 }

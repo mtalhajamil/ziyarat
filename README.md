@@ -10,6 +10,8 @@ The reusable markup lives in `templates.html`; `site.js` loads the templates and
 
 Run `node --test tests/site.test.cjs` to check content rendering and navigation.
 
+When changing `styles.css` or `site.js`, update the corresponding `?v=` value in both HTML pages so visitors receive the new version without waiting for cached assets to expire.
+
 ## Image sources
 
 - Makkah: [Medineli / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Kaaba_at_night.jpg), CC0.

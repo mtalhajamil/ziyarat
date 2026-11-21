@@ -38,6 +38,7 @@ function fragment(kind) {
 async function loadPage(mode, fail = false) {
   const status = new Element();
   const content = new Element();
+  const requests = [];
   const document = {
     getElementById(id) {
       if (id === 'load-status') return status;
@@ -59,15 +60,18 @@ async function loadPage(mode, fail = false) {
   }
   const context = vm.createContext({
     document, DOMParser, URL, console: {error() {}},
-    fetch: async path => ({
-      ok: !fail, status: 503,
-      text: async () => fs.readFileSync(path, 'utf8'),
-      json: async () => data[path]
-    })
+    fetch: async (path, options) => {
+      requests.push({path, cache: options.cache});
+      return {
+        ok: !fail, status: 503,
+        text: async () => fs.readFileSync(path, 'utf8'),
+        json: async () => data[path]
+      };
+    }
   });
   vm.runInContext(script, context);
   await new Promise(resolve => setImmediate(resolve));
-  return {context, status, content};
+  return {context, status, content, requests};
 }
 
 test('renders destination data and links only available pages', async () => {
@@ -117,4 +121,19 @@ test('rejects unsafe map URLs before rendering', async () => {
     /Google Maps HTTPS link/
   );
   assert.equal(context.container.children.length, 0);
+});
+
+test('revalidates templates and data instead of using stale cached content', async () => {
+  const {requests} = await loadPage('place');
+  assert.deepEqual(requests.map(request => request.path), ['templates.html', 'data/madinah.json']);
+  assert.ok(requests.every(request => request.cache === 'no-cache'));
+});
+
+test('both pages use the same versioned stylesheet and script', () => {
+  const pages = ['index.html', 'madinah.html'].map(path => fs.readFileSync(path, 'utf8'));
+  for (const asset of ['styles.css', 'site.js']) {
+    const versioned = pages.map(page => page.match(new RegExp(`${asset.replace('.', '\\.')}\\?v=[\\w-]+`))?.[0]);
+    assert.ok(versioned[0]);
+    assert.equal(versioned[0], versioned[1]);
+  }
 });
