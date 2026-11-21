@@ -33,6 +33,8 @@ Only Madinah has a place-page implementation: `site.js` selects Madinah data for
 
 Directory pages use a relative `<base>` so links, scripts, styles, data and images resolve under the GitHub Pages project path as well as at a local root. Keep the existing relative paths and test direct entry and refresh on nested pages; do not assume a server-side router or rewrite rules.
 
+The homepage's Open Graph and Twitter Card metadata is in the initial `index.html`, so sharing services can read it without JavaScript. The canonical URL and share-image URLs are absolute and tied to the GitHub Pages address; update them if the site moves. `assets/images/share.jpg` is a 1200 × 630 JPEG. Social platforms may cache old previews after a deployment.
+
 ## Destination theme guide
 
 The homepage has its own existing warm-neutral theme (`#f7f6f0` background, `#242d26` text). Madinah is the only destination with implemented place pages and a distinct theme: light green (`#f2f8ef` background), deep green (`#1c4935` text and `#245c3e` map button), muted gold accents, softly translucent cards and rounded images. All places within Madinah share that theme. See `styles.css` for the actual gradients, colors and responsive layout.
@@ -82,6 +84,7 @@ Urdu text uses a locally hosted Arabic subset of [Noto Naskh Arabic](https://fon
 
 - Makkah: [Medineli / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Kaaba_at_night.jpg), CC0.
 - Madinah: [Wurzelgnohm / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:MasjidNabawi.jpg), CC0.
+- Homepage share image (`assets/images/share.jpg`): cropped and resized from the Madinah image above, CC0.
 - Badr: [Konevi / Pixabay](https://pixabay.com/photos/monument-badr-martyrs-islam-5097514/), Pixabay Content License.
 - Quba Mosque: [Konevi / Pixabay](https://pixabay.com/photos/cuba-quba-cami-masjid-religion-3723174/), Pixabay Content License.
 - Taif: [Musaddek Sayek / Pexels](https://www.pexels.com/photo/scenic-view-of-taif-city-architecture-in-makkah-38048226/), Pexels License.

@@ -83,6 +83,24 @@ async function loadPage(mode, fail = false, slug = '') {
   return {context, status, content, requests, navigations};
 }
 
+test('homepage provides a reachable social preview without JavaScript', () => {
+  const html = fs.readFileSync('index.html', 'utf8');
+  const image = 'https://mtalhajamil.github.io/ziyarat/assets/images/share.jpg';
+  for (const [attribute, name, content] of [
+    ['property', 'og:type', 'website'],
+    ['property', 'og:title', 'Places of ziyarat'],
+    ['property', 'og:url', 'https://mtalhajamil.github.io/ziyarat/'],
+    ['property', 'og:image', image],
+    ['property', 'og:image:width', '1200'],
+    ['property', 'og:image:height', '630'],
+    ['name', 'twitter:card', 'summary_large_image'],
+    ['name', 'twitter:image', image]
+  ]) {
+    assert.ok(html.includes(`<meta ${attribute}="${name}" content="${content}">`), name);
+  }
+  assert.ok(fs.existsSync('assets/images/share.jpg'));
+});
+
 test('renders destination data and links only available pages', async () => {
   const {status, content} = await loadPage('home');
   const cards = content.children[0].children;
