@@ -73,6 +73,9 @@ function renderDestinations(container, template, destinations) {
           !/^(?:(?:[a-z0-9-]+\/)+|[a-z0-9-]+\.html)$/.test(destination.page))) {
       throw new Error('Invalid destination page.');
     }
+    if (destination.description !== undefined) {
+      requireText(destination.description, 'destination description');
+    }
 
     const card = document.importNode(template.content, true);
     const name = field(card, 'name');
@@ -85,7 +88,11 @@ function renderDestinations(container, template, destinations) {
       link.href = destination.page;
       link.textContent = destination.name;
       name.replaceChildren(link);
-      status.hidden = true;
+      if (destination.description) {
+        status.textContent = destination.description;
+      } else {
+        status.hidden = true;
+      }
     } else {
       status.textContent = 'Coming soon';
     }

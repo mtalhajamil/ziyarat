@@ -92,7 +92,7 @@ test('renders destination data and links only available pages', async () => {
   const link = cards[1].fields['[data-field="name"]'].children[0];
   assert.equal(link.href, 'madinah/quba/');
   assert.equal(link.textContent, 'Madinah');
-  assert.equal(cards[1].fields['[data-field="status"]'].hidden, true);
+  assert.equal(cards[1].fields['[data-field="status"]'].textContent, data['data/destinations.json'][1].description);
   assert.equal(cards[0].fields['[data-field="status"]'].textContent, 'Coming soon');
   assert.equal(cards[0].fields['[data-field="name"]'].children.length, 0);
   for (const card of [cards[2], cards[3], cards[4]]) {
