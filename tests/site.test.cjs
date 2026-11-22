@@ -6,7 +6,9 @@ const vm = require('node:vm');
 const script = fs.readFileSync('site.js', 'utf8');
 const data = {
   'data/destinations.json': JSON.parse(fs.readFileSync('data/destinations.json')),
-  'data/madinah.json': JSON.parse(fs.readFileSync('data/madinah.json'))
+  'data/madinah.json': JSON.parse(fs.readFileSync('data/madinah.json')),
+  'data/makkah.json': JSON.parse(fs.readFileSync('data/makkah.json')),
+  'data/badr.json': JSON.parse(fs.readFileSync('data/badr.json'))
 };
 
 class Element {
@@ -41,10 +43,11 @@ function fragment(kind) {
   return node;
 }
 
-async function loadPage(mode, fail = false, slug = '') {
+async function loadPage(mode, fail = false, slug = '', destination = 'madinah') {
   const status = new Element();
   const content = new Element();
   content.dataset.placeSlug = slug;
+  content.dataset.destination = destination;
   const requests = [];
   const navigations = [];
   const document = {
@@ -115,9 +118,11 @@ test('renders destination data and links only available pages', async () => {
   assert.equal(link.href, 'madinah/quba/');
   assert.equal(link.textContent, 'Madinah');
   assert.equal(cards[1].fields['[data-field="status"]'].textContent, data['data/destinations.json'][1].description);
-  assert.equal(cards[0].fields['[data-field="status"]'].textContent, 'Coming soon');
-  assert.equal(cards[0].fields['[data-field="name"]'].children.length, 0);
-  for (const card of [cards[2], cards[3], cards[4]]) {
+  for (const index of [0, 2]) {
+    assert.equal(cards[index].fields['[data-field="status"]'].textContent, data['data/destinations.json'][index].description);
+    assert.equal(cards[index].fields['[data-field="name"]'].children[0].href, data['data/destinations.json'][index].page);
+  }
+  for (const card of [cards[3], cards[4]]) {
     assert.equal(card.fields['[data-field="status"]'].textContent, 'Coming soon');
     assert.equal(card.fields['[data-field="name"]'].children.length, 0);
   }
@@ -203,6 +208,38 @@ test('displays image attribution and rejects unsafe credit links', async () => {
     () => vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context),
     /Invalid image license URL/
   );
+});
+
+test('Makkah and Badr load their own data, placeholders and local navigation', async () => {
+  for (const [destination, count] of [['makkah', 10], ['badr', 6]]) {
+    const places = data[`data/${destination}.json`];
+    assert.equal(places.length, count);
+    for (const [index, place] of places.entries()) {
+      const {status, content, requests, navigations} = await loadPage('place', false, place.slug, destination);
+      assert.equal(status.textContent, '');
+      assert.equal(requests[1].path, `data/${destination}.json`);
+      const view = content.children[0];
+      assert.equal(view.fields['[data-field="name"]'].textContent, place.name);
+      assert.equal(view.fields['[data-field="map"]'].href, place.mapUrl);
+      assert.equal(new URL(place.mapUrl).searchParams.get('query'), `${place.name}, ${destination === 'makkah' ? 'Makkah' : 'Badr'}`);
+      assert.equal(view.fields['[data-field="image-placeholder"]'].hidden, false);
+      assert.equal(view.fields['[data-field="description-empty"]'].hidden, false);
+      view.fields['[data-action="previous"]'].events.click();
+      view.fields['[data-action="next"]'].events.click();
+      assert.deepEqual(navigations, [
+        `https://example.com/ziyarat/${destination}/${places[(index + count - 1) % count].slug}/`,
+        `https://example.com/ziyarat/${destination}/${places[(index + 1) % count].slug}/`
+      ]);
+      const page = fs.readFileSync(`${destination}/${place.slug}/index.html`, 'utf8');
+      assert.ok(page.includes('<base href="../../">'));
+      assert.ok(page.includes(`data-destination="${destination}" data-place-slug="${place.slug}"`));
+    }
+    const {content} = await loadPage('place', false, '', destination);
+    assert.equal(content.children[0].fields['[data-field="name"]'].textContent, places[0].name);
+    assert.ok(fs.readFileSync(`${destination}/index.html`, 'utf8').includes('<base href="../">'));
+  }
+  const {status} = await loadPage('place', false, '', '../unknown');
+  assert.match(status.textContent, /Unable to load content/);
 });
 
 test('descriptions default to English and switch languages without changing text', async () => {
@@ -302,7 +339,10 @@ test('revalidates templates and data instead of using stale cached content', asy
 
 test('all pages use the same versioned stylesheet and script', () => {
   const pages = ['index.html', 'madinah.html', 'madinah/index.html',
-    ...data['data/madinah.json'].map(place => `madinah/${place.slug}/index.html`)]
+    ...['madinah', 'makkah', 'badr'].flatMap(destination => [
+      `${destination}/index.html`,
+      ...data[`data/${destination}.json`].map(place => `${destination}/${place.slug}/index.html`)
+    ])]
     .map(path => fs.readFileSync(path, 'utf8'));
   for (const asset of ['styles.css', 'site.js']) {
     const versioned = pages.map(page => page.match(new RegExp(`${asset.replace('.', '\\.')}\\?v=[\\w-]+`))?.[0]);

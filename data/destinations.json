@@ -1,6 +1,8 @@
 [
   {
     "name": "Makkah",
+    "page": "makkah/hudaybiyyah/",
+    "description": "Home to the Kaaba and the sacred destination of Hajj and Umrah.",
     "image": { "src": "assets/images/makkah.jpg", "alt": "The Kaaba in Makkah at night", "width": 960, "height": 720 }
   },
   {
@@ -11,6 +13,8 @@
   },
   {
     "name": "Badr",
+    "page": "badr/anas-bin-malik/",
+    "description": "The site of the Battle of Badr, a defining event in early Islamic history.",
     "image": { "src": "assets/images/badr.jpg", "alt": "A monument to the martyrs of Badr", "width": 1280, "height": 960 }
   },
   {

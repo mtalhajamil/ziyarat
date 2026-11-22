@@ -16,9 +16,9 @@ Open `http://localhost:8000/`, or visit `http://localhost:8000/madinah/quba/` di
 
 | Path | Responsibility |
 | --- | --- |
-| `index.html`, `madinah.html`, `madinah/**/index.html` | Static page shells, navigation, asset versions and content containers. Each place route has its own directory index. |
+| `index.html`, `madinah.html`, `{madinah,makkah,badr}/**/index.html` | Static page shells, navigation, asset versions and content containers. Each place route has its own directory index. |
 | `data/destinations.json` | Homepage cards, images, optional descriptions and links. |
-| `data/madinah.json` | Ordered Madinah places, map links, optional images, credits and bilingual descriptions. |
+| `data/madinah.json`, `data/makkah.json`, `data/badr.json` | Ordered destination places, map links, optional images, credits and bilingual descriptions. |
 | `templates.html` | Reusable destination and place markup, including missing-content states. |
 | `site.js` | Fetches and validates the data and templates, renders the page, and handles place navigation. |
 | `styles.css` | Shared responsive styles, the Madinah theme and locally hosted Urdu font. |
@@ -29,9 +29,9 @@ The page shell loads `site.js`, which fetches `templates.html` and the relevant 
 
 Place descriptions show English by default. The compact, right-aligned EN/UR box toggle switches between the existing descriptions, with Urdu rendered right-to-left; the selection resets to English on each page load. Its small visual track sits within 44px touch targets, directly above the text without an extra grid gap. Places with no descriptions show “Description coming soon” without language controls.
 
-The homepage links the Madinah tile to `/madinah/quba/`; other destination cards without a `page` show “Coming soon”. `/madinah/` and the legacy `madinah.html` display the first entry in `data/madinah.json`. Each `/madinah/<slug>/` page selects its entry through `data-place-slug`. The arrows navigate to the previous or next directory URL in JSON order and wrap around; both are disabled when there is only one entry. Adding JSON alone does **not** create a route.
+The homepage links Madinah to `/madinah/quba/`, Makkah to `/makkah/hudaybiyyah/` and Badr to `/badr/anas-bin-malik/`; Taif and Turkiye still show “Coming soon”. Each destination's directory index displays its first JSON entry. The legacy `madinah.html` does the same for Madinah. Each `/<destination>/<slug>/` page selects its entry through `data-place-slug`. The arrows navigate within that destination in JSON order and wrap around; both are disabled when there is only one entry. Adding JSON alone does **not** create a route.
 
-Only Madinah has a place-page implementation: `site.js` selects Madinah data for place pages and constructs Madinah slider URLs. A new destination's place pages need corresponding implementation and routes; adding a homepage link alone is not enough.
+The shared renderer supports `madinah`, `makkah` and `badr`. The page container's `data-destination` selects its JSON and navigation prefix; older Madinah shells omit it and default to Madinah. Unknown destinations are rejected. A further destination requires updating the supported list in `site.js`, adding JSON and route shells, and testing them; adding a homepage link alone is not enough. Makkah and Badr currently use missing-image and missing-description placeholders, not inferred historical details.
 
 Directory pages use a relative `<base>` so links, scripts, styles, data and images resolve under the GitHub Pages project path as well as at a local root. Keep the existing relative paths and test direct entry and refresh on nested pages; do not assume a server-side router or rewrite rules.
 
@@ -39,9 +39,9 @@ The homepage's Open Graph and Twitter Card metadata is in the initial `index.htm
 
 ## Destination theme guide
 
-The homepage has its own existing warm-neutral theme (`#f7f6f0` background, `#242d26` text). Madinah is the only destination with implemented place pages and a distinct theme: light green (`#f2f8ef` background), deep green (`#1c4935` text and `#245c3e` map button), muted gold accents, softly translucent cards and rounded images. All places within Madinah share that theme. See `styles.css` for the actual gradients, colors and responsive layout.
+The homepage has its own existing warm-neutral theme (`#f7f6f0` background, `#242d26` text). All implemented place pages currently reuse the Madinah light-green theme (`#f2f8ef` background), deep green (`#1c4935` text and `#245c3e` map button), muted gold accents, softly translucent cards and rounded images. Makkah and Badr do not yet have distinct themes. See `styles.css` for the actual gradients, colors and responsive layout.
 
-The other destinations are currently coming soon. The following are **proposed starting palettes**, not implemented themes; confirm the direction with the owner before introducing a new destination design:
+The following are **proposed starting palettes**, not implemented themes; confirm the direction with the owner before introducing a distinct destination design. Taif and Turkiye are still coming soon:
 
 | Destination | Background | Main text | Dark control | Direction |
 | --- | --- | --- | --- | --- |
@@ -57,7 +57,7 @@ Keep the existing light, calm visual language: centered place heading, proportio
 1. Edit the appropriate JSON file, not the reusable markup or rendering logic. Destination entries require a name and image; `page` and `description` are optional. A live `page` must be a relative directory URL ending in `/` or a simple `.html` filename, as validated by `site.js`.
 2. A Madinah place requires a unique lowercase, hyphen-separated `slug`, `name` and an HTTPS Google Maps `mapUrl`. The accepted hosts and paths are checked in `site.js`. Omit `image` if no reliably identified, licensed image is available. Omit **both** `english` and `urdu` when no descriptions are supplied; the page then shows “Description coming soon”. If either description is present, both must be nonempty.
 3. Preserve supplied Urdu text and punctuation; only format it when requested. Put paragraph breaks in JSON as `\n\n`; the stylesheet preserves them and the template sets Urdu to `lang="ur"` and `dir="rtl"`. Translate supplied text faithfully rather than inventing additional content.
-4. For a new Madinah entry, copy `madinah/quba/index.html` to `madinah/<slug>/index.html` and update its title, breadcrumb and `data-place-slug`. Keep its `<base href="../../">` and the current asset versions. The slider links to that directory, so every entry needs its matching file.
+4. For a new place entry, copy a shell from the same destination to `<destination>/<slug>/index.html` and update its title, breadcrumb and `data-place-slug`. Makkah and Badr shells must retain the matching `data-destination`. Keep `<base href="../../">` and the current asset versions. The slider links to that directory, so every entry needs its matching file.
 5. If adding a photograph, put it in `assets/images/` and set `image.src`, `alt`, `width` and `height` to its actual local path and dimensions. Image filenames may contain letters, digits, `_` and `-`; supported extensions are `jpg`, `jpeg`, `png` and `webp`. Verify the subject and reuse license; never substitute a photo of a different place.
 6. Record the source, creator, license and modifications below. Where a place photo requires visible attribution, add `image.credit` with `description`, `sourceUrl`, `license` and `licenseUrl`, following the Jummah entry. Credit URLs must be HTTPS; the place template renders the source and license links. Destination cards do not currently render image credits, so do not use an image requiring visible attribution there without implementing that support.
 

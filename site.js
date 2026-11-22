@@ -101,7 +101,16 @@ function renderDestinations(container, template, destinations) {
   container.replaceChildren(cards);
 }
 
+function placeDestination(container) {
+  const destination = container?.dataset.destination || 'madinah';
+  if (!['madinah', 'makkah', 'badr'].includes(destination)) {
+    throw new Error('Unsupported place destination.');
+  }
+  return destination;
+}
+
 function renderPlaces(container, template, places) {
+  const destination = placeDestination(container);
   if (!Array.isArray(places) || places.length === 0) {
     throw new Error('Place data must contain at least one place.');
   }
@@ -149,7 +158,7 @@ function renderPlaces(container, template, places) {
   if (index === -1) throw new Error(`Unknown place: ${slug}.`);
 
   function navigateTo(placeIndex) {
-    const path = `madinah/${places[placeIndex].slug}/`;
+    const path = `${destination}/${places[placeIndex].slug}/`;
     window.location.assign(new URL(path, document.baseURI).href);
   }
 
@@ -209,7 +218,7 @@ async function start() {
   try {
     const [templateHtml, data] = await Promise.all([
       loadResource('templates.html', 'text'),
-      loadResource(destinations ? 'data/destinations.json' : 'data/madinah.json', 'json')
+      loadResource(destinations ? 'data/destinations.json' : `data/${placeDestination(places)}.json`, 'json')
     ]);
     const templates = new DOMParser().parseFromString(templateHtml, 'text/html');
     if (destinations) {
