@@ -1,0 +1,67 @@
+styles.css
+  s_a70902b9386716::t_368ad4290c98f8 368,370-391,395-396,399-400,412-416
+  s_a70902b9386716::t_5145ed2cd0e9ad 437
+  s_a70902b9386716::t_933060fa154ac5 417
+README.md
+  s_a70902b9386716::t_368ad4290c98f8 30
+tests/site.test.cjs
+  s_a70902b9386716::t_5145ed2cd0e9ad 237-239
+templates.html
+  s_a70902b9386716::t_5145ed2cd0e9ad 35,38
+index.html
+  s_a70902b9386716::t_314110b5d3dc9a 25
+madinah.html
+  s_a70902b9386716::t_86371c50ac35aa 9
+madinah/banu-unaif/index.html
+  s_a70902b9386716::t_f1ee194bc99fd3 10
+madinah/fasih/index.html
+  s_a70902b9386716::t_05a3f8388a7885 10
+madinah/fath/index.html
+  s_a70902b9386716::t_0ac20ef4b509f4 10
+madinah/ghamama/index.html
+  s_a70902b9386716::t_66e97657a761ac 10
+madinah/index.html
+  s_a70902b9386716::t_837168efeaf437 10
+madinah/jummah/index.html
+  s_a70902b9386716::t_26c45f3e5395ff 10
+madinah/kab-ashraf/index.html
+  s_a70902b9386716::t_e1f5ef2492a298 10
+madinah/mustarah/index.html
+  s_a70902b9386716::t_09805dfd35536d 10
+madinah/qiblatain/index.html
+  s_a70902b9386716::t_f6d52a5fae4635 10
+madinah/quba/index.html
+  s_a70902b9386716::t_b465cc0eeaded6 10
+madinah/rayah/index.html
+  s_a70902b9386716::t_f1fc53f4cc3714 10
+madinah/ruma/index.html
+  s_a70902b9386716::t_55906c4f543df7 10
+madinah/sabah/index.html
+  s_a70902b9386716::t_40e74c1aefa6d6 10
+madinah/saqia/index.html
+  s_a70902b9386716::t_d3c95178c62be4 10
+madinah/shaykhain/index.html
+  s_a70902b9386716::t_d9587fc65cdf93 10
+madinah/uhud/index.html
+  s_a70902b9386716::t_04d6f6aaf80bed 10
+madinah/umar/index.html
+  s_a70902b9386716::t_76e5627b485092 10
+madinah/utban/index.html
+  s_a70902b9386716::t_5e928c07da0298 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "72d67e9a829cc37e5825df3acbef952c4c355500",
+  "prompts": {},
+  "sessions": {
+    "s_a70902b9386716": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "311ba99e-a886-4d45-bf5f-e61a56b682ee",
+        "model": "unknown"
+      },
+      "human_author": "mtalhajamil <muhammad.jamil@hungerstation.com>"
+    }
+  }
+}
