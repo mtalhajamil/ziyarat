@@ -368,19 +368,19 @@ h2 {
   position: relative;
   display: flex;
   justify-self: end;
-  padding: 4px;
+  padding: 2px;
   border: 1px solid #b6d2b7;
-  border-radius: 999px;
+  border-radius: 6px;
   background: #e3f2e0;
 }
 
 .language-toggle::before {
   position: absolute;
-  top: 4px;
-  bottom: 4px;
-  left: 4px;
-  width: calc((100% - 8px) / 2);
-  border-radius: 999px;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  width: calc((100% - 4px) / 2);
+  border-radius: 4px;
   background: #245c3e;
   content: "";
   pointer-events: none;
@@ -393,14 +393,15 @@ h2 {
 
 .language-toggle button {
   position: relative;
-  min-width: 48px;
+  min-width: 44px;
   min-height: 44px;
-  padding: 0.5rem 0.75rem;
+  padding: 0.25rem 0.5rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: 4px;
   background: transparent;
   color: #245c3e;
   font: inherit;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
 }
