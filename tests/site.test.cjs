@@ -234,6 +234,9 @@ test('descriptions default to English and switch languages without changing text
   assert.match(template, /data-field="urdu-panel" lang="ur" dir="rtl"/);
   assert.match(template, /aria-controls="english-description"/);
   assert.match(template, /aria-controls="urdu-description"/);
+  assert.doesNotMatch(template, /id="(?:english|urdu)-heading"/);
+  assert.match(template, /aria-label="English description"/);
+  assert.match(template, /aria-label="Urdu description"/);
   const {content} = await loadPage('place', false, 'saqia');
   assert.equal(content.children[0].fields['[data-field="descriptions"]'].hidden, true);
   assert.equal(content.children[0].fields['[data-field="language-en"]'].events.click, undefined);
