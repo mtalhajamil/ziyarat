@@ -29,7 +29,8 @@ function fragment(kind) {
   const fields = kind === 'destination'
     ? ['name', 'image', 'status']
     : ['name', 'image', 'map', 'english', 'urdu', 'image-credit', 'image-source', 'image-license',
-      'image-placeholder', 'descriptions', 'description-empty'];
+      'image-placeholder', 'descriptions', 'description-empty',
+      'english-panel', 'urdu-panel', 'language-en', 'language-ur'];
   for (const name of fields) node.fields[`[data-field="${name}"]`] = new Element();
   if (kind === 'place') {
     node.fields['[data-field="image-credit"]'].hidden = true;
@@ -202,6 +203,40 @@ test('displays image attribution and rejects unsafe credit links', async () => {
     () => vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context),
     /Invalid image license URL/
   );
+});
+
+test('descriptions default to English and switch languages without changing text', async () => {
+  for (const place of data['data/madinah.json'].filter(place => place.english !== undefined)) {
+    const {content} = await loadPage('place', false, place.slug);
+    const view = content.children[0];
+    const english = view.fields['[data-field="english-panel"]'];
+    const urdu = view.fields['[data-field="urdu-panel"]'];
+    const enButton = view.fields['[data-field="language-en"]'];
+    const urButton = view.fields['[data-field="language-ur"]'];
+    assert.equal(english.hidden, false);
+    assert.equal(urdu.hidden, true);
+    assert.equal(enButton.ariaPressed, 'true');
+    assert.equal(urButton.ariaPressed, 'false');
+    urButton.events.click();
+    assert.equal(english.hidden, true);
+    assert.equal(urdu.hidden, false);
+    assert.equal(enButton.ariaPressed, 'false');
+    assert.equal(urButton.ariaPressed, 'true');
+    enButton.events.click();
+    assert.equal(english.hidden, false);
+    assert.equal(urdu.hidden, true);
+    assert.equal(enButton.ariaPressed, 'true');
+    assert.equal(urButton.ariaPressed, 'false');
+    assert.equal(view.fields['[data-field="english"]'].textContent, place.english);
+    assert.equal(view.fields['[data-field="urdu"]'].textContent, place.urdu);
+  }
+  const template = fs.readFileSync('templates.html', 'utf8');
+  assert.match(template, /data-field="urdu-panel" lang="ur" dir="rtl"/);
+  assert.match(template, /aria-controls="english-description"/);
+  assert.match(template, /aria-controls="urdu-description"/);
+  const {content} = await loadPage('place', false, 'saqia');
+  assert.equal(content.children[0].fields['[data-field="descriptions"]'].hidden, true);
+  assert.equal(content.children[0].fields['[data-field="language-en"]'].events.click, undefined);
 });
 
 test('shows the licensed Banu Unaif photo with its attribution', async () => {

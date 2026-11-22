@@ -172,6 +172,20 @@ function renderPlaces(container, template, places) {
   if (place.english !== undefined) {
     english.textContent = place.english;
     urdu.textContent = place.urdu;
+    const englishPanel = field(content, 'english-panel');
+    const urduPanel = field(content, 'urdu-panel');
+    const englishButton = field(content, 'language-en');
+    const urduButton = field(content, 'language-ur');
+    function setLanguage(language) {
+      const isEnglish = language === 'en';
+      englishPanel.hidden = !isEnglish;
+      urduPanel.hidden = isEnglish;
+      englishButton.ariaPressed = String(isEnglish);
+      urduButton.ariaPressed = String(!isEnglish);
+    }
+    setLanguage('en');
+    englishButton.addEventListener('click', () => setLanguage('en'));
+    urduButton.addEventListener('click', () => setLanguage('ur'));
   } else {
     descriptions.hidden = true;
     descriptionEmpty.hidden = false;

@@ -27,6 +27,8 @@ Open `http://localhost:8000/`, or visit `http://localhost:8000/madinah/quba/` di
 
 The page shell loads `site.js`, which fetches `templates.html` and the relevant JSON with `cache: 'no-cache'`, clones a template and inserts text as text rather than HTML. Invalid data or failed requests produce an error message instead of partial content; inspect the browser console for details. All place entries are validated before a place is shown, so one invalid entry can prevent every Madinah place from loading.
 
+Place descriptions show English by default. The EN/UR buttons switch between the existing descriptions, with Urdu rendered right-to-left; the selection resets to English on each page load. Places with no descriptions show “Description coming soon” without language controls.
+
 The homepage links the Madinah tile to `/madinah/quba/`; other destination cards without a `page` show “Coming soon”. `/madinah/` and the legacy `madinah.html` display the first entry in `data/madinah.json`. Each `/madinah/<slug>/` page selects its entry through `data-place-slug`. The arrows navigate to the previous or next directory URL in JSON order and wrap around; both are disabled when there is only one entry. Adding JSON alone does **not** create a route.
 
 Only Madinah has a place-page implementation: `site.js` selects Madinah data for place pages and constructs Madinah slider URLs. A new destination's place pages need corresponding implementation and routes; adding a homepage link alone is not enough.
