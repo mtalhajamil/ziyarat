@@ -1,0 +1,61 @@
+styles.css
+  s_a70902b9386716::t_3c225e84756b8a 338-339,349,363,371-378,380,382-383,388-390,406,442
+README.md
+  s_a70902b9386716::t_3c225e84756b8a 30
+index.html
+  s_a70902b9386716::t_d94f1b39cd44e1 25
+madinah.html
+  s_a70902b9386716::t_72986ad9dce9aa 9
+madinah/banu-unaif/index.html
+  s_a70902b9386716::t_7187e7285454aa 10
+madinah/fasih/index.html
+  s_a70902b9386716::t_c4795659297bb1 10
+madinah/fath/index.html
+  s_a70902b9386716::t_01cab476ca945f 10
+madinah/ghamama/index.html
+  s_a70902b9386716::t_fd64d167a21a09 10
+madinah/index.html
+  s_a70902b9386716::t_e092eb76ae995c 10
+madinah/jummah/index.html
+  s_a70902b9386716::t_d2b988213bab44 10
+madinah/kab-ashraf/index.html
+  s_a70902b9386716::t_152424077c12e4 10
+madinah/mustarah/index.html
+  s_a70902b9386716::t_b108cad8fdf28c 10
+madinah/qiblatain/index.html
+  s_a70902b9386716::t_6e63643e2adcfc 10
+madinah/quba/index.html
+  s_a70902b9386716::t_1d63095400c641 10
+madinah/rayah/index.html
+  s_a70902b9386716::t_85edd98311477e 10
+madinah/ruma/index.html
+  s_a70902b9386716::t_48b211525fea0c 10
+madinah/sabah/index.html
+  s_a70902b9386716::t_c316dd4ac32926 10
+madinah/saqia/index.html
+  s_a70902b9386716::t_845838ee1e6fbf 10
+madinah/shaykhain/index.html
+  s_a70902b9386716::t_6540e8a5b71023 10
+madinah/uhud/index.html
+  s_a70902b9386716::t_b57b3287d62c4e 10
+madinah/umar/index.html
+  s_a70902b9386716::t_0f46a1166a18f6 10
+madinah/utban/index.html
+  s_a70902b9386716::t_5b24c87a965769 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "3812f868f70ddd3a04d2a910405f5446339370fb",
+  "prompts": {},
+  "sessions": {
+    "s_a70902b9386716": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "311ba99e-a886-4d45-bf5f-e61a56b682ee",
+        "model": "unknown"
+      },
+      "human_author": "mtalhajamil <muhammad.jamil@hungerstation.com>"
+    }
+  }
+}
