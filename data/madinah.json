@@ -2,16 +2,25 @@
   {
     "slug": "quba",
     "name": "Masjid Quba",
-    "image": { "src": "assets/images/quba.jpg", "alt": "Quba Mosque in Madinah", "width": 1280, "height": 1013 },
+    "image": {
+      "src": "assets/images/quba.jpg",
+      "alt": "Quba Mosque in Madinah",
+      "width": 1280,
+      "height": 1013
+    },
     "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Quba%2C%20Madinah",
     "english": "After arriving in Quba, there was discussion of building a place of worship. The Messenger of Allah ﷺ instructed that his she-camel be set loose and that a mosque be built wherever she sat down. The mosque was built where she sat, on a plot of land belonging to Kulthum ibn al-Hidm, may Allah be pleased with him, where his dates were dried.\n\nThis mosque has great virtues. It is the first mosque of Islam; the Messenger of Allah ﷺ laid its foundation himself and took part in its construction like an ordinary worker. The Holy Quran says: “A mosque founded on righteousness from the first day is more worthy that you stand in it for worship.” (Surah al-Tawbah 9:108; al-Sirah al-Halabiyyah, chapter on the migration to Madinah.)\n\nAllah greatly rewarded the people of Quba for the love and devotion they showed the Prophet ﷺ and the Companions, may Allah be pleased with them, and granted their land great honour. The Prophet ﷺ said: “Whoever purifies himself in his home, then comes to Masjid Quba and offers a prayer in it, will have a reward like that of an Umrah.” The accompanying explanation describes offering two units of prayer after coming from home in a state of ablution. (Sunan Ibn Majah, chapter on prayer in Masjid Quba.)",
-    "urdu": "قبا میں رونق افروز ہونے کے بعد عبادت گاہ بنانے کی بات ہوئی، رسول اللہ صلی اللہ علیہ وسلم نے اپنی اونٹنی کو اٹھائے جانے کی ہدایت فرمائی، کہ یہ جہاں بیٹھ جائے، اسی جگہ مسجد بنائی جائے، اونٹنی جہاں بیٹھی، وہیں مسجد تعمیر ہوئی، یہ کلثوم بن الہدم رضی اللہ تعالیٰ عنہ کی افتادہ زمین تھی، جہاں ان کی کھجوریں سکھائی جاتی تھیں۔\n\nاس مسجد کے بڑے فضائل ہیں، اسلام کی یہ اول مسجد ہے، اس کی بنیاد خود رسول اللہ صلی اللہ علیہ وسلم نے رکھی، خود آپ صلی اللہ علیہ وسلم نے اس کی تعمیر میں عام مزدوروں کی طرح حصہ لیا، قرآن مجید میں ہے: ﴿لَمَسْجِدٌ أُسِّسَ عَلَى التَّقْوَى مِنْ أَوَّلِ يَوْمٍ أَحَقُّ أَن تَقُومَ فِيهِ﴾ (سورۃ التوبہ: ۱۰۸) ”جس مسجد کی بنیاد اول روز سے ہی تقویٰ پر رکھی گئی تھی، وہی اس کیلئے موزوں ہے کہ آپ اس میں عبادت کیلئے کھڑے ہوں“۔ (السیرۃ الحلبیۃ، باب الھجرۃ الی المدینۃ)\n\nقبا والوں نے آقا صلی اللہ علیہ وسلم اور صحابہ رضی اللہ تعالیٰ عنہم کے ساتھ جس محبت و عقیدت کا اظہار کیا، اس پر اللہ تعالیٰ نے انہیں عظیم صلہ دیا، ان کی سرزمین کو عظیم شرف بخشا، آقا صلی اللہ علیہ وسلم نے ارشاد فرمایا: ((من تطہر فی بیتہ ثم اتی مسجد قبا فصلی فیہ صلوۃ کان لہ کاجر عمرۃ)) ”جو شخص گھر سے باوضو ہو کر آئے، اور مسجد قبا میں دو رکعتیں پڑھے، اسے ایک عمرہ کا ثواب ملتا ہے“۔ (سنن ابن ماجہ، باب ما جاء فی الصلوۃ فی مسجد قبا)"
+    "urdu": "قبا میں رونق افروز ہونے کے بعد عبادت گاہ بنانے کی بات ہوئی، رسول اللہ صلی اللہ علیہ وسلم نے اپنی اونٹنی کو اٹھائے جانے کی ہدایت فرمائی، کہ یہ جہاں بیٹھ جائے، اسی جگہ مسجد بنائی جائے، اونٹنی جہاں بیٹھی، وہیں مسجد تعمیر ہوئی، یہ کلثوم بن الہدم رضی اللہ تعالیٰ عنہ کی افتادہ زمین تھی، جہاں ان کی کھجوریں سکھائی جاتی تھیں۔\n\nاس مسجد کے بڑے فضائل ہیں، اسلام کی یہ اول مسجد ہے، اس کی بنیاد خود رسول اللہ صلی اللہ علیہ وسلم نے رکھی، خود آپ صلی اللہ علیہ وسلم نے اس کی تعمیر میں عام مزدوروں کی طرح حصہ لیا، قرآن مجید میں ہے: ﴿لَمَسْجِدٌ أُسِّسَ عَلَى التَّقْوَى مِنْ أَوَّلِ يَوْمٍ أَحَقُّ أَن تَقُومَ فِيهِ﴾ (سورۃ التوبہ: ۱۰۸) ”جس مسجد کی بنیاد اول روز سے ہی تقویٰ پر رکھی گئی تھی، وہی اس کیلئے موزوں ہے کہ آپ اس میں عبادت کیلئے کھڑے ہوں“۔ (السیرۃ الحلبیۃ، باب الھجرۃ الی المدینۃ)\n\nقبا والوں نے آقا صلی اللہ علیہ وسلم اور صحابہ رضی اللہ تعالیٰ عنہم کے ساتھ جس محبت و عقیدت کا اظہار کیا، اس پر اللہ تعالیٰ نے انہیں عظیم صلہ دیا، ان کی سرزمین کو عظیم شرف بخشا، آقا صلی اللہ علیہ وسلم نے ارشاد فرمایا: ((من تطہر فی بیتہ ثم اتی مسجد قبا فصلی فیہ صلوۃ کان لہ کاجر عمرۃ)) ”جو شخص گھر سے باوضو ہو کر آئے، اور مسجد قبا میں دو رکعتیں پڑھے، اسے ایک عمرہ کا ثواب ملتا ہے“۔ (سنن ابن ماجہ، باب ما جاء فی الصلوۃ فی مسجد قبا)",
+    "sourceCode": "MED-QUBA"
   },
   {
     "slug": "jummah",
     "name": "Masjid Jummah",
     "image": {
-      "src": "assets/images/jummah.jpg", "alt": "Masjid Jummah in Madinah", "width": 1280, "height": 843,
+      "src": "assets/images/jummah.jpg",
+      "alt": "Masjid Jummah in Madinah",
+      "width": 1280,
+      "height": 843,
       "credit": {
         "description": "Masjid Jum'ah by Imam Khairul Annas (cropped and resized)",
         "sourceUrl": "https://commons.wikimedia.org/wiki/File:Masjid_Jum%27ah.jpg",
@@ -21,21 +30,31 @@
     },
     "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Jummah%2C%20Madinah",
     "english": "After staying in Quba for four or fourteen days, the Prophet ﷺ decided to go to Madinah and sent word to his maternal relatives, the Banu Najjar. He set out in the morning on his she-camel, accompanied by the noble Companions, may Allah be pleased with them. After travelling a short distance, midday arrived and he stopped in the neighbourhood of Banu Salim. When he had left Quba, they had said: “O Messenger of Allah! You stayed with our cousins in Quba; honour us too.”\n\nHe alighted in their settlement and gave a sermon before a large gathering of Companions. This was the first Friday sermon of his prophetic life. He delivered it after spending thirteen years oppressed in Makkah, yet the gentle and patient Prophet of Mercy ﷺ did not say a word of condemnation or complaint about his enemies. The sermon concerned God-consciousness, piety, and preparation for the Hereafter. Indeed: “And indeed, you are of a great moral character.” (Surah al-Qalam 68:4.) After the sermon he offered the Friday prayer: this was the first Friday prayer in Islam that he performed. (Al-Sirah al-Halabiyyah, chapter on the migration to Madinah.)\n\nAt the time these lines are being written, it happens to be midday on a blessed Friday. Praise be to Allah for this coincidence; O Allah, accept from us.\n\nThe Banu Salim built a mosque where he had offered the Friday prayer. It is known as Masjid Jummah and Masjid Banu Salim. It lies about one kilometre from Masjid Quba; travelling from Masjid Quba towards the Prophet's Mosque, the beautiful white Masjid Jummah is on the right.",
-    "urdu": "قبا میں چار دن یا چودہ دن قیام کے بعد مدینہ منورہ تشریف لے جانے کا خیال ہوا، اپنے ننھیال بنو نجار کو اطلاع دی، اونٹنی پر سوار ہو کر صحابہ کرام رضی اللہ تعالیٰ عنہم کے جلو میں دن چڑھے روانہ ہوئے، تھوڑی دیر چلے کہ زوال کا وقت ہو گیا، آپ صلی اللہ علیہ وسلم ٹھہر گئے، یہ محلہ بنی سالم تھا، انہوں نے قبا سے روانگی کے وقت عرض کیا: ”یا رسول اللہ! آپ نے ہمارے چچا زاد کے ہاں قبا میں قیام فرمایا، کچھ شرف ہمیں بھی بخشیں“......\n\nآپ صلی اللہ علیہ وسلم ان کی بستی میں اترے، کثیر صحابہ کرام رضی اللہ تعالیٰ عنہم کے اجتماع میں خطبہ دیا، پیغمبرانہ زندگی کا یہ پہلا خطبہ جمعہ تھا، مکہ مکرمہ میں مظلومانہ تیرہ سال گزارنے کے بعد یہ خطبہ دیا، مگر حلیم و صابر نبی رحمت صلی اللہ علیہ وسلم نے اس خطبہ میں ایک حرف بھی دشمنوں کی مذمت اور شکایت میں نہیں کہا، تقویٰ، پرہیزگاری اور یومِ آخرت کی تیاری ہی خطبہ کا مضمون تھا، واقعی! ﴿إِنَّكَ لَعَلَىٰ خُلُقٍ عَظِيمٍ﴾ (سورۃ القلم آیت ۴)...... خطبہ کے بعد نماز جمعہ ادا کی، یہ اسلام کا سب سے پہلا جمعہ تھا جو آپ صلی اللہ علیہ وسلم نے ادا فرمایا۔ (السیرۃ الحلبیۃ، باب الھجرۃ الی المدینۃ)......\n\n(اس وقت جب یہ سطور لکھی جا رہی ہیں، اتفاق سے وقت بھی زوال کا ہے اور دن بھی جمعۃ المبارک کا۔ فللہ الحمد علی ھذہ الموافقۃ، اللھم تقبل منا)......\n\nجس جگہ آپ صلی اللہ علیہ وسلم نے نماز جمعہ ادا فرمائی، وہاں بنو سالم نے مسجد بنا لی، جو مسجد جمعہ اور مسجد بنو سالم سے مشہور ہے، یہ مسجد قبا سے تقریباً ایک کلومیٹر کے فاصلے پر واقع ہے، مسجد قبا سے مسجد نبوی کو جاتے ہوئے، دائیں ہاتھ پہ ایک خوبصورت سفید رنگ کی مسجد ”مسجد جمعہ“ ہے۔"
+    "urdu": "قبا میں چار دن یا چودہ دن قیام کے بعد مدینہ منورہ تشریف لے جانے کا خیال ہوا، اپنے ننھیال بنو نجار کو اطلاع دی، اونٹنی پر سوار ہو کر صحابہ کرام رضی اللہ تعالیٰ عنہم کے جلو میں دن چڑھے روانہ ہوئے، تھوڑی دیر چلے کہ زوال کا وقت ہو گیا، آپ صلی اللہ علیہ وسلم ٹھہر گئے، یہ محلہ بنی سالم تھا، انہوں نے قبا سے روانگی کے وقت عرض کیا: ”یا رسول اللہ! آپ نے ہمارے چچا زاد کے ہاں قبا میں قیام فرمایا، کچھ شرف ہمیں بھی بخشیں“...... آپ صلی اللہ علیہ وسلم ان کی بستی میں اترے، کثیر صحابہ کرام رضی اللہ تعالیٰ عنہم کے اجتماع میں خطبہ دیا، پیغمبرانہ زندگی کا یہ پہلا خطبہ جمعہ تھا، مکہ مکرمہ میں مظلومانہ تیرہ سال گزارنے کے بعد یہ خطبہ دیا، مگر حلیم و صابر نبی رحمت صلی اللہ علیہ وسلم نے اس خطبہ میں ایک حرف بھی دشمنوں کی مذمت اور شکایت میں نہیں کہا، تقویٰ، پرہیزگاری اور یومِ آخرت کی تیاری ہی خطبہ کا مضمون تھا، واقعی! ﴿إِنَّكَ لَعَلَىٰ خُلُقٍ عَظِيمٍ﴾ (سورۃ القلم آیت ۴)...... خطبہ کے بعد نماز جمعہ ادا کی، یہ اسلام کا سب سے پہلا جمعہ تھا جو آپ صلی اللہ علیہ وسلم نے ادا فرمایا۔ (السیرۃ الحلبیۃ، باب الھجرۃ الی المدینۃ)...... (اس وقت جب یہ سطور لکھی جا رہی ہیں، اتفاق سے وقت بھی زوال کا ہے اور دن بھی جمعۃ المبارک کا۔ فللہ الحمد علی ھذہ الموافقۃ، اللھم تقبل منا)...... جس جگہ آپ صلی اللہ علیہ وسلم نے نماز جمعہ ادا فرمائی، وہاں بنو سالم نے مسجد بنا لی، جو مسجد جمعہ اور مسجد بنو سالم سے مشہور ہے، یہ مسجد قبا سے تقریباً ایک کلومیٹر کے فاصلے پر واقع ہے، مسجد قبا سے مسجد نبوی کو جاتے ہوئے، دائیں ہاتھ پہ ایک خوبصورت سفید رنگ کی مسجد ”مسجد جمعہ“ ہے۔",
+    "sourceCode": "MED-JUMMA"
   },
   {
     "slug": "qiblatain",
     "name": "Masjid Qiblatain",
-    "image": { "src": "assets/images/qiblatain.jpg", "alt": "Masjid Qiblatain in Madinah", "width": 960, "height": 1280 },
+    "image": {
+      "src": "assets/images/qiblatain.jpg",
+      "alt": "Masjid Qiblatain in Madinah",
+      "width": 960,
+      "height": 1280
+    },
     "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Qiblatain%2C%20Madinah",
     "english": "When the Prophet ﷺ came to Madinah, there were many Jews there, whose direction of prayer was Jerusalem. To maintain a connection with them, he prayed facing Jerusalem for sixteen or seventeen months by Allah's permission. Yet he continually wished that his direction of prayer would be the Kaaba.\n\nOne day he was visiting a sick Companion in the neighbourhood of Banu Salimah. The Companion prepared a meal, and the time for the noon prayer arrived. The Prophet ﷺ began leading prayer in their neighbourhood mosque. Two units had been completed when the trustworthy Jibril, peace be upon him, brought the command to change the direction of prayer. During the prayer itself, the Prophet ﷺ turned towards the Kaaba. Because one prayer was offered facing two directions in this mosque, it became known as Masjid Qiblatain, the Mosque of the Two Qiblahs.\n\nThe mosque is beside Khalid ibn al-Walid Road and near Wadi al-Aqiq. By a curious coincidence, the new mosque has two storeys, two minarets, and two domes, perhaps pointing to its association with the two directions of prayer. Banu Salimah was a well-known tribe of the Khazraj. Their settlement was about 3.5 kilometres from the Prophet's Mosque, on the northern side of Harrah Gharbiyyah, near Wadi al-Aqiq and west of Mount Sal'.\n\nThis was the tribe that wished to move closer to the Prophet's Mosque. The Prophet ﷺ discouraged them, saying that they would be rewarded for the steps they took to the mosque. The Banu Salimah cemetery adjoins Masjid Qiblatain on its western side.",
-    "urdu": "آپ صلی اللہ علیہ وسلم مدینہ منورہ تشریف لائے، یہاں یہود کی کثرت تھی، ان کا قبلہ بیت المقدس تھا، آپ صلی اللہ علیہ وسلم نے ان سے جوڑ رکھنے کیلئے سولہ یا سترہ ماہ باذن خداوندی بیت المقدس کی طرف منہ کر کے نماز پڑھی، مگر یہ خواہش ہر وقت لگی رہتی تھی کہ میرا قبلہ خانہ کعبہ ہی ہو،\n\nایک دن آپ صلی اللہ علیہ وسلم بنو سلمہ کے محلہ میں ایک صحابی کی عیادت کیلئے گئے ہوئے تھے، انہوں نے کھانا تیار کیا، ظہر کا وقت ہو گیا، آپ صلی اللہ علیہ وسلم نے ان کے محلہ کی مسجد میں نماز پڑھانی شروع کی، ابھی دو رکعتیں ہوئی تھیں کہ جبریل امین علیہ السلام قبلہ کی تبدیلی کا حکم لے آئے، آپ صلی اللہ علیہ وسلم دورانِ نماز ہی خانہ کعبہ کی طرف گھوم گئے، چونکہ اس مسجد میں ایک ہی نماز دو قبلوں کی طرف منہ کر کے پڑھی گئی، اس لئے یہ ”مسجد قبلتین“ سے مشہور ہو گئی۔\n\nیہ مسجد شارع خالد بن ولید رضی اللہ تعالیٰ عنہ کے کنارے اور وادی عقیق کے قریب ہے، عجیب اتفاق ہے کہ مسجد قبلتین کی نئی تعمیر کی دو منزلیں، دو مینار، دو ہی گنبد ہیں، شاید اس سے اس کی دو قبلوں والی خصوصیت کی طرف اشارہ ہے، بنو سلمہ خزرج کا مشہور قبیلہ ہے، ان کی آبادی مسجد نبوی سے تقریباً 3.5 کلومیٹر کے فاصلے پر حرہ غربیہ کی شمالی جانب وادی عقیق کے قریب اور جبل سلع کی مغربی جانب تھی،\n\nیہ وہی قبیلہ ہے جنہوں نے مسجد نبوی کے قریب منتقل ہونا چاہا، تو آپ صلی اللہ علیہ وسلم نے منع فرمایا کہ مسجد نبوی تک تمہارے اٹھنے والے قدموں پر ثواب ملے گا، بنو سلمہ کا قبرستان مسجد قبلتین سے متصل مغربی جانب واقع ہے۔"
+    "urdu": "آپ صلی اللہ علیہ وسلم مدینہ منورہ تشریف لائے، یہاں یہود کی کثرت تھی، ان کا قبلہ بیت المقدس تھا، آپ صلی اللہ علیہ وسلم نے ان سے جوڑ رکھنے کیلئے سولہ یا سترہ ماہ باذن خداوندی بیت المقدس کی طرف منہ کر کے نماز پڑھی، مگر یہ خواہش ہر وقت لگی رہتی تھی کہ میرا قبلہ خانہ کعبہ ہی ہو، ایک دن\n\nآپ صلی اللہ علیہ وسلم بنو سلمہ کے محلہ میں ایک صحابی کی عیادت کیلئے گئے ہوئے تھے، انہوں نے کھانا تیار کیا، ظہر کا وقت ہو گیا، آپ صلی اللہ علیہ وسلم نے ان کے محلہ کی مسجد میں نماز پڑھانی شروع کی، ابھی دو رکعتیں ہوئی تھیں کہ جبریل امین علیہ السلام قبلہ کی تبدیلی کا حکم لے آئے، آپ صلی اللہ علیہ وسلم دورانِ نماز ہی خانہ کعبہ کی طرف گھوم گئے، چونکہ اس مسجد میں ایک ہی نماز دو قبلوں کی طرف منہ کر کے پڑھی گئی، اس لئے یہ ”مسجد قبلتین“ سے مشہور ہو گئی۔\n\nیہ مسجد شارع خالد بن ولید رضی اللہ تعالیٰ عنہ کے کنارے اور وادی عقیق کے قریب ہے، عجیب اتفاق ہے کہ مسجد قبلتین کی نئی تعمیر کی دو منزلیں، دو مینار، دو ہی گنبد ہیں، شاید اس سے اس کی دو قبلوں والی خصوصیت کی طرف اشارہ ہے، بنو سلمہ خزرج کا مشہور قبیلہ ہے، ان کی آبادی مسجد نبوی سے تقریباً 3.5 کلومیٹر کے فاصلے پر حرہ غربیہ کی شمالی جانب وادی عقیق کے قریب اور جبل سلع کی مغربی جانب تھی، یہ وہی قبیلہ ہے جنہوں نے مسجد نبوی کے قریب منتقل ہونا چاہا، تو آپ صلی اللہ علیہ وسلم نے منع فرمایا کہ مسجد نبوی تک تمہارے اٹھنے والے قدموں پر ثواب ملے گا، بنو سلمہ کا قبرستان مسجد قبلتین سے متصل مغربی جانب واقع ہے۔",
+    "sourceCode": "MED-QIBLAT"
   },
   {
     "slug": "ghamama",
     "name": "Masjid Ghamama",
     "image": {
-      "src": "assets/images/ghamama.jpg", "alt": "Masjid Ghamama in Madinah", "width": 1280, "height": 960,
+      "src": "assets/images/ghamama.jpg",
+      "alt": "Masjid Ghamama in Madinah",
+      "width": 1280,
+      "height": 960,
       "credit": {
         "description": "Mosque of Al-Ghamama 2026-05-13 by FaysaLBinDaruL (resized)",
         "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mosque_of_Al-Ghamama_2026-05-13.jpg",
@@ -45,135 +64,258 @@
     },
     "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Ghamama%2C%20Madinah",
     "english": "The Eid prayer was prescribed in the second year after the Hijrah. The Prophet ﷺ is known to have offered it at several nearby sites in an open area southwest of the Prophet's Mosque, including near the houses of Abdullah ibn Durrah and Hakim ibn al-Adda, where the mosque of Ali, may Allah be pleased with him, now stands. Later, he most often offered the Eid prayer where Masjid Ghamama now stands.\n\nGhamama means a cloud. At this place the Prophet ﷺ offered the prayer for rain; clouds suddenly appeared and rain fell. It is also called Masjid Musalla. This small mosque has eight small domes. Eid prayer continued to be offered here until approximately the ninth Islamic century; afterwards, it was probably arranged at the Prophet's Mosque because of its expansion.\n\nAbu Bakr, may Allah be pleased with him, offered Eid prayer slightly to the right of this site, and Umar, may Allah be pleased with him, respectfully offered it at some distance from both places. The area remained open ground. Umar ibn Abd al-Aziz, may Allah have mercy on him, had the sites identified and a mosque built at each: Masjid Musalla (the Eid prayer ground), Masjid Abu Bakr, Masjid Umar, Masjid Ali, and others. (Sharh Bulugh al-Maram, chapter on the place of Eid prayer; Madinah Munawwarah ki Tarikhi Masajid, p. 68.) Congregational prayers are no longer held in these mosques because the newly expanded Prophet's Mosque now reaches close to them. They remain as reminders of the Messenger ﷺ.\n\nIn the same open area, the Prophet ﷺ offered the funeral prayer in absentia for King Najashi. This was a special honour from the Messenger of Allah ﷺ because Najashi had treated the Muslim migrants with great respect; may Allah be pleased with him and make him content. Here too, the Prophet ﷺ offered the prayer for rain.\n\nAbu Hurayrah, may Allah be pleased with him, relates that when the Prophet ﷺ passed through this area on returning from a journey, he would stand facing the qiblah and supplicate. The Jews of Madinah had their own market, so the Prophet ﷺ designated this area as a market for Muslims to maintain their distinct identity. In this context the place was called Manakhah, meaning a place where camels are made to sit; camels were brought to rest here for trade. (Tarikh Madinah Munawwarah, p. 56.)",
-    "urdu": "۲ھ میں نمازِ عید کی مشروعیت ہوئی، آپ صلی اللہ علیہ وسلم سے متعدد مقامات پر نمازِ عید پڑھنا ثابت ہے، یہ سب مقامات مسجد نبوی سے جنوب مغربی جانب قریب قریب میدان میں تھے، مثلاً عبداللہ بن درۃ کے گھر کے قریب اور حکیم بن العداء کے گھر کے قریب (جہاں اب مسجد علی رضی اللہ تعالیٰ عنہ ہے) آخر میں زیادہ تر اس مقام پر نمازِ عید پڑھتے تھے، جہاں اب مسجد غمامہ ہے، ”غمامہ“ بادل کو کہتے ہیں، اس جگہ پر آپ صلی اللہ علیہ وسلم نے استسقاء کی نماز پڑھی، اچانک بادل نمودار ہوئے اور بارش ہوئی۔\n\nاس کو مسجد مصلیٰ بھی کہا جاتا ہے، اس ننھی سی مسجد کے آٹھ چھوٹے چھوٹے گنبد ہیں، تقریباً نویں صدی ہجری تک عید کی نماز اسی جگہ پر پڑھی جاتی تھی، پھر غالباً مسجد نبوی کے کشادہ ہونے کی وجہ سے وہاں نمازِ عید کا اہتمام کیا جانے لگا،\n\nابوبکر رضی اللہ تعالیٰ عنہ نے اس مقام سے ہٹ کر ذرا کچھ دائیں طرف نمازِ عید ادا کی، اور پھر عمر رضی اللہ تعالیٰ عنہ نے ادباً ان دونوں مقامات سے الگ تھوڑا فاصلے پر نمازِ عید ادا کی، یہ جگہ ویسے ہی میدانی شکل میں رہی، عمر بن عبدالعزیز رحمہ اللہ نے ان مقامات کی نشاندہی کروا کے ہر ایک مقام پر مسجد بنوائی، مسجد مصلیٰ (عید گاہ)، مسجد ابوبکر رضی اللہ تعالیٰ عنہ، مسجد عمر رضی اللہ تعالیٰ عنہ، مسجد علی رضی اللہ تعالیٰ عنہ وغیرہ۔\n\n(شرح بلوغ المرام باب مکان صلوٰۃ العید، مدینہ منورہ کی تاریخی مساجد ص ۶۸) ان مساجد میں اب جماعت نہیں ہوتی، کیونکہ مسجد نبوی جدید توسیع کے بعد ان کے قریب تک پہنچ گئی ہے، یادگارِ رسول صلی اللہ علیہ وسلم کے طور پر یہ موجود ہیں۔\n\n...... اسی میدان میں آپ صلی اللہ علیہ وسلم نے نجاشی بادشاہ کی غائبانہ نمازِ جنازہ پڑھی۔ (یہ رسول اللہ صلی اللہ علیہ وسلم کی طرف سے خصوصی اعزاز تھا، کیونکہ نجاشی بادشاہ نے مسلمان مہاجرین کو بہت احترام دیا تھا) رضی اللہ عنہ وارضاہ ...... اسی میدان میں آپ صلی اللہ علیہ وسلم نے نمازِ استسقاء ادا فرمائی۔\n\n...... ابوہریرہ رضی اللہ تعالیٰ عنہ سے روایت ہے کہ آپ صلی اللہ علیہ وسلم سفر سے واپسی پر اس میدان سے گزرتے تو قبلہ رخ کھڑے ہو کر دعا فرماتے۔\n\n...... مدینہ منورہ میں یہود کا اپنا بازار تھا، آپ صلی اللہ علیہ وسلم نے اسلامی تشخص قائم رکھنے کیلئے اس میدان کو مسلمانوں کا بازار قرار دیا، اسی پس منظر میں یہ جگہ ”مناخہ“ کہلائی، یعنی اونٹ کے بٹھانے کی جگہ، یہاں تجارت کے سلسلے میں اونٹ بٹھائے جاتے تھے۔ (تاریخ مدینہ منورہ ص ۵۶)"
+    "urdu": "۲ھ میں نمازِ عید کی مشروعیت ہوئی، آپ صلی اللہ علیہ وسلم سے متعدد مقامات پر نمازِ عید پڑھنا ثابت ہے، یہ سب مقامات مسجد نبوی سے جنوب مغربی جانب قریب قریب میدان میں تھے، مثلاً عبداللہ بن درۃ کے گھر کے قریب اور حکیم بن العداء کے گھر کے قریب (جہاں اب مسجد علی رضی اللہ تعالیٰ عنہ ہے) آخر میں زیادہ تر اس مقام پر نمازِ عید پڑھتے تھے، جہاں اب مسجد غمامہ ہے، ”غمامہ“ بادل کو کہتے ہیں، اس جگہ پر آپ صلی اللہ علیہ وسلم نے استسقاء کی نماز پڑھی، اچانک بادل نمودار ہوئے اور بارش ہوئی۔\n\nاس کو مسجد مصلیٰ بھی کہا جاتا ہے، اس ننھی سی مسجد کے آٹھ چھوٹے چھوٹے گنبد ہیں، تقریباً نویں صدی ہجری تک عید کی نماز اسی جگہ پر پڑھی جاتی تھی، پھر غالباً مسجد نبوی کے کشادہ ہونے کی وجہ سے وہاں نمازِ عید کا اہتمام کیا جانے لگا، ابوبکر رضی اللہ تعالیٰ عنہ نے اس مقام سے ہٹ کر ذرا کچھ دائیں طرف نمازِ عید ادا کی، اور پھر عمر رضی اللہ تعالیٰ عنہ نے ادباً ان دونوں مقامات سے الگ تھوڑا فاصلے پر نمازِ عید ادا کی، یہ جگہ ویسے ہی میدانی شکل میں رہی، عمر بن عبدالعزیز رحمہ اللہ نے ان مقامات کی نشاندہی کروا کے ہر ایک مقام پر مسجد بنوائی، مسجد مصلیٰ (عید گاہ)، مسجد ابوبکر رضی اللہ تعالیٰ عنہ، مسجد عمر رضی اللہ تعالیٰ عنہ، مسجد علی رضی اللہ تعالیٰ عنہ وغیرہ۔ (شرح بلوغ المرام باب مکان صلوٰۃ العید، مدینہ منورہ کی تاریخی مساجد ص ۶۸)\n\nان مساجد میں اب جماعت نہیں ہوتی، کیونکہ مسجد نبوی جدید توسیع کے بعد ان کے قریب تک پہنچ گئی ہے، یادگارِ رسول صلی اللہ علیہ وسلم کے طور پر یہ موجود ہیں۔\n\n...... اسی میدان میں آپ صلی اللہ علیہ وسلم نے نجاشی بادشاہ کی غائبانہ نمازِ جنازہ پڑھی۔ (یہ رسول اللہ صلی اللہ علیہ وسلم کی طرف سے خصوصی اعزاز تھا، کیونکہ نجاشی بادشاہ نے مسلمان مہاجرین کو بہت احترام دیا تھا) رضی اللہ عنہ وارضاہ\n\n...... اسی میدان میں آپ صلی اللہ علیہ وسلم نے نمازِ استسقاء ادا فرمائی۔\n\n...... ابوہریرہ رضی اللہ تعالیٰ عنہ سے روایت ہے کہ آپ صلی اللہ علیہ وسلم سفر سے واپسی پر اس میدان سے گزرتے تو قبلہ رخ کھڑے ہو کر دعا فرماتے۔\n\n...... مدینہ منورہ میں یہود کا اپنا بازار تھا، آپ صلی اللہ علیہ وسلم نے اسلامی تشخص قائم رکھنے کیلئے اس میدان کو مسلمانوں کا بازار قرار دیا، اسی پس منظر میں یہ جگہ ”مناخہ“ کہلائی، یعنی اونٹ کے بٹھانے کی جگہ، یہاں تجارت کے سلسلے میں اونٹ بٹھائے جاتے تھے۔ (تاریخ مدینہ منورہ ص ۵۶)",
+    "sourceCode": "MED-GHAMAMA"
   },
   {
     "slug": "saqia",
     "name": "Masjid al-Saqia",
     "image": {
-      "src": "assets/images/saqia.jpg", "alt": "Masjid al-Saqia in Madinah", "width": 1280, "height": 960,
+      "src": "assets/images/saqia.jpg",
+      "alt": "Masjid al-Saqia in Madinah",
+      "width": 1280,
+      "height": 960,
       "credit": {
         "description": "مسجد السقيا by Imam Khairul Annas (resized)",
         "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D9%85%D8%B3%D8%AC%D8%AF_%D8%A7%D9%84%D8%B3%D9%82%D9%8A%D8%A7.jpg",
-        "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
       }
     },
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20al-Saqia%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20al-Saqia%2C%20Madinah",
+    "sourceCode": "MED-SAQIA",
+    "videoUrl": "https://www.youtube.com/shorts/FVdwdYbFbqw",
+    "urdu": "مدینہ منورہ سے بدر کی طرف جاتے ہوئے مسجد عنبریہ کے قریب ایک علاقے کا نام بیوت السقیاء ہے، یہ جگہ سعد بن ابی وقاص رضی اللہ تعالیٰ عنہ کی ملکیت تھی، یہاں ایک کنواں تھا، جس کا نام بئر سقیا تھا، اس کنویں کا پانی آپ صلی اللہ علیہ وسلم نوش فرمایا کرتے تھے۔\n\nجب آپ صلی اللہ علیہ وسلم بدر کیلئے روانہ ہوئے تو اس جگہ قیام فرمایا، لشکر کا معائنہ فرمایا، کم سن صحابہ رضی اللہ تعالیٰ عنہم کو واپس فرمایا، بئر سقیا سے وضو کر کے نماز پڑھی، آپ صلی اللہ علیہ وسلم کی نماز پڑھنے والی جگہ پر عمر بن عبدالعزیز رحمہ اللہ نے مسجد بنا دی تھی جو مسجد سقیا سے مشہور ہوئی، آج بھی یہ مسجد قدیم ترکی ریلوے اسٹیشن کے اندر موجود ہے، یہ ریلوے اسٹیشن اور مسجد سقیا اب آثارِ قدیمہ کی حیثیت سے شمار کئے جاتے ہیں، اس کے چاروں طرف مضبوط لوہے کا جنگلا لگا کر اس جگہ کو مقفل کر دیا گیا ہے، پہلے یہ جگہ کھلی تھی، لوگ اندر چلے جاتے تھے، مسجد کی زیارت کرتے تھے، 2004ء میں ہم نے بھی اس مسجد کی زیارت کی تھی، مگر آجکل عشاق کو جنگلے کے باہر سے ہی اس کے نظارہ پہ اکتفا کرنا پڑتا ہے۔\n\nآپ صلی اللہ علیہ وسلم نے صحابہ رضی اللہ تعالیٰ عنہم سے بھی فرمایا کہ بئر سقیا کا پانی پیو...... یہیں آپ صلی اللہ علیہ وسلم نے مدینہ منورہ کیلئے دعا فرمائی:۔\n\nجب یہاں سے روانہ ہوئے تو مجاہدین کیلئے ان الفاظ میں دعا فرمائی:۔...... ((اللھم انھم حفاۃ فاحملھم ، وعراۃ فاکسھم ، وجیاع فاشبعھم ، وعالۃ فاغنھم من فضلک))\n\n”اے اللہ! یہ مسلمان پیادہ پا ہیں ان کو سواریاں عطا فرما، یہ بے لباس ہیں ان کو لباس عطا فرما، یہ بھوکے ہیں ان کو شکم سیری عطا فرما اور یہ مسکین و غریب ہیں ان کو اپنے فضل سے غنی اور خوشحال فرما“۔\n\nسعد بن ابی وقاص رضی اللہ تعالیٰ عنہ کہتے ہیں جب ہم واپس ہوئے تو ہر خواہشمند کے پاس ایک دو اونٹ، جس کے پاس لباس کی کمی تھی، اسے لباس مل گیا، کفار کے جمع کردہ خوراک ذخیرہ سے سب کو کھانا مل گیا، اور قیدیوں کے فدیہ سے ہر تنگدست غنی ہو گیا۔ (المستدرک للحاکم، کتاب قسم الفیء)\n\nمسجد سقیا کا قدیم منظر\n\nقدیم ترکی ریلوے اسٹیشن کے [اندر/قریب] اور باہر کی جگہ کے قریب قریب [بئر] سقیا کی جگہ تھی، جس جگہ اب [مسجد] سقیا واقع ہے، کنواں چودھویں [صدی] ہجری کے دوران سڑک کی [توسیع] کے پیشِ نظر دفن کر دیا گیا۔\n\nاسی جگہ پر حضرت عمر رضی اللہ تعالیٰ عنہ کے دورِ حکومت میں آپ صلی اللہ علیہ وسلم کے چچا حضرت عباس رضی اللہ تعالیٰ عنہ سے دعائے استسقاء کرائی گئی۔ (تاریخ مدینہ منورہ ڈاکٹر محمد الیاس ص ۵۶)"
   },
   {
     "slug": "umar",
     "name": "Masjid Umar (R.A)",
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Umar%20%28R.A%29%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Umar%20%28R.A%29%2C%20Madinah",
+    "sourceCode": "MED-UMAR"
   },
   {
     "slug": "kab-ashraf",
     "name": "Ka'b bin Ashraf Ka Qila",
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Ka%27b%20bin%20Ashraf%20Ka%20Qila%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Ka%27b%20bin%20Ashraf%20Ka%20Qila%2C%20Madinah",
+    "sourceCode": "MED-KAB-ASHRAF",
+    "urdu": "کعب بن اشرف مدینہ منورہ کی زمین پر متعصب اور شرپسند یہودی تھا، یہودِ مدینہ کا اگرچہ مسلمانوں سے حلیفانہ معاہدہ تھا، مگر بدر میں کفار کی شکستِ فاش کے بعد کعب بن اشرف مکہ مکرمہ پہنچا، مکہ مکرمہ میں مشرک مقتولوں پہ خوب رویا دھویا، مکہ والوں کو مسلمانوں کے خلاف بھڑکایا، پھر مدینہ منورہ میں آ کر اپنے بغض کے اظہار کیلئے عشقیہ اشعار میں مسلمان خواتین کا ذکر اپنا مشن بنا لیا، اشعار میں رسول اللہ صلی اللہ علیہ وسلم کی بھی ہجو کرتا تھا، (نعوذ باللہ) ایک مرتبہ اس نے کسی بہانے آقا صلی اللہ علیہ وسلم کو اپنے گھر بلایا اور کچھ آدمی مقرر کئے کہ جب آپ صلی اللہ علیہ وسلم تشریف لائیں تو یکبارگی حملہ کر دیا جائے، آپ صلی اللہ علیہ وسلم دعوت پر تشریف لے گئے، ابھی بیٹھے ہی تھے کہ جبریل امین نے آ کر کعب کی بد نیتی اور ارادۂ ظلم و فساد سے آگاہ کر دیا، آپ صلی اللہ علیہ وسلم فوراً وہاں سے روح الامین کے پروں کے سایہ میں باہر تشریف لے آئے۔\n\nاب جب اس خبیث کی شرارتیں عروج پر پہنچیں، تو آقا صلی اللہ علیہ وسلم نے فرمایا: ”کعب بن اشرف نے اللہ اور اس کے رسول صلی اللہ علیہ وسلم کو تکلیف پہنچائی ہے، اسے کون ٹھکانے لگائے گا؟“...... محمد بن مسلمہ رضی اللہ تعالیٰ عنہ نے کہا: ”یا رسول اللہ! یہ میرے ذمے ہے“۔\n\nمحمد بن مسلمہ رضی اللہ تعالیٰ عنہ نے جا کر کعب سے کہا: مجھے قرض میں کچھ اناج چاہئے...... اس نے کہا: میں تمہیں قرض دوں گا، مگر تمہیں اپنی عورتیں بطور ضمانت میرے پاس رکھنی ہوں گی...... محمد بن مسلمہ رضی اللہ تعالیٰ عنہ نے کہا یہ ہماری غیرت کیسے برداشت کرے گی؟...... کعب نے کہا: اچھا اپنے بچے میرے پاس رہن رکھو...... محمد بن مسلمہ رضی اللہ تعالیٰ عنہ نے کہا: یہ بھی نہیں ہو سکتا، یہ تو ساری عمر کی عار اور شرمندگی ہے، لوگ ہماری اولاد کو اس کا طعنہ دیتے رہیں گے، البتہ اپنے ہتھیار تمہارے پاس رہن رکھ سکتے ہیں...... کعب اس بات پر راضی ہو گیا، رات کا وقت طے ہوا۔\n\nاس مشن کیلئے محمد بن مسلمہ، ابو نائلہ اور عباد بن بشر رضی اللہ تعالیٰ عنہم روانہ ہوئے، آقا صلی اللہ علیہ وسلم بقیع تک ان کے ساتھ گئے، پھر دعائیں دے کر رخصت فرمایا...... انہوں نے قلعہ کے قریب پہنچ کر اُسے آواز دی، وہ نیچے اتر آیا...... محمد رضی اللہ تعالیٰ عنہ نے اپنے رفقاء سے کہا: میں اس کو کسی بہانے سے قابو کروں گا، تم اس کا کام تمام کر دینا، یہ لوگ تھوڑی دیر ٹہل کر گپیں مارنے لگے...... محمد رضی اللہ تعالیٰ عنہ نے کعب سے کہا: ”واہ یار! تم نے تو آج بڑی لاجواب اور غضب کی خوشبو لگا رکھی ہے“...... وہ بڑے نخرے سے بولا: ”ہاں میرے پاس عرب کی سب سے زیادہ حسین و جمیل اور سب سے زیادہ معطر عورت ہے“...... محمد رضی اللہ تعالیٰ عنہ نے کہا: ”سچ؟؟ کیا میں یہ خوشبو سونگھ سکتا ہوں؟“...... کعب نے کہا: ”کیوں نہیں، بڑے شوق سے“...... یوں خوشبو سونگھنے کے بہانے محمد رضی اللہ تعالیٰ عنہ نے اس کے سر کے بال مضبوطی سے پکڑ لئے، ساتھیوں نے اس کا سر قلم کرنے میں دیر نہیں لگائی، اخیر شب میں یہ سب رسول اللہ صلی اللہ علیہ وسلم کی خدمت میں پہنچے، آپ صلی اللہ علیہ وسلم نے دیکھتے ہی ارشاد فرمایا ((افلحت الوجوه)) ان چہروں نے فلاح پائی...... وہ کہنے لگے ”ووجهك يا رسول الله“ ”اور سب سے پہلے تو آپ کا چہرہ مبارک، اے اللہ کے رسول“...... یہ ربیع الاول ۳ھ کا واقعہ ہے۔ (صحیح البخاری مع فتح الباری۔ سیرت ابن اسحاق)\n\nکعب بن اشرف کا قلعہ آج بھی نشانِ عبرت بنا ہوا ہے، مدینہ منورہ کے جنوب مشرق میں بطحان ڈیم کے راستہ میں روڈ کے دائیں جانب واقع ہے، مضبوط پتھروں کا بنا ہوا، صدیاں گزر گئیں مگر اس کے کھنڈرات اب بھی باقی ہیں، قلعہ کے قریب ہی اس کا کنواں بھی موجود ہے"
   },
   {
     "slug": "shaykhain",
     "name": "Masjid-e-Shaykhain",
     "image": {
-      "src": "assets/images/shaykhain.jpg", "alt": "Masjid al-Dir, also known as Masjid-e-Shaykhain", "width": 1280, "height": 960,
+      "src": "assets/images/shaykhain.jpg",
+      "alt": "Masjid al-Dir, also known as Masjid-e-Shaykhain",
+      "width": 1280,
+      "height": 960,
       "credit": {
         "description": "Madina trip 145 by Ashashyou (resized)",
         "sourceUrl": "https://commons.wikimedia.org/wiki/File:Madina_trip_145.jpg",
-        "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
       }
     },
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid-e-Shaykhain%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid-e-Shaykhain%2C%20Madinah",
+    "sourceCode": "MED-SHAYKHAIN",
+    "urdu": "مدینہ منورہ سے شمال کی طرف مقامِ شیخین میں پہنچ کر لشکر کا جائزہ لیا، کم عمر صحابہ رضی اللہ تعالیٰ عنہم کو واپس کیا، آفتاب غروب ہو گیا، بلال رضی اللہ تعالیٰ عنہ نے اذان دی، مغرب اور عشاء کی نماز یہیں ادا کی، رات کو یہاں قیام فرمایا، ام سلمہ رضی اللہ تعالیٰ عنہا ایک بھنا ہوا بکری کا بازو لے آئیں، آپ صلی اللہ علیہ وسلم نے تناول فرمایا، پھر انہوں نے کھجوروں کا نبیذ پیش کیا۔ محمد بن مسلمہ رضی اللہ تعالیٰ عنہ نے تمام شب لشکر کی پاسبانی کی، وقتاً فوقتاً لشکر کا چکر لگاتے، پھر واپس آ کر نبی مجاہد صلی اللہ علیہ وسلم کے خیمہ کا پہرہ دیتے۔\n\nیہاں کچھ یہودی اسلحہ کی گھن گرج کے ساتھ پہنچے، آپ صلی اللہ علیہ وسلم نے پوچھا: ”یہ کون لوگ ہیں؟“ بتایا گیا کہ یہ عبداللہ بن ابی کے یہودی حلیف ہیں، فرمایا: ”اہلِ شرک سے اہلِ شرک کے خلاف مدد نہ لو“...... یہ کہہ کر ان کو واپس کر دیا۔\n\nمقامِ شیخین...... دو ٹیلوں کا نام تھا، جو مدینہ منورہ اور احد کے درمیان واقع تھے، یہاں ایک اندھا بوڑھا یہودی اور اندھی بوڑھی یہودن رہتے تھے، اس لئے وہ ٹیلے ”شیخین“ سے مشہور ہو گئے، جس جگہ پر آپ صلی اللہ علیہ وسلم نے قیام فرمایا، وہاں ایک مسجد بنا دی گئی، جس کا نام بھی ”مسجدِ شیخین“ ہے، جو سڑک سید الشہداء رضی اللہ تعالیٰ عنہ کی طرف سے آتی ہے، اس کے دائیں طرف مسجد مستراح کے جنوب میں یہ مسجد واقع ہے، مسجد کی اس وقت جو عمارت ہے وہ ترکوں کی بنائی ہوئی ہے، البتہ خادم حرمین شریفین شاہ فہد مرحوم کے دور میں ۱۹۹۷ء میں اس کی مرمت ہوئی ہے، محلہ کی مسجد ہے، باجماعت نماز ہوتی ہے، چھوٹی سی مگر بہت پرنور مسجد ہے۔ (معجم البلدان، مدینہ منورہ کی تاریخی مساجد ص ۹۵)"
   },
   {
     "slug": "uhud",
     "name": "Jabal-e-Uhud",
     "image": {
-      "src": "assets/images/uhud.jpg", "alt": "Mount Uhud in Madinah", "width": 1280, "height": 720,
+      "src": "assets/images/uhud.jpg",
+      "alt": "Mount Uhud in Madinah",
+      "width": 1280,
+      "height": 720,
       "credit": {
         "description": "Mount Uhud, Medina, 20241002 091235 780 by Ahmed (resized)",
         "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mount_Uhud,_Medina,_20241002_091235_780.jpg",
-        "license": "CC BY 4.0", "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
       }
     },
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Jabal-e-Uhud%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Jabal-e-Uhud%2C%20Madinah",
+    "sourceCode": "MED-UHUD",
+    "urdu": "مدینہ منورہ کا مشہور پہاڑ، جس کی عظمت، احترام اور محبت کے پیشِ نظر آپ صلی اللہ علیہ وسلم نے کئی چیزوں کی اس کے ساتھ تشبیہ دی، مسجد نبوی سے تقریباً دو میل کے فاصلے پر واقع ہے، آجکل تو مدینہ شہر کا حصہ بن چکا ہے، ”احد“ اس لئے کہتے ہیں کہ یہ دوسرے پہاڑوں سے متوحد یعنی منفرد اور علیحدہ ہے، احد پہاڑ کی کئی فضیلتیں احادیث میں مذکور ہیں...... آپ صلی اللہ علیہ وسلم نے فرمایا:\n\n...... احد پہاڑ ہم سے محبت کرتا ہے اور ہم اس سے محبت کرتے ہیں۔ (ہم نے بھی جبل احد پہ ہاتھ رکھ کے کہا: ”خدا کی قسم! اے جبل احد! ہمیں بھی تم سے محبت ہے، پس تو بھی ہم سے محبت کر“)\n\n...... جبل احد جنت کے ارکان (ستون) میں سے ایک رکن (سمت) ہے، ایک روایت میں ہے جنت کے دروازوں میں سے ایک دروازہ ہے۔\n\n...... ”جب تم اس پہاڑ سے گزرو تو اس کے درختوں کا پھل کھا لیا کرو، چاہے کتنا ہی تھوڑا سا کیوں نہ ہو“۔ مقصد رغبت دلانا ہے کہ کوئی شخص بغیر کچھ کھائے ہوئے یہاں سے نہ گزر جائے، کوئی تنکا ہی منہ میں ڈال لے، تاکہ برکت حاصل ہو، انس بن مالک رضی اللہ تعالیٰ عنہ سے یہ حدیث سن کر ان کی اہلیہ\n\nزینب بنت غطیط رضی اللہ عنہا اپنے بچوں کو بھیجتی تھیں کہ جاؤ، احد پہاڑ سے کوئی اُگی ہوئی چیز لے آؤ۔\n\n...... جب اللہ تعالیٰ نے جبل طور پہ اپنی تجلی ڈالی تو وہ عظمت کی وجہ سے چھ ٹکڑے ہو گیا، ۳ مدینہ منورہ میں اور ۳ مکہ مکرمہ میں، مدینہ منورہ کے ۳ یہ ہیں، احد، ورقان، رضوی...... مکہ مکرمہ کے تین پہاڑ یہ ہیں، حرا، ثبیر، ثور۔ (خلاصۃ الوفا باخبار دار المصطفٰی صلی اللہ علیہ وسلم، تاریخ المدینۃ المنورۃ لابن شبہ)\n\n...... ایک بار نبی اکرم صلی اللہ علیہ وسلم احد پہاڑ پر چڑھے، ابوبکر، عمر، عثمان رضی اللہ تعالیٰ عنہم بھی ساتھ تھے، پہاڑ ہلنے لگا، آپ صلی اللہ علیہ وسلم نے فرمایا: ”احد ٹھہر جا، تجھ پر ایک نبی، ایک صدیق اور دو شہید ہیں“۔ (صحیح البخاری، مناقب عمر بن الخطاب رضی اللہ تعالیٰ عنہ)\n\n...... جبل احد نے حضور صلی اللہ علیہ وسلم کے اسم مبارک کو اٹھا رکھا ہے، فضائی تصویر بتاتی ہے کہ احد پہاڑ جو کہ تقریباً [چند] کلو میٹر پر مشتمل ہے وہ اسم ”محمد“ صلی اللہ علیہ وسلم کی شکل پر ہے۔ (تفصیل کیلئے دیکھئے: مؤلف کی کتاب ’اسم محمد صلی اللہ علیہ وسلم‘)\n\nبدر کی شکست کا بدلہ\n\nبدر کی شکست کے بعد مکہ مکرمہ کی وہ تمام رونقیں ختم ہو گئیں، سردارانِ مکہ کے قتل نے سب کو توڑ کے رکھ دیا، ہزیمت و شکست کا زخم ہر ایک کو کھائے جا رہا تھا، جب انہوں نے یہ دیکھا کہ ابوسفیان کے اس قافلہ کا مکمل سامان دارالندوہ میں محفوظ ہے، تو مشورہ ہوا کہ اصل سرمایہ تو تقسیم کر دیا جائے، مگر جو منافع ہیں، ان کو محمد (صلی اللہ علیہ وسلم) سے جنگ کی تیاری پر خرچ کیا جائے، اور اس جنگ میں سب شریک ہوں تاکہ ہر کوئی اپنے اپنے رشتہ داروں کا [انتقام] لے، ایک بار پھر کفر مکہ مکرمہ سے مٹھی بھر مسلمانوں پر حملہ کرنے مدینہ منورہ کو چلا، عورتیں بھی ساتھ تھیں، تاکہ مردوں کو غیرت دلائیں، ارد گرد کے قبائل میں بھی آدمی دوڑائے اور مدد کی درخواست کی، ۳۰۰۰ جنگجوؤں کا لشکر تیار ہو گیا، حضور صلی اللہ علیہ وسلم کے چچا عباس رضی اللہ تعالیٰ عنہ، جو کہ ابھی تک مکہ مکرمہ میں تھے اور گویا کہ مسلمانوں کی طرف سے جاسوسی کے فرائض انجام دے رہے تھے، انہوں نے یہ تمام حالات لکھے، اور قاصد کو خط دیا کہ تین دن کے اندر اندر یہ خط مدینہ منورہ پہنچا دو۔"
   },
   {
     "slug": "ruma",
     "name": "Jabal-e-Ruma",
     "image": {
-      "src": "assets/images/ruma.jpg", "alt": "Archers' Hill at Uhud", "width": 1280, "height": 853,
+      "src": "assets/images/ruma.jpg",
+      "alt": "Archers' Hill at Uhud",
+      "width": 1280,
+      "height": 853,
       "credit": {
         "description": "Archers' Hill, Uhud by Ahill34 (resized)",
         "sourceUrl": "https://commons.wikimedia.org/wiki/File:Archers%27_Hill,_Uhud.jpg",
-        "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
       }
     },
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Jabal-e-Ruma%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Jabal-e-Ruma%2C%20Madinah",
+    "sourceCode": "MED-RUMA",
+    "urdu": "خالد بن الولید نے ادھر سے راستہ صاف دیکھا، تو پیچھے سے آ کر مسلمانوں پر حملہ کر دیا، اس اچانک حملہ نے لڑائی کی کایا پلٹ دی، مسلمانوں کی\n\nصفیں درہم برہم ہو گئیں، تلوار زور سے چلنے لگی، دشمن، رسول خدا صلی اللہ علیہ وسلم کے قریب آپہنچے، مصعب بن عمیر رضی اللہ تعالیٰ عنہ جن کے ہاتھ میں جھنڈا تھا، وہ شہید ہو گئے، وہ آپ صلی اللہ علیہ وسلم سے مشابہ تھے، کفار نے مشہور کر دیا کہ محمد [صلی اللہ علیہ وسلم] شہید ہو گئے، مسلمان یہ خبر سنتے ہی پریشان ہو گئے، دوست و دشمن کا امتیاز ہی نہ رہا، آپس میں ایک دوسرے پر تلوار چلنے لگی، آپ صلی اللہ علیہ وسلم جبلِ استقامت بنے اپنی جگہ کھڑے رہے، ایک بالشت بھی اپنی جگہ سے نہ ہٹے، مہاجرین و انصار آپ صلی اللہ علیہ وسلم کی حفاظت کرتے رہے۔\n\nجبل رماۃ...... جبل احد کے قریب چھوٹی سی پہاڑی، جو آج بھی قائم ہے، اسی کے سامنے معرکہ احد ہوا، سامنے ہی احاطہ میں شہداء احد کے مزارات ہیں، آپ صلی اللہ علیہ وسلم جب جنگ سے فارغ ہوئے، شہداء کی تدفین کی، تو اس پہاڑی پہ تشریف لائے، یہاں نماز ادا فرمائی، جس جگہ آقا صلی اللہ علیہ وسلم سر بسجود ہوئے، وہاں مسجد بنا دی گئی تھی، جس کا نام ”مسجد جبل الرماۃ“ تھا، یہ مسجد ماضی قریب تک موجود رہی، آج سے کوئی چالیس پچاس سال قبل منہدم ہو گئی۔"
   },
   {
     "slug": "fasih",
     "name": "Masjid Fasih",
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Fasih%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Fasih%2C%20Madinah",
+    "sourceCode": "MED-FASIH",
+    "urdu": "پہاڑ کے دامن میں [غیر واضح] کے نیچے مسجد ہے، محراب اور دیواروں کے کچھ کچھ نشانات شکستہ حالت میں باقی ہیں۔ جو عمر بن عبدالعزیز رحمۃ اللہ علیہ نے تعمیر کے [غیر واضح] باقی مسجد منہدم ہو چکی ہے، یہ مسجد بھی عمر بن عبدالعزیز رحمۃ اللہ علیہ نے بنوائی تھی۔ روایات میں ہے کہ غزوۂ احد کے دن لڑائی کی سختی کے بعد ظہر کی نماز آپ صلی اللہ علیہ وسلم نے یہاں ادا فرمائی۔ یہ بھی روایات میں آتا ہے کہ آپ صلی اللہ علیہ وسلم نے نقاہت اور کمزوری کی وجہ سے یہاں بیٹھ کر نماز پڑھائی، صحابہ نے بھی بیٹھ کر اقتدا کی۔ (اس وقت مقتدیوں کا امام قاعدہ (بیٹھ کر نماز پڑھانے والا) کے پیچھے بیٹھ کر نماز پڑھنا جائز تھا، بعد میں یہ حکم منسوخ ہو گیا۔)\n\nایک روایت یہ بھی ہے کہ قرآن کریم کی آیت:\n\n﴿يَا أَيُّهَا الَّذِينَ آمَنُوا إِذَا قِيلَ لَكُمْ تَفَسَّحُوا فِي الْمَجَالِسِ فَافْسَحُوا يَفْسَحِ اللَّهُ لَكُمْ﴾\n\n(سورۃ المجادلہ، آیت 11)\n\nاس جگہ نازل ہوئی، اس لیے اس کو مسجد [غیر واضح] کہتے ہیں۔\n\nیہ چھوٹی سی شکستہ مسجد کھنڈر کے انداز میں [غیر واضح] ہے، جس ... رسول اللہ صلی اللہ علیہ وسلم کی بارگاہ سے قریب ...\n\nاحد پہاڑ کے قریب قریب کچھ اور مساجد بھی ہیں، جہاں نبی صلی اللہ علیہ وسلم نماز پڑھ چکے ہیں، مگر ان میں سے کسی مسجد کے آثار باقی نہیں ہیں۔ (خلاصہ: اللواء، جاد المعاطی، البدایہ والنہایہ، ذکر غزوہ احد)"
   },
   {
     "slug": "rayah",
     "name": "Masjid-e-Rayah",
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid-e-Rayah%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid-e-Rayah%2C%20Madinah",
+    "sourceCode": "MED-RAYA",
+    "urdu": "یہود بنو نضیر کی جلا وطنی کے بعد مکہ کے کفار، قبیلہ بنو غطفان، خیبر کے یہودی اور کئی دوسرے قبائل کا دس ہزار کا لشکر مدینہ منورہ کی اینٹ سے اینٹ بجانے کیلئے ابو سفیان کی قیادت میں نکلا، سلمان فارسی رضی اللہ عنہ کے مشورہ سے آپ صلی اللہ علیہ وسلم نے مدینہ منورہ کے باہر خندق کھدوا کر شہر کو محفوظ کر لیا، بقول اکثر حضرات کے یہ ۵ھ کا واقعہ ہے۔ آقا صلی اللہ علیہ وسلم نے خود خندق کی حدود قائم فرمائیں، اور خط کھینچ کر دس دس آدمیوں کو دس دس گز زمین خندق کھودنے کیلئے تقسیم فرمائی، بنفس نفیس مکمل خندق کی نگرانی کرتے رہے، کبھی اس طرف اور کبھی اُس طرف، آپ صلی اللہ علیہ وسلم کیلئے ایک خیمہ بنا دیا گیا، یہ خیمہ جبل ذباب پہاڑی پر نصب تھا۔\n\nنبی مجاہد صلی اللہ علیہ وسلم کے خیمہ والی جگہ پر پھر مسجد بنا دی گئی جو مسجد رایہ کے نام سے مشہور ہے، دور سے پتہ نہیں چلتا کہ یہاں مسجد ہے، پہاڑی پر چڑھیں تو آگے سفید چونے والی مسجد کی عمارت نظر آتی ہے، اسی مناسبت سے اس محلے کا نام بھی ”حی الرایۃ“ ہے، جبل ذباب کا بھی ایک نام جبل رایہ ہے، مسجد نبوی سے شمال مغرب کی طرف مکتبہ عبدالعزیز والی سڑک پر شمال کی طرف چلتے جائیں ، آگے دوار (چوک) ہے، وہاں پاکستان ہاؤس کی عمارت بھی ہے، اسی جگہ سے شارع عثمان بن عفان رضی اللہ عنہ (شارع عیون ) کی طرف راستہ نکلتا ہے، اسی شارع پر بائیں ہاتھ پر جبل ذباب کی پہاڑی ہے، اسی پہاڑی پہ مسجد رایہ ہے، چھوٹی سی سفید رنگ کی محلہ کی مسجد ہے، اس میں پانچ وقت کی نماز ہوتی ہے، ایک مسجد رایہ مکہ مکرمہ میں ہے جس کا تذکرہ فتح مکہ میں آئے گا۔ (تاریخ مدینہ منورہ لدکتور شیخ محمد الیاس ص ۹۲)"
   },
   {
     "slug": "sabah",
     "name": "Masjid-e-Sab'ah",
     "image": {
-      "src": "assets/images/sabah.jpg", "alt": "Mosque of Salman al-Farisi, one of the Seven Mosques in Madinah", "width": 1280, "height": 960,
+      "src": "assets/images/sabah.jpg",
+      "alt": "Mosque of Salman al-Farisi, one of the Seven Mosques in Madinah",
+      "width": 1280,
+      "height": 960,
       "credit": {
         "description": "Mosque of Salman al-Farisi at the Seven Mosques by Richard Mortel (resized)",
         "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mosque_of_Salman_al-Farisi_at_the_Seven_Mosques,_Madinah,_Saudi_Arabia_(2).jpg",
-        "license": "CC BY 2.0", "licenseUrl": "https://creativecommons.org/licenses/by/2.0/"
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/"
       }
     },
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid-e-Sab%27ah%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid-e-Sab%27ah%2C%20Madinah",
+    "sourceCode": "MED-SABA",
+    "urdu": "سلع ........ مدینہ منورہ کے ایک بڑے پہاڑ کا نام ہے، یہ پہاڑ چونکہ مدینہ منورہ کے عین وسط میں ہے، اس لیے حکومت نے کہیں کہیں اس کے اردگرد گرد و نواح کے مضبوط جنگلہ نصب کر رکھے ہیں اور اس کی خوبصورتی کے لیے مصنوعی آبشار بنائے ہیں۔ غزوۂ خندق کے دوران اسی پہاڑ کے دامن میں حضرات صحابہ نے خیمہ قائم تھا، اسے اب میدان فتح کہتے ہیں۔ حکومت نے یہاں ایک خوبصورت باغیچہ بنا دیا ہے، جس کو ’’باغیچہ فتح‘‘ کا عنوان دیا گیا ہے، یہاں پہاڑ کے دامن میں مساجد سبعہ ہیں، مسجد فتح، مسجد سلمان فارسی، مسجد علی، مسجد عمر، مسجد سعد بن معاذ، مسجد ابو بکر صدیق، جیسا کہ نام سے ظاہر ہو رہا ہے، یہ سب مساجد ان صحابہ کے خیمہ ڈالنے والی جگہوں پر بنائی گئی ہیں، اس مناسبت سے اس شارع (روڈ) کا نام ’’شارع المساجد السبعہ‘‘ ہے۔\n\nیہ سب الگ الگ مسجدیں تھیں، مگر ان مساجد میں نوافل وغیرہ کی ادائیگی کے لیے زائرین کا ہجوم لگا رہتا تھا، اس لیے حکومت نے 1413ھ میں شاہ فہد مرحوم کے زمانے میں ایک بڑی مسجد ’’مسجد خندق‘‘ کے نام سے بنا دی، مسجد سبعہ میں سے کچھ مسجدیں اس میں شامل ہو گئیں"
   },
   {
     "slug": "fath",
     "name": "Masjid-e-Fath",
     "image": {
-      "src": "assets/images/fath.jpg", "alt": "Masjid al-Fath in Madinah", "width": 1280, "height": 960,
+      "src": "assets/images/fath.jpg",
+      "alt": "Masjid al-Fath in Madinah",
+      "width": 1280,
+      "height": 960,
       "credit": {
         "description": "Madina trip 106 by Ashashyou (resized)",
         "sourceUrl": "https://commons.wikimedia.org/wiki/File:Madina_trip_106.jpg",
-        "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
       }
     },
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid-e-Fath%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid-e-Fath%2C%20Madinah",
+    "sourceCode": "MED-FATAH",
+    "urdu": "مسجد فتح اس جگہ پر بنائی گئی ہے، جہاں میدانِ جنگ میں آپ صلی اللہ علیہ وسلم کا قیام تھا، خندق کی نگرانی فرماتے ، نماز پڑھتے اور اللہ تعالیٰ سے دعائیں کرتے رہتے ، چونکہ اس جگہ پر جبریل امین فتح کی خوشخبری و بشارت لائے تھے ، اس لئے اس مسجد کا نام ”مسجد فتح“ ہے....... اس مسجد کا نام ”مسجد الاعلیٰ“ بھی ہے، کیونکہ یہ پہاڑ کی اونچائی پر واقع ہے، اس کی اول تعمیر کا سہرا عمر بن عبدالعزیز رحمہ اللہ کے سر ہے، بعد میں مختلف امراء نے اس کی تعمیر و تجدید کی ، شاہ فہد مرحوم کے دور میں بھی اس کی تجدید و مرمت کی گئی، اس سے نیچے ”مسجد سلمان فارسی رضی اللہ عنہ“ ہے، بعض روایات کے مطابق آقا صلی اللہ علیہ وسلم نے اس مسجد میں بھی نماز ادا فرمائی ہے۔\n\n....... اسی جگہ پر آپ صلی اللہ علیہ وسلم نے کفار کیلئے بد دعا فرمائی، جس کے الفاظ یہ ہیں ((اللھم اھزم الاحزاب)) اے اللہ! کفار کے لشکروں کو شکست سے دوچار کر دے....... تین دن ، پیر، منگل ، بدھ بد دعا فرمائی ، بدھ کے دن ظہر کے بعد دعا کی قبولیت کی بشارت ہوئی ، جبریل امین فتح و نصرت کی بشارت لے کر آئے۔\n\n....... اسی جگہ سے آپ صلی اللہ علیہ وسلم نے حضرت حذیفہ رضی اللہ عنہ کو کفارِ احزاب کی صورتحال معلوم کرنے بھیجا تھا، بعد میں اس جگہ مسجد بنائی گئی جو مسجد فتح کے نام سے مشہور ہوئی۔\n\n....... جابر رضی اللہ عنہ نے یہ واقعہ دیکھا تھا ، چنانچہ جب کوئی مشکل پیش آ پڑتی تو اس خاص وقت میں وہاں جا کے دعا کرتے اور قبولیت و اجابت کا مژدہ ساتھ لاتے۔ (مدینہ منورہ کی تاریخی مساجد ۱۳۰)\n\n....... علماء و مشائخ فرماتے ہیں کہ بدھ کے دن ظہر تا عصر یہاں دعا کی جائے تو قبول ہوتی ہے، کئی مشائخ نے اسے مجرب بتایا ہے۔"
   },
   {
     "slug": "utban",
     "name": "Masjid-e-Utban bin Malik (R.A)",
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid-e-Utban%20bin%20Malik%20%28R.A%29%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid-e-Utban%20bin%20Malik%20%28R.A%29%2C%20Madinah",
+    "sourceCode": "MED-UTBAN",
+    "videoUrl": "https://www.youtube.com/shorts/GNv5tLUf9yo",
+    "urdu": "عتبان بن مالک رضی اللہ عنہ نابینا صحابی تھے، ایک دن کہنے لگے ”یا رسول اللہ! میری نظر کمزور ہو چکی ہے، میرے اور میری قوم کے درمیان سیلاب آڑے آجاتا ہے، آپ میرے گھر تشریف لائیں اور میرے ہاں نماز پڑھیں تاکہ میں اس جگہ کو مسجد بنالوں“، آپ صلی اللہ علیہ وسلم نے فرمایا: ”ٹھیک ہے“، ایک دن، دن چڑھے آپ صلی اللہ علیہ وسلم ابو بکر رضی اللہ عنہ کے ساتھ ان کے گھر تشریف لے گئے، اور پوچھا: ”بتاؤ، تم کس جگہ نماز پڑھنا پسند کرتے ہو؟“ انہوں نے گھر کے ایک حصہ کی طرف اشارہ کیا، آپ صلی اللہ علیہ وسلم نے نماز پڑھائی، صحابہ رضی اللہ عنہم نے بھی صف بنالی۔ (صحیح للبخاری، باب المساجد فی البیوت) یہ چاشت کی نماز تھی۔ (زاد المعاد)\n\nاس جگہ پھر انہوں نے مسجد بنالی، یہ ”مسجد عتبان رضی اللہ عنہ“ کہلائی، مسجد جمعہ کی شمالی جانب روڈ کراس کرکے جو جگہ خالی پڑی ہے، اسی جگہ پر یہ مسجد تھی، صدیوں تک یہ مسجد قائم رہی، پھر کچھ عرصہ تک آثارِ قدیمہ کی شکل میں قدیم عمارت کے ساتھ موجود رہی، زائرین اس کی زیارت کو آتے رہتے تھے، مگر اب اس قدیم عمارت کو بھی منہدم کرکے جگہ کو برابر کر دیا گیا ہے، پرانے لوگ جگہ کی تعیین جانتے ہیں۔"
   },
   {
     "slug": "banu-unaif",
     "name": "Masjid Banu Unaif",
     "image": {
-      "src": "assets/images/banu-unaif.jpg", "alt": "Masjid Banu Unaif in Madinah", "width": 1280, "height": 795,
+      "src": "assets/images/banu-unaif.jpg",
+      "alt": "Masjid Banu Unaif in Madinah",
+      "width": 1280,
+      "height": 795,
       "credit": {
         "description": "مسجد بني أُنَيْف by Ayman dhū alghiná (resized)",
         "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D9%85%D8%B3%D8%AC%D8%AF_%D8%A8%D9%86%D9%8A_%D8%A3%D9%8F%D9%86%D9%8E%D9%8A%D9%92%D9%81.jpg",
-        "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
       }
     },
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Banu%20Unaif%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Banu%20Unaif%2C%20Madinah",
+    "sourceCode": "MED-BANU-UNAIF",
+    "videoUrl": "https://www.youtube.com/shorts/u4c0VYG7mFI",
+    "urdu": "نوجوان، جان نثار صحابی طلحہ بن براء رضی اللہ عنہ بیمار ہوئے، آپ صلی اللہ علیہ وسلم ان کی عیادت کیلئے تشریف لاتے رہے، اس دوران اس مسجد والی جگہ پر آپ صلی اللہ علیہ وسلم نے نمازیں ادا کیں، بنو انیف اِس مقام کا بہت خیال رکھتے، یہاں پانی چھڑکتے، بعد میں وہاں انہوں نے مسجد بنالی....... اس مسجد کا نام ”مسجد مصبح“ بھی ہے، کیونکہ یہ مسجد اس چوٹی پہ تعمیر کی گئی جہاں صحابہ رضی اللہ عنہم صبح کے وقت رسول اللہ صلی اللہ علیہ وسلم کے انتظار میں جمع ہوا کرتے تھے، جب آپ صلی اللہ علیہ وسلم ہجرت کرکے مدینہ منورہ آ رہے تھے، یا شاید اس لئے کہ نبی کریم صلی اللہ علیہ وسلم جب مدینہ منورہ ہجرت فرما کر آئے تو اس جگہ پر نماز صبح ادا فرمائی، بہر حال یہ مقام آقا صلی اللہ علیہ وسلم کے نماز پڑھنے کا ہے۔\n\nآپ صلی اللہ علیہ وسلم نے طلحہ البراء رضی اللہ عنہ کے گھر والوں سے کہا تھا کہ جب ان کا انتقال ہو جائے، تو مجھے اطلاع دینا، رات کو انتقال ہوا، طلحہ رضی اللہ عنہ نے گھر والوں سے وفات سے کچھ دیر پہلے کہا: ”رات کا وقت ہے، راستے میں یہودی لوگ رہتے ہیں، ان سے خطرہ ہے، آپ صلی اللہ علیہ وسلم کو تکلیف نہ دینا، بس مجھے دفن کر دینا“....... صبح کو آپ صلی اللہ علیہ وسلم کو اطلاع ملی، آپ صلی اللہ علیہ وسلم صحابہ رضی اللہ عنہم کو ساتھ لے کر ان کی قبر پہ تشریف لائے، ان کی قبر پہ نماز جنازہ پڑھائی اور ہاتھ اٹھا کر دعا کی ((اللھم القہ وھو یضحک الیک وانت تضحک الیہ)) اے اللہ! تو طلحہ رضی اللہ عنہ کو مسکراتے ہوئے مل، اور وہ تجھے مسکراتا ہوا ملے۔ (المعجم الکبیر، ذکر طلحہ بن البراء رضی اللہ عنہ ۱۵۰، صورۃ من المدینۃ المنورۃ ص ۲۸۔ مدینہ منورہ کی تاریخی مساجد ص ۳۲)\n\nبنو انیف کی یہ مسجد قبا کے جنوب مغرب میں محلہ میں واقع ہے، مسجد قبا کے مغربی جانب کے دروازے سے نکل کر ڈبل روڈ عبور کر لیں، پھر بائیں ہاتھ پر قبلہ کی جانب چلتے جائیں، آگے ایک تنگ سی سڑک ہے، اس پر آگے جا کر دائیں ہاتھ پر کھجوروں کے باغ کے کنارے مسجد واقع ہے۔\n\nیہ مسجد کافی عرصہ تک آباد رہی، نمازیں ہوتی رہیں، اب مسجد آثارِ قدیمہ کی شکل میں موجود ہے، جس کی کوئی چھت نہیں ہے، دیواریں قدیم پتھروں سے بنی ہوئی ہیں، کوئی دروازہ ہے نہ کھڑکی، مسجد کی شکستہ عمارت دیکھ کے دل دُکھی ہوتا ہے، کھنڈرات کی شکل میں ویران یہ مسجد کسی اللہ والے کی منتظر ہے، جو اللہ کے اس گھر اور رسول اللہ صلی اللہ علیہ وسلم کی اس یادگار کو خوبصورت انداز سے تعمیر کرائے، ہم نے مسجد میں داخل ہو کر کھلی زمین پر نماز شکرانہ ادا کی کہ اللہ تعالیٰ نے ہمیں اس زمین پر نماز پڑھنے کی سعادت سے نوازا، جہاں آقا صلی اللہ علیہ وسلم کے قدم مبارک لگے۔\n\nصدیوں پہلے تعمیر شدہ ”مسجد بنو انیف“ آقا صلی اللہ علیہ وسلم کی یادگار... ہم نے بھی یہاں نماز ادا کر کے روحانی لطف اُٹھایا"
   },
   {
     "slug": "mustarah",
     "name": "Masjid Al-Mustarāh (Masjid Bani Harisa)",
     "image": {
-      "src": "assets/images/mustarah.jpg", "alt": "Masjid Bani Harisa in Madinah", "width": 1280, "height": 960,
+      "src": "assets/images/mustarah.jpg",
+      "alt": "Masjid Bani Harisa in Madinah",
+      "width": 1280,
+      "height": 960,
       "credit": {
         "description": "Madina trip 137 by Ashashyou (resized)",
         "sourceUrl": "https://commons.wikimedia.org/wiki/File:Madina_trip_137.jpg",
-        "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
       }
     },
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Al-Mustar%C4%81h%20%28Masjid%20Bani%20Harisa%29%2C%20Madinah"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Al-Mustar%C4%81h%20%28Masjid%20Bani%20Harisa%29%2C%20Madinah",
+    "sourceCode": "MED-MUSTARAH",
+    "urdu": "آپ صلی اللہ علیہ وسلم غزوۂ احد سے واپسی پر یہاں آرام فرمایا تھا، اس جگہ اب مسجد مستراح (استراحت) قائم ہے، اس کے قریب ہی بنو حارثہ کا قبیلہ آباد تھا، خندق جو کھودی گئی تھی، وہ یہاں سے شروع ہو کر مسجد فتح تک چلی گئی ہے۔ بنو حارثہ کے یہاں آپ صلی اللہ علیہ وسلم کی بارگاہ میں تشریف لے گئے۔ یہ مسجد روزہ میں بھی تھی، آپ صلی اللہ علیہ وسلم بھی اس میں نماز پڑھا کرتے تھے، [اس مسجد کی] احادیث میں ذکر آیا ہے۔\n\nیہ خوبصورت مسجد سفید رنگ کے پتھر سے بنائی گئی ہے، مسجد شیشے کے آئینہ کی طرح چمکتی ہے۔ مسجد شمال کی طرف 300 میٹر دور واقع ہے۔\n\n(مدینہ منورہ کی تاریخی مساجد، ص 108)"
+  },
+  {
+    "slug": "abuzar-ghifari",
+    "name": "Masjid Abuzar Ghifari (Masjid Sajdah)",
+    "mapUrl": "https://maps.app.goo.gl/DM47iRnR1nqCc9jz5",
+    "urdu": "عبدالرحمن بن عوف رضی اللہ عنہ کہتے ہیں کہ ایک بار نبی رحمت صلی اللہ علیہ وسلم ایک باغ میں تشریف لائے اور وضو کر کے دو رکعت نماز ادا کی اور ایک لمبا سجدہ کیا، میرے دل میں خیال آنے لگا کہ کہیں آپ صلی اللہ علیہ وسلم کی روح قبض نہ ہو گئی ہو، جب آپ صلی اللہ علیہ وسلم نے سجدہ سے سر اٹھایا تو پوچھا: ”کیا بات ہے؟“ میں نے کہا: میرے ماں باپ آپ پہ قربان ہوں ، آپ نے اتنا طویل سجدہ کیا ، میں ڈر گیا کہ کہیں اللہ تعالیٰ نے آپ کو اپنے پاس بلا نہ لیا ہو، آپ صلی اللہ علیہ وسلم نے فرمایا: ”جبریل امین اللہ تعالیٰ کا پیغام لائے تھے کہ جو آپ پر درود و سلام بھیجے گا ، اللہ تعالیٰ اس پر رحمت و سلامتی نازل فرمائے گا“ (ایک روایت میں ہے کہ جو مجھ پر ایک بار درود بھیجے گا ، اللہ تعالیٰ اس پہ دس رحمتیں نازل فرمائے گا) اس عنایت پر میں نے سجدہ شکر ادا کیا۔\n\nبعد میں اس جگہ مسجد بنا دی گئی اور اس کا نام ”مسجد سجدہ“ رکھا گیا، اس کو ”مسجد ابوذر، مسجد سافلہ“ بھی کہا جاتا ہے....... ”مسجد سافلہ“ کہنے کی وجہ یہ ہے کہ مدینہ منورہ کی شمالی جانب کو سافلہ اور جنوبی یعنی قبلہ کی جانب کو عالیہ یا عوالی کہا جاتا ہے، تو یہ سافلہ میں واقع ہے۔\n\nیہ مسجد مختلف تاریخی ادوار سے گزری، تا آنکہ سعودی حکومت نے ۱۴۲۳ھ میں اس کو خوبصورت انداز میں تعمیر کیا، جو ایک تہہ خانہ اور دو بالائی منزلوں پر مشتمل ہے، مسجد نبوی سے شمال کی جانب شارع ابوذر رضی اللہ عنہ پر یہ مسجد واقع ہے، اکثر زائرین اس یادگار مقام کی زیارت کو جاتے رہتے ہیں، اس مسجد کے قریب ہی سعودی عرب کے بڑے بڑے شہروں کو جانے والی گاڑیوں کا اسٹاپ ہے۔ (مسند احمد، خلاصۃ الوفا باخبار دار المصطفیٰ، تاریخ مدینہ منورہ لدکتور شیخ محمد الیاس ص ۶"
+  },
+  {
+    "slug": "ijaba",
+    "name": "Masjid-e-Ijaba (Mubaahila)",
+    "mapUrl": "https://maps.app.goo.gl/fynkguSA1672jjsD7",
+    "urdu": "پ صلی اللہ علیہ وسلم ایک دن عوالی مدینہ سے واپس آتے ہوئے بنو معاویہ کی مسجد سے گزرے، اس میں دو رکعتیں ادا کیں، اصحاب رضی اللہ عنہم نے بھی آپ صلی اللہ علیہ وسلم کے ساتھ نماز ادا کی، آپ صلی اللہ علیہ وسلم نے طویل دعا فرمائی اور پھر فرمایا: ”میں نے اپنے رب سے تین دعائیں مانگیں، جن میں سے دو قبول ہو گئیں وہ یہ ہیں: (۱) میری امت قحط سالی کی وجہ سے تباہ نہ ہو، (۲) میری امت غرق ہو کر تباہ نہ ہو، یہ دونوں قبول ہو گئیں، تیسری دعا یہ تھی کہ میری امت آپس کے لڑائی جھگڑے سے محفوظ رہے، یہ دعا قبول نہ ہوئی“۔\n\nان دعاؤں کے بعد بنو معاویہ کی یہ مسجد ”مسجد اجابہ“ کے نام سے مشہور ہو گئی، یہ بقیع سے ۳۸۵ میٹر دور شارع فیصل (شارع ستین) کے کنارے واقع ہے، شاہ فہد کے زمانہ میں اس کی تعمیر و توسیع ہوئی، بنو معاویہ قبیلہ اوس کی ایک شاخ ہے، ان کی بستی بقیع کے شمال میں تقریبا نصف کلومیٹر کے فاصلہ پہ واقع تھی، اسی قبیلہ کی طرف یہ مسجد منسوب تھی، جو بعد میں مسجد اجابہ سے مشہور ہو گئی۔ (تاریخ مدینہ منورہ لدکتور شیخ محمد الیاس ص ۶۸)\n\nیہ مسجد عشاق وزائرین کی زیارت کا مرکز ہے، شیخ عبدالحق محدث دہلوی رحمہ اللہ فرماتے ہیں: ’محمد ابن طلحہ کی روایت ہے کہ سرور انبیاء صلی اللہ علیہ وسلم کا مصلی محراب کے دائیں جانب دو گز کے فاصلے پر تھا، جو ذوق، لذت اور نور و مشغولی عبادت کے بعد دعا، استغراق، حضور صلی اللہ علیہ وسلم کے ذکر اور اس مسجد سے باہر آنے پر یکا یک قبہ شریف پر نظر پڑ جانے سے اس کے مشتاقوں کو حاصل ہوتا ہے، اس کی صحیح کیفیت کا علم اس میں مبتلا ہوئے بغیر نہیں ہو سکتا‘۔ (جذب القلوب الی دیار المحبوب ص ۱۲۸)"
+  },
+  {
+    "slug": "banu-zafar",
+    "name": "Masjid banu zafar",
+    "mapUrl": "https://maps.app.goo.gl/mqCjupjqLKMXPzvn8",
+    "urdu": "آپ صلی اللہ علیہ وسلم ایک بار بنو ظفر کے علاقے میں تشریف لائے، مسجد بنی ظفر والی جگہ پہ ایک چٹان پر بیٹھے، ابن مسعود رضی اللہ عنہ سے فرمایا: ”مجھے حکم ہوا ہے کہ آپ سے قرآن سنوں“....... ابن مسعود رضی اللہ عنہ کہتے ہیں میں نے عرض کیا: ”یا رسول اللہ! آپ پہ قرآن اترتا ہے، میں آپ کو قرآن سناؤں“....... آپ صلی اللہ علیہ وسلم نے فرمایا: ”میرا جی چاہتا ہے کہ میں کسی اور سے قرآن سنوں“....... ابن مسعود رضی اللہ عنہ کہتے ہیں میں نے سورۃ نساء پڑھنا شروع کی، جب اس آیت پہ پہنچا ﴿فَكَيْفَ إِذَا جِئْنَا مِنْ كُلِّ أُمَّةٍ بِشَهِيدٍ وَجِئْنَا بِكَ عَلَى هَؤُلَاءِ شَهِيدًا﴾ (سورۃ النساء، آیت ۴۱) تو آپ صلی اللہ علیہ وسلم نے فرمایا: ”بس کرو“....... میں نے دیکھا، تو آپ صلی اللہ علیہ وسلم کی آنکھوں سے آنسو جاری ہیں۔ (کنز العمال، سورۃ النساء، فضائل الصحابہ)\n\nبنو ظفر کا قبیلہ....... ان کی بستی حرہ شرقیہ میں بقیع کی مشرقی جانب تھی، وہیں ان کی مسجد تھی، یہ مسجد کافی عرصہ سے منہدم ہو چکی ہے، البتہ اس کی جگہ متعین کی جا سکتی ہے کہ یہ مسجد شارع ملک عبدالعزیز روڈ پہ جانے والے کے دائیں ہاتھ ہیئۃ الامر بالمعروف والنہی عن المنکر کی سفید عمارت سے متصل چار دیواری میں واقع تھی، بعض روایات کے مطابق مسجد بنو ظفر میں آپ صلی اللہ علیہ وسلم کا آنا جانا اور نماز پڑھنا ثابت ہے۔ (مدینہ منورہ کی تاریخی مساجد ص ۳۸)"
+  },
+  {
+    "slug": "al-sabq",
+    "name": "Masjid al-Sabq",
+    "mapUrl": "https://maps.app.goo.gl/8Cf44FcngkxwJETy5",
+    "urdu": "اس مقام پر آپ صلی اللہ علیہ وسلم تشریف فرما ہوتے تھے اور جہادی تربیت کے حوالے سے دوڑائے جانے والے گھڑ سواروں میں سے سبقت لے جانے والوں، اول آنے والوں کا انتخاب فرمایا کرتے تھے، یہ جگہ شمالی ثنیۃ الوداع کے قریب تھی....... گھڑ دوڑ کے مقابلے دو قسم کے ہوتے تھے، (اول) مقام حفیاء سے ثنیۃ الوداع تک، اس مقابلہ میں وہ گھوڑے ہوتے تھے جو جنگ کیلئے تیار کئے ہوئے ہوتے تھے، یہ گھوڑے پھرتیلے، خوب دوڑنے والے ہوتے تھے، مقام حفیاء مدینہ منورہ کے باہر جبل احد کی مغربی جانب غابہ کے قریب ایک جگہ ہے، حفیاء اور ثنیۃ الوداع کے درمیان فاصلہ چھ میل (تقریباً نو کلومیٹر) ہے....... (دوم) ثنیۃ الوداع سے مسجد بنی زریق تک، اس مقابلہ میں بھاری جسم والے گھوڑے ہوتے تھے، یہ فاصلہ تقریباً ایک میل بنتا ہے، مسجد بنو زریق کا محل وقوع مسجد غمامہ اور شرعی عدالت کے درمیان تھا۔ ابن عمر رضی اللہ عنہما فرماتے ہیں کہ میں بھی دوڑ کے شاہسواروں میں شامل تھا، میرا گھوڑا مجھ سمیت ایک دیوار پر جا گودا۔ (سنن الترمذی، باب ماجاء فی الرھان بتغییر)\n\nنویں صدی ہجری میں قاضی علامہ محی الدین حنبلی رحمہ اللہ نے یہاں مسجد تعمیر کروائی، شاہ فیصل مرحوم کے دور میں پھر اس کی تعمیر ہوئی، مسجد نبوی سے شمال مغرب میں نصف کلومیٹر کے فاصلہ پر مسجد السبق کا محل وقوع ہے، اس وقت یہ مسجد منہدم ہو چکی ہے، مگر وہاں تعمیری کام ہو رہا ہے، سننے میں آیا ہے کہ حکومت نے مسجد کی جگہ دوبارہ مسجد بنانے کا حکم دیا ہے۔ (مدینہ منورہ کی تاریخی مساجد ص ۶۱ بتغییر)"
+  },
+  {
+    "slug": "saqifah-bani-saedah",
+    "name": "Saqifah Bani Saedah",
+    "mapUrl": "https://maps.app.goo.gl/7Zogpi26hxu3v4Kw7"
+  },
+  {
+    "slug": "tooba",
+    "name": "Masjid-e-tooba",
+    "mapUrl": "https://maps.app.goo.gl/YgwShjVqZ6WFkkXs9",
+    "urdu": "حضرات صحابہ رضی اللہ عنہم ہجرت کر کے مدینہ منورہ پہنچے، تو مقام عصبہ میں تشریف فرما ہوئے، صحیح بخاری کی ایک روایت میں ہے کہ رسول اللہ صلی اللہ علیہ وسلم کی تشریف آوری سے قبل جب مہاجرین اولین عصبہ (قبا) میں آئے تو سالم مولی ابی حذیفہ رضی اللہ عنہ امام تھے، کیونکہ وہ سب سے زیادہ قرآن کے حافظ تھے....... عصبہ ایک علاقہ ہے، جہاں بہت کنویں اور کھیت ہیں، یہاں کی ایک قدیم مسجد کا نام بھی اس کی مناسبت سے ”مسجد عصبہ“ ہے، مسجد توبہ بھی اس کو کہا جاتا ہے، مسجد قبا سے مغرب میں واقع ہے، جو شخص مکہ مکرمہ سے طریق ہجرت روڈ پہ آئے تو دائیں ہاتھ پہ ایک باغ کے اندر واقع ہے۔\n\nفلیح بن سعد کا بیان ہے کہ رسول اللہ صلی اللہ علیہ وسلم نے عصبہ میں بجیم کنویں کے پاس مسجد توبہ میں نماز ادا فرمائی۔ (مدینہ منورہ کی تاریخی مساجد ص ۳۶، ۳۷)"
+  },
+  {
+    "slug": "minarteen",
+    "name": "Masjid MinarTeen",
+    "mapUrl": "https://maps.app.goo.gl/Dnp821SuW7B7PMZu9"
+  },
+  {
+    "slug": "ares-well",
+    "name": "Ares Well",
+    "mapUrl": "https://maps.app.goo.gl/eK96DyGX7t2p58X19",
+    "urdu": "بئر اریس مدینہ منورہ کے مشہور کنوؤں میں سے ہے، ایک بار نبی رحمت صلی اللہ علیہ وسلم تشریف لائے اور پنڈلی مبارک سے کپڑا ہٹا کر اس کنویں میں پاؤں لٹکا کر بیٹھ گئے ، ابو موسیٰ اشعری رضی اللہ عنہ بطور دربان کے کھڑے ہوئے ، ابو بکر رضی اللہ عنہ نے حاضر خدمت ہونے کی اجازت مانگی ، آپ صلی اللہ علیہ وسلم نے ابو موسیٰ رضی اللہ عنہ سے فرمایا: ”انہیں اندر آنے دو اور جنت کی خوشخبری سنادو“....... پھر عمر رضی اللہ عنہ پہنچے اندر آنے کی اجازت مانگی ، ان کیلئے بھی ایسا ہی ارشاد فرمایا ، تھوڑی دیر بعد عثمان رضی اللہ عنہ کی آمد ہوئی ، ان کے بارے میں ارشاد فرمایا: ”ان کو بھی اندر آنے دو، جنت کی بشارت دے دو، نیز بتا دو کہ ان پر ایک بڑی آزمائش آئے گی“۔\n\nآپ صلی اللہ علیہ وسلم کی اتباع میں خلفاء راشدین رضی اللہ عنہم بھی یہاں تشریف لاتے ، اور بیٹھے رہتے ، ایک دن سیدنا عثمان رضی اللہ عنہ اس کنویں کی منڈیر پر بیٹھے ہوئے انگوٹھی کو ہاتھوں میں گھما رہے تھے کہ اچانک انگوٹھی ہاتھ سے چھوٹ کر اس کنویں میں گر گئی ، صحابہ رضی اللہ عنہم فرماتے ہیں کہ ہم نے بہت کوشش کی ، اس کنویں کو تہہ تک چھان مارا مگر انگوٹھی نہ ملی ، اس وجہ سے اس کنویں کو بئر خاتم بھی کہتے ہیں، کیونکہ رسول اللہ صلی اللہ علیہ وسلم کی انگوٹھی انتقال کے بعد ابو بکر رضی اللہ عنہ ، پھر عمر رضی اللہ عنہ ، اور پھر عثمان رضی اللہ عنہ کے ہاتھ میں رہی ، اور پھر اچانک اس کنویں میں گر گئی۔\n\nبئر اریس (بئر خاتم) مسجد قبا کے قریب مغربی جانب واقع تھا، چودھویں صدی ہجری کے آخر میں سڑک کی توسیع کیلئے دفن کر دیا گیا ۔ (صحیح بخاری ، باب قول النبی الوكنت متخذا خلیلا ۔ تاریخ مدینہ منورہ لدکتور محمد الیاس ص ۱۳۰)\n\nبئر الخاتم پر بنے ہوئے گنبد کی ایک قدیم تصویر\n\nAn ancient picture of a dome built on \"Ber-ul-Khatam\".\n\nمدینہ منورہ میں مدینہ میونسپلٹی کے سابق چیئر مین المعلم علی حافظ (شیخ ۱۳۸۵ھ تک بلدیہ مدینہ طیبہ کے رئیس رہے ) اپنی کتاب ’ابواب تاریخ المدینۃ المنورۃ‘ میں لکھتے ہیں: یہ کنواں مسجد قبا کے مغرب میں مسجد کے صدر دروازے سے ٹھیک ۳۲ میٹر کے فاصلے پر واقع تھا، ابن النجار کے بیان کے مطابق کنویں کی گہرائی ۶۰،۳ اور چوڑائی ۲،۲ میٹر تھی ، جبکہ پانی کی سطح ۳،۱ میٹر تھی ، ۱۳۳۵ھ (1917ء) میں اس کنویں کی تہہ تک اترنے کیلئے سیڑھیاں تعمیر کر دی گئیں، عہد عثمانی میں اس کنویں پر دو گنبد تعمیر کیے گئے ، یہ دونوں گنبد شکستہ حالت میں ٹوٹ کر گرنے والے ہی تھے کہ جب ۱۳۸۳ھ 1964ء میں مسجد قبا کا چوک تعمیر کیا گیا تو مدینہ میونسپلٹی نے انہیں منہدم کرا دیا۔\n\n(آخر میں معلم علی حافظ لکھتے ہیں کہ ) وہ کنواں زمین میں دفن ہو گیا ، لیکن اب بھی دریافت کیا جا سکتا ہے، اور ایک تاریخی حیثیت سے محفوظ رکھا جا سکتا ہے۔ (ابواب تاریخ المدینۃ المنورۃ ص ۱۴۹) جہاں اب چوک کے قریب خوبصورتی کیلئے فوارے لگائے گئے ہیں ، اسی کے قریب ہی فٹ پاتھ اور سڑک کے درمیان اس کنویں کا محل وقوع تھا، بعض لوگ کہتے ہیں کہ مسجد قبا کے جنوب مغرب میں تکونے پارک میں جہاں کچھ پتھر رکھے ہوئے ہیں ، یہ مقام بئر اریس کا تھا، مگر یہ بات درست نہیں ہے"
+  },
+  {
+    "slug": "uthman-farm-well",
+    "name": "Uthman Ibn Affan's Farm & Well",
+    "mapUrl": "https://maps.app.goo.gl/oNodQTQT3q7wQxkW9",
+    "urdu": "یہ ایک یہودی کا کنواں تھا، جو لوگوں کو پینے کا پانی فروخت کرتا تھا، آپ صلی اللہ علیہ وسلم نے فرمایا: ”جو کوئی اس کنویں کو خرید کر صدقہ کرے ، تو میں اس کیلئے جنت کا اعلان کرتا ہوں“....... عثمان رضی اللہ عنہ نے اسے ۲۰۰ دینار میں خرید کر وقف کر دیا....... آپ صلی اللہ علیہ وسلم کو اطلاع ملی تو دعا دیتے ہوئے فرمایا ((اللھم اوجب لہ الجنۃ)) اے اللہ! عثمان پر جنت واجب کر دے۔ اس سے ایک ڈول پانی منگوا کر اس سے پیا اور فرمایا: ”اس وادی میں اس کے پانی کی کثرت ہو گی ، اس کا پانی میٹھا ہو گا“۔\n\nالبتہ بعض مؤرخین کا خیال ہے کہ یہ کنواں ایک صحابی رضی اللہ عنہ کی ملکیت میں تھا، جس کا تعلق بنی غفار سے تھا، عثمان رضی اللہ عنہ نے ان سے خرید کر وقف کر دیا۔\n\nایک بار اس کنویں پہ آپ صلی اللہ علیہ وسلم کا گزر ہوا، اس کے قریب خیمہ میں مشکیزہ میں ٹھنڈا پانی تھا، گرمی عروج پر تھی ، آپ صلی اللہ علیہ وسلم کو ٹھنڈا پانی پلایا گیا ، تو فرمایا ((ھذا العذاب الزلال)) یہ تو بہت ہی میٹھا پانی ہے۔\n\nسیدنا عثمان رضی اللہ عنہ کی یہ یادگار آج بھی موجود ہے، زائرین مدینہ منورہ کے مقدس مقامات کی زیارت کے وقت اس کی زیارت کو بھی آتے ہیں، اکثر زائرین کو باہر کی چار دیواری پہ لگے بورڈ تک ہی اکتفا کرنا پڑتا ہے، اس کنویں کا پانی آج بھی صاف شفاف شکل میں موجود ہے، قریب ہی باغ اور مزرعہ ہے، یہ باغ اور کنواں اوقاف حرم نبوی شریف کی تحویل میں ہیں ، جنہوں نے اسے وزارت زراعت و آبپاشی کو پٹے پر دیا ہوا ہے، محکمہ زراعت نے اس کو زرعی تجربات کا سینٹر بنا رکھا ہے، مختلف انواع و اقسام کے کھجوروں کے درختوں پر ریسرچ ہوتی ہے، قریب ہی ایک جانوروں کا ہسپتال بھی ہے، کنویں کے قدیم کھنڈرات اب بھی باقی ہیں ، کنویں کا پانی صاف شفاف ، جاری ساری ہے، کنویں کے قریب ہی ایک خزان (حوض) ہے، جس میں پانی جمع کیا جاتا ہے، پھر نالیوں اور پائپوں کے ذریعے پورے مزرعے کو سیراب کیا جاتا ہے، ہم نے اس تاریخی کنویں پر حاضری دی، کام کرنے والے مزدور کو کچھ ہدیہ دیا تو انہوں نے خوش ہو کر مشین چلائی اور ہمیں کنویں کا پانی نوش کرنے کا موقع ہاتھ آ گیا، کنویں کی منڈیر کے متصل پرانے زمانے کی کمرہ نما عمارت کے کھنڈرات بھی باقی ہیں ، جس میں اتر کر قریب سے پانی بھرا جاتا تھا، عموماً زیارتیں کروانے والے زائرین کو مزرعہ سے باہر لگے بورڈ کی زیارت کروا کے واپس لے آتے ہیں ، حالانکہ مرکزی دروازہ سے اندر جانے کا راستہ بھی ہے، اور قریب جا کر کنویں کی زیارت کی جا سکتی ہے، پانی بھی نوش کیا جا سکتا ہے، عصر کے بعد اگر زیارت کے لئے جائیں تو کوئی رش نہیں ہوتا۔\n\nعلماء نے فرمایا: ”جن کنوؤں کی نسبت رسول اللہ صلی اللہ علیہ وسلم کی طرف ہے کہ آقا صلی اللہ علیہ وسلم نے یہاں وضو یا غسل فرمایا، یا یہاں کا پانی نوش فرمایا ، وہاں شفا اور تبرک کیلئے جانا چاہئے ، وہاں کا پانی استعمال کرنا چاہئے“....... لیکن افسوس ہمارے زمانے میں کوئی کنواں بھی باقی نہیں رہا، سوائے اس بئر رومہ کے ، یہاں بھی زائرین کو اندر تک نہیں جانے دیا جاتا۔ (سبل الہدی والرشاد ، ذکر آبار المدینۃ المنورۃ بتلخیص وتغیر۔ ابواب تاریخ المدینۃ المنورۃ ص ۱۴۰۔ جستجوئے مدینہ ص ۷۶۲)"
+  },
+  {
+    "slug": "ghars-well",
+    "name": "Ghars well",
+    "mapUrl": "https://maps.app.goo.gl/HWghDSW3XnnSTmWm8"
+  },
+  {
+    "slug": "khaake-shifa",
+    "name": "Khaake Shifa",
+    "mapUrl": "https://maps.app.goo.gl/sj6GjPCsvNyqRb2q6"
   }
 ]
