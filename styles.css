@@ -135,7 +135,6 @@ h1 {
 .header-brand {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
 }
 
 .install-button[hidden] {
