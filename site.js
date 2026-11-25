@@ -419,6 +419,13 @@ function renderNearby(container, template, places) {
   const tripProgresses = [field(container, 'trip-progress'), field(container, 'map-trip-progress')];
   const tripSpinners = [field(container, 'trip-spinner'), field(container, 'map-trip-spinner')];
   const tripButtons = [container.querySelector('[data-action="trip"]'), container.querySelector('[data-action="map-trip"]')];
+  const tripDialog = field(container, 'trip-dialog');
+  const tripStops = field(container, 'trip-stops');
+  const tripDialogStatus = field(container, 'trip-dialog-status');
+  const tripOpenProgress = field(container, 'trip-open-progress');
+  const tripOpenSpinner = field(container, 'trip-open-spinner');
+  const cancelTrip = container.querySelector('[data-action="cancel-trip"]');
+  const openTrip = container.querySelector('[data-action="open-trip"]');
   const setOriginStatus = message => { status.textContent = message; mapOriginStatus.textContent = message; };
   const setTripStatus = message => { for (const element of tripStatuses) element.textContent = message; };
   const map = L.map(mapElement).setView([mappedPlaces[0].latitude, mappedPlaces[0].longitude], 12);
@@ -575,28 +582,46 @@ function renderNearby(container, template, places) {
   container.querySelector('[data-action="locate"]').addEventListener('click', requestCurrentLocation);
   let tripRequest = 0;
   let handoffPending = false;
+  let pendingTripUrl = null;
+  let tripTrigger = null;
   function resetTrip() {
     tripRequest++;
     handoffPending = false;
     for (const button of tripButtons) { button.disabled = false; button.removeAttribute('aria-busy'); }
     for (const spinner of tripSpinners) spinner.hidden = true;
     for (const progress of tripProgresses) progress.textContent = '';
+    openTrip.disabled = false;
+    openTrip.removeAttribute('aria-busy');
+    tripOpenSpinner.hidden = true;
+    tripOpenProgress.textContent = '';
   }
-  window.addEventListener('pagehide', resetTrip);
-  window.addEventListener('pageshow', resetTrip);
-  document.addEventListener('visibilitychange', () => {
-    if (handoffPending && document.visibilityState === 'hidden') resetTrip();
+  function resetTripOnLeave() {
+    resetTrip();
+    if (tripDialog.open) tripDialog.close();
+  }
+  cancelTrip.addEventListener('click', () => tripDialog.close());
+  tripDialog.addEventListener('close', () => {
+    pendingTripUrl = null;
+    resetTrip();
+    const target = tripTrigger === tripButtons[1] && mapFrame.open ? tripButtons[1] : tripButtons[0];
+    target.focus();
   });
-  function planTrip() {
+  window.addEventListener('pagehide', resetTripOnLeave);
+  window.addEventListener('pageshow', resetTripOnLeave);
+  document.addEventListener('visibilitychange', () => {
+    if (handoffPending && document.visibilityState === 'hidden') resetTripOnLeave();
+  });
+  function planTrip(event) {
     if (!navigator.geolocation) {
       setTripStatus('Current location is unavailable. A trip requires your current location.');
       return;
     }
     const request = ++tripRequest;
+    tripTrigger = event.currentTarget;
     setTripStatus('');
     for (const button of tripButtons) { button.disabled = true; button.setAttribute('aria-busy', 'true'); }
     for (const spinner of tripSpinners) spinner.hidden = false;
-    for (const progress of tripProgresses) progress.textContent = 'Requesting your current location and opening Google Maps.';
+    for (const progress of tripProgresses) progress.textContent = 'Requesting your current location and planning your trip.';
     navigator.geolocation.getCurrentPosition(position => {
       if (request !== tripRequest) return;
       const current = {latitude: position.coords.latitude, longitude: position.coords.longitude};
@@ -606,16 +631,17 @@ function renderNearby(container, template, places) {
         return;
       }
       const stops = nearestTripPlaces(current, mappedPlaces);
-      handoffPending = true;
-      try {
-        window.location.assign(tripDirectionsUrl(current, stops));
-        window.setTimeout(() => {
-          if (request === tripRequest) resetTrip();
-        }, 1500);
-      } catch {
-        resetTrip();
-        setTripStatus('Google Maps could not be opened. Please try again.');
+      const list = document.createDocumentFragment();
+      for (const stop of stops) {
+        const item = document.createElement('li');
+        item.textContent = placesByCode.get(stop.sourceCode).name;
+        list.append(item);
       }
+      tripStops.replaceChildren(list);
+      resetTrip();
+      pendingTripUrl = tripDirectionsUrl(current, stops);
+      tripDialogStatus.textContent = '';
+      tripDialog.showModal();
     }, error => {
       if (request !== tripRequest) return;
       resetTrip();
@@ -625,6 +651,28 @@ function renderNearby(container, template, places) {
     }, {timeout: 10000, maximumAge: 0});
   }
   for (const button of tripButtons) button.addEventListener('click', planTrip);
+  openTrip.addEventListener('click', () => {
+    if (!pendingTripUrl) return;
+    handoffPending = true;
+    openTrip.disabled = true;
+    openTrip.setAttribute('aria-busy', 'true');
+    tripOpenSpinner.hidden = false;
+    tripDialogStatus.textContent = '';
+    tripOpenProgress.textContent = 'Opening Google Maps.';
+    const request = tripRequest;
+    try {
+      window.location.assign(pendingTripUrl);
+      window.setTimeout(() => {
+        if (request === tripRequest) {
+          resetTrip();
+          tripDialogStatus.textContent = '';
+        }
+      }, 1500);
+    } catch {
+      resetTrip();
+      tripDialogStatus.textContent = 'Google Maps could not be opened. Please try again.';
+    }
+  });
   showResults();
   requestCurrentLocation();
 }

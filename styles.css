@@ -163,7 +163,8 @@ h1 {
   background: #e7ece5;
 }
 
-.install-dialog {
+.install-dialog,
+.trip-dialog {
   width: min(28rem, calc(100% - 2rem));
   max-height: calc(100% - 2rem);
   padding: 1.5rem;
@@ -173,7 +174,8 @@ h1 {
   color: #242d26;
 }
 
-.install-dialog::backdrop {
+.install-dialog::backdrop,
+.trip-dialog::backdrop {
   background: rgb(20 30 22 / 55%);
 }
 
@@ -200,6 +202,50 @@ h1 {
 
 .install-dialog p:empty {
   display: none;
+}
+
+.trip-dialog h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.trip-dialog ol {
+  padding-left: 1.5rem;
+  line-height: 1.6;
+}
+
+.trip-dialog-status:empty {
+  display: none;
+}
+
+.trip-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.trip-dialog-actions button {
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border: 1px solid #245c3e;
+  border-radius: 0.6rem;
+  background: #245c3e;
+  color: #fffefa;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.trip-dialog-actions .trip-cancel {
+  background: transparent;
+  color: #245c3e;
+}
+
+@media (max-width: 360px) {
+  .trip-dialog-actions button {
+    width: 100%;
+  }
 }
 
 .nearby-page {
@@ -284,9 +330,22 @@ body.nearby-map-open {
   line-height: 1;
 }
 
-.nearby-map-controls .map-trip {
+.map-trip {
+  position: absolute;
+  top: max(0.75rem, env(safe-area-inset-top));
+  left: 50%;
+  z-index: 1000;
+  transform: translateX(-50%);
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #245c3e;
+  border-radius: 0.4rem;
   background: #245c3e;
   color: #fffefa;
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 .nearby-map-feedback {
