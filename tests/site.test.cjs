@@ -481,6 +481,16 @@ test('supports Urdu-only descriptions without inventing an English translation',
   assert.equal(view.fields['[data-field="urdu-panel"]'].hidden, false);
 });
 
+test('places map and video actions in a responsive shared row', () => {
+  const template = fs.readFileSync('templates.html', 'utf8');
+  const css = fs.readFileSync('styles.css', 'utf8');
+  assert.match(template, /<div class="place-actions">\s*<a class="map-link"[\s\S]*?<\/a>\s*<a class="video-link"[\s\S]*?<\/a>\s*<\/div>/);
+  assert.match(css, /\.place-actions\s*\{[^}]*display:\s*flex;[^}]*flex-wrap:\s*wrap/s);
+  assert.match(css, /\.map-link\s*\{[^}]*flex:\s*[^;]+;/s);
+  assert.match(css, /\.video-link\s*\{[^}]*flex:\s*[^;]+;/s);
+  assert.match(css, /\.video-link\[hidden\]\s*\{\s*display:\s*none;/);
+});
+
 test('renders only validated optional YouTube video links', async () => {
   const {context} = await loadPage('place');
   context.container = new Element();
