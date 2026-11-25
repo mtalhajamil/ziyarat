@@ -39,7 +39,7 @@ The homepage's Open Graph and Twitter Card metadata is in the initial `index.htm
 
 ## Destination theme guide
 
-The homepage has its own warm-neutral theme (`#f7f6f0` background, `#242d26` text). Place pages share a layout but use destination-specific palettes: Madinah is light green with deep-green controls, Makkah is warm ivory and charcoal, and Badr is sand and muted olive. Video buttons use a contrasting warm accent. The destination selected by `data-destination` on the place content container also selects the theme; legacy Madinah pages without the attribute use the Madinah default. See `styles.css` for gradients, colors and responsive layout.
+The homepage has its own warm-neutral theme (`#f7f6f0` background, `#242d26` text). Place pages share a layout but use destination-specific palettes: Madinah is light green with deep-green controls, Makkah is warm ivory and charcoal, and Badr is soft red with deep-red controls. Video buttons use a contrasting accent. The destination selected by `data-destination` on the place content container also selects the theme; legacy Madinah pages without the attribute use the Madinah default. See `styles.css` for gradients, colors and responsive layout.
 
 The following are proposed starting palettes for destinations that are still coming soon; confirm the direction with the owner when implementing them:
 
