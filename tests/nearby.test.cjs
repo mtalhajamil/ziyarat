@@ -35,10 +35,11 @@ class Element {
 }
 
 function setup(geolocation) {
-  const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'tile-status', 'results']
+  const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'tile-status', 'results', 'trip', 'trip-status']
     .map(name => [`[data-field="${name}"]`, new Element()]));
   fields['[data-action="locate"]'] = new Element();
   fields['[data-action="fullscreen"]'] = new Element();
+  fields['[data-action="trip"]'] = new Element();
   const container = new Element();
   container.querySelector = selector => fields[selector];
   const markers = [];
@@ -156,6 +157,55 @@ test('pins and nearby results open supplied place links without starting directi
   for (const [index, marker] of markers.entries()) marker.events.click();
   assert.deepEqual(opened.slice(2).map(args => args[0]), mapped.map(place => place.nearbyMapUrl ?? place.mapUrl));
   assert.throws(() => setupWithInvalidMapUrl(), /Google Maps HTTPS link/);
+});
+
+test('trip chooses the nearest five and greedily orders visits', () => {
+  const {context} = setup();
+  const origin = {latitude: 0, longitude: 0};
+  const candidates = [1, 2, -1.2, 3, -1.3, 5].map(longitude => ({latitude: 0, longitude}));
+  const stops = context.nearestTripPlaces(origin, candidates);
+  assert.deepEqual(Array.from(stops, stop => stop.longitude), [1, 2, 3, -1.2, -1.3]);
+  const url = new URL(context.tripDirectionsUrl(origin, stops));
+  assert.equal(url.searchParams.get('origin'), '0,0');
+  assert.equal(url.searchParams.get('waypoints'), '0,1|0,2|0,3|0,-1.2');
+  assert.equal(url.searchParams.get('destination'), '0,-1.3');
+  assert.match(url.href, /%7C/);
+});
+
+test('trip requests the actual location and provides mobile route parts and individual stops', () => {
+  let success;
+  let failure;
+  let options;
+  const {fields, map} = setup({getCurrentPosition(ok, fail, opts) { success = ok; failure = fail; options = opts; }});
+  map.events.click({latlng: {lat: 24.4, lng: 39.6}});
+  const button = fields['[data-action="trip"]'];
+  const trip = fields['[data-field="trip"]'];
+  const status = fields['[data-field="trip-status"]'];
+  button.events.click();
+  assert.equal(button.disabled, true);
+  assert.equal(options.maximumAge, 0);
+  success({coords: {latitude: 24.5, longitude: 39.7}});
+  assert.equal(button.disabled, false);
+  assert.equal(trip.hidden, false);
+  assert.match(status.textContent, /Trip ready/);
+  const content = trip.children[0].children;
+  const routes = content[1].children.map(link => new URL(link.href));
+  assert.equal(routes.length, 3);
+  assert.equal(routes[0].searchParams.get('origin'), '24.5,39.7');
+  assert.equal(routes[0].searchParams.get('waypoints').split('|').length, 4);
+  assert.equal(routes[1].searchParams.get('waypoints').split('|').length, 3);
+  assert.equal(routes[2].searchParams.get('origin'), routes[1].searchParams.get('destination'));
+  assert.equal(routes[2].searchParams.get('destination'), routes[0].searchParams.get('destination'));
+  assert.equal(content[2].children.length, 5);
+  assert.match(fields['[data-field="origin-status"]'].textContent, /24.40000, 39.60000/);
+  button.events.click();
+  failure({code: 1});
+  assert.equal(trip.hidden, true);
+  assert.equal(button.disabled, false);
+  assert.match(status.textContent, /denied.*requires your current location/i);
+  const unavailable = setup();
+  unavailable.fields['[data-action="trip"]'].events.click();
+  assert.match(unavailable.fields['[data-field="trip-status"]'].textContent, /unavailable/);
 });
 
 function setupWithInvalidMapUrl() {

@@ -341,6 +341,31 @@ function straightLineKm(origin, destination) {
   return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
 }
 
+function nearestTripPlaces(origin, places) {
+  const remaining = [...places]
+    .sort((a, b) => straightLineKm(origin, a) - straightLineKm(origin, b))
+    .slice(0, 5);
+  const ordered = [];
+  let current = origin;
+  while (remaining.length) {
+    remaining.sort((a, b) => straightLineKm(current, a) - straightLineKm(current, b));
+    current = remaining.shift();
+    ordered.push(current);
+  }
+  return ordered;
+}
+
+function tripDirectionsUrl(origin, stops) {
+  const coordinates = place => `${place.latitude},${place.longitude}`;
+  const params = new URLSearchParams({
+    api: '1',
+    origin: coordinates(origin),
+    destination: coordinates(stops[stops.length - 1])
+  });
+  if (stops.length > 1) params.set('waypoints', stops.slice(0, -1).map(coordinates).join('|'));
+  return `https://www.google.com/maps/dir/?${params}`;
+}
+
 function renderNearby(container, template, places) {
   if (!Array.isArray(places)) throw new Error('Invalid place data.');
   const mappedPlaces = places.filter(place => {
@@ -366,6 +391,9 @@ function renderNearby(container, template, places) {
   const status = field(container, 'origin-status');
   const tileStatus = field(container, 'tile-status');
   const results = field(container, 'results');
+  const trip = field(container, 'trip');
+  const tripStatus = field(container, 'trip-status');
+  const tripButton = container.querySelector('[data-action="trip"]');
   const map = L.map(mapElement).setView([mappedPlaces[0].latitude, mappedPlaces[0].longitude], 12);
   const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -566,6 +594,65 @@ function renderNearby(container, template, places) {
       const reason = error.code === 1 ? 'Location permission was denied.' :
         error.code === 3 ? 'The location request timed out.' : 'Your location could not be determined.';
       status.textContent = `${reason} Select a point on the map instead.`;
+    }, {timeout: 10000, maximumAge: 0});
+  });
+  tripButton.addEventListener('click', () => {
+    trip.replaceChildren();
+    trip.hidden = true;
+    if (!navigator.geolocation) {
+      tripStatus.textContent = 'Current location is unavailable. A trip requires your current location.';
+      return;
+    }
+    tripButton.disabled = true;
+    tripStatus.textContent = 'Requesting your current location for the trip…';
+    navigator.geolocation.getCurrentPosition(position => {
+      tripButton.disabled = false;
+      const current = {latitude: position.coords.latitude, longitude: position.coords.longitude};
+      if (!validCoordinates(current.latitude, current.longitude)) {
+        tripStatus.textContent = 'Your current location is outside the supported map area.';
+        return;
+      }
+      const stops = nearestTripPlaces(current, mappedPlaces);
+      const content = document.createDocumentFragment();
+      const explanation = document.createElement('p');
+      explanation.textContent = 'Stops are ordered by straight-line distance, not roads. Some Google Maps products limit or ignore waypoints; use the shorter route parts or individual stops if needed.';
+      content.append(explanation);
+      const routes = document.createElement('div');
+      routes.className = 'nearby-trip-routes';
+      function addRoute(label, routeOrigin, routeStops) {
+        const link = document.createElement('a');
+        link.href = tripDirectionsUrl(routeOrigin, routeStops);
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = label;
+        routes.append(link);
+      }
+      addRoute('Open full trip in Google Maps', current, stops);
+      if (stops.length > 4) {
+        addRoute('Open trip part 1', current, stops.slice(0, 4));
+        addRoute('Open trip part 2', stops[3], stops.slice(4));
+      }
+      content.append(routes);
+      const list = document.createElement('ol');
+      for (const place of stops) {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = place.nearbyMapUrl ?? place.mapUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = place.name;
+        item.append(link);
+        list.append(item);
+      }
+      content.append(list);
+      trip.replaceChildren(content);
+      trip.hidden = false;
+      tripStatus.textContent = 'Trip ready. Open a route or an individual stop in Google Maps.';
+    }, error => {
+      tripButton.disabled = false;
+      const reason = error.code === 1 ? 'Location permission was denied.' :
+        error.code === 3 ? 'The location request timed out.' : 'Your current location could not be determined.';
+      tripStatus.textContent = `${reason} A trip requires your current location.`;
     }, {timeout: 10000, maximumAge: 0});
   });
   showResults();

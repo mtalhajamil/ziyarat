@@ -104,7 +104,9 @@ h1 {
 }
 
 .nearby-home-link,
-.nearby-controls button {
+.nearby-controls button,
+.nearby-heading button,
+.nearby-trip-routes a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -126,7 +128,9 @@ h1 {
 }
 
 .nearby-home-link:hover,
-.nearby-controls button:hover {
+.nearby-controls button:hover,
+.nearby-heading button:hover,
+.nearby-trip-routes a:hover {
   background: #19452e;
 }
 
@@ -279,6 +283,35 @@ body.nearby-fullscreen-open {
 .nearby-privacy {
   color: #405d48;
   font-size: 0.875rem;
+}
+
+.nearby-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-top: 1.5rem;
+}
+
+.nearby-heading h2 {
+  margin: 0;
+}
+
+.nearby-trip-routes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.nearby-trip ol {
+  line-height: 1.6;
+}
+
+.nearby-trip ol a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #245c3e;
 }
 
 .nearby-results {
