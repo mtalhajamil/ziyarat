@@ -6,6 +6,15 @@ const vm = require('node:vm');
 const places = JSON.parse(fs.readFileSync('data/madinah.json')).places;
 const script = fs.readFileSync('site.js', 'utf8').replace(/\nstart\(\);\s*$/, '');
 
+test('nearby introduction stays available to assistive technology without taking up layout space', () => {
+  const template = fs.readFileSync('templates.html', 'utf8');
+  const css = fs.readFileSync('styles.css', 'utf8');
+  assert.match(template, /id="nearby-title" class="visually-hidden"/);
+  assert.match(template, /id="nearby-instructions" class="visually-hidden"/);
+  assert.match(template, /aria-describedby="nearby-instructions"/);
+  assert.match(css, /\.visually-hidden\s*\{[^}]*position:\s*absolute;[^}]*clip:\s*rect\(0, 0, 0, 0\)/s);
+});
+
 class Element {
   constructor() {
     this.children = [];
@@ -100,16 +109,24 @@ test('manual origin sorts results and both links and pins use that origin for di
   assert.equal(markers.length, 27);
   assert.equal(markers[0].tooltip.content.textContent, 'Masjid Quba');
   assert.equal(markers[0].tooltip.options.permanent, true);
+  assert.equal(fields['[data-field="results"]'].children.length, 0);
   markers[0].events.click();
   assert.match(fields['[data-field="origin-status"]'].textContent, /Choose a location first/);
   map.events.click({latlng: {lat: 24.439391, lng: 39.617301}});
-  const first = fields['[data-field="results"]'].children[0].children[0].children[0];
+  const results = fields['[data-field="results"]'];
+  assert.equal(results.children[0].children.length, 5);
+  const first = results.children[0].children[0].children[0];
   assert.match(first.textContent, /Masjid Quba — 0.0 km straight-line/);
   const url = new URL(first.href);
   assert.equal(url.searchParams.get('origin'), '24.439391,39.617301');
   assert.equal(url.searchParams.get('destination'), '24.439391,39.617301');
   const mapElement = fields['[data-field="map"]'];
   mapElement.events.keydown({target: mapElement, key: 'Enter', preventDefault() {}});
+  const nearest = places.filter(place => place.latitude !== undefined)
+    .map(place => ({place, distance: Math.hypot(place.latitude - 24.5, (place.longitude - 39.6) * Math.cos(24.5 * Math.PI / 180))}))
+    .sort((a, b) => a.distance - b.distance)
+    .slice(0, 5).map(({place}) => place.name);
+  assert.deepEqual(results.children[0].children.map(item => item.children[0].textContent.split(' — ')[0]), nearest);
   markers[0].events.click();
   assert.equal(new URL(opened[0][0]).searchParams.get('origin'), '24.5,39.6');
 });

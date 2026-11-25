@@ -401,24 +401,24 @@ function renderNearby(container, template, places) {
   }
 
   function showResults() {
+    if (!origin) {
+      results.replaceChildren();
+      return;
+    }
     const ordered = mappedPlaces.map(place => ({
       place,
-      distance: origin ? straightLineKm(origin, place) : null
+      distance: straightLineKm(origin, place)
     }));
-    if (origin) ordered.sort((a, b) => a.distance - b.distance);
+    ordered.sort((a, b) => a.distance - b.distance);
     const list = document.createDocumentFragment();
-    for (const {place, distance} of ordered) {
+    for (const {place, distance} of ordered.slice(0, 5)) {
       const item = document.createElement('li');
-      if (origin) {
-        const link = document.createElement('a');
-        link.href = directionsUrl(origin, place);
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.textContent = `${place.name} — ${distance.toFixed(1)} km straight-line (directions)`;
-        item.append(link);
-      } else {
-        item.textContent = place.name;
-      }
+      const link = document.createElement('a');
+      link.href = directionsUrl(origin, place);
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = `${place.name} — ${distance.toFixed(1)} km straight-line (directions)`;
+      item.append(link);
       list.append(item);
     }
     results.replaceChildren(list);
