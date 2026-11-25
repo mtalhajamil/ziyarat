@@ -368,6 +368,15 @@ function tripDirectionsUrl(origin, stops) {
 
 function renderNearby(container, template, places) {
   if (!Array.isArray(places)) throw new Error('Invalid place data.');
+  const placesByCode = new Map();
+  for (const place of places) {
+    if (place.sourceCode === undefined) continue;
+    if (typeof place.sourceCode !== 'string' || !/^[A-Z0-9]+(?:-[A-Z0-9]+)*$/.test(place.sourceCode) ||
+        placesByCode.has(place.sourceCode)) {
+      throw new Error('Invalid or duplicate location code.');
+    }
+    placesByCode.set(place.sourceCode, place);
+  }
   const mappedPlaces = places.filter(place => {
     const hasLatitude = place.latitude !== undefined;
     const hasLongitude = place.longitude !== undefined;
@@ -375,12 +384,16 @@ function renderNearby(container, template, places) {
       throw new Error(`Invalid coordinates for ${place.slug}.`);
     }
     return hasLatitude;
-  });
-  if (!mappedPlaces.length) throw new Error('No places with coordinates.');
-  for (const place of mappedPlaces) {
+  }).map(place => {
+    if (!placesByCode.has(place.sourceCode)) throw new Error('Missing location code.');
+    if (typeof place.slug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(place.slug)) {
+      throw new Error('Invalid place slug.');
+    }
     requireText(place.name, 'place name');
     validateMapUrl(place.nearbyMapUrl ?? place.mapUrl);
-  }
+    return {sourceCode: place.sourceCode, latitude: place.latitude, longitude: place.longitude};
+  });
+  if (!mappedPlaces.length) throw new Error('No places with coordinates.');
   if (typeof L === 'undefined') throw new Error('Map library could not be loaded.');
 
   const content = document.importNode(template.content, true);
@@ -391,7 +404,6 @@ function renderNearby(container, template, places) {
   const status = field(container, 'origin-status');
   const tileStatus = field(container, 'tile-status');
   const results = field(container, 'results');
-  const trip = field(container, 'trip');
   const tripStatus = field(container, 'trip-status');
   const tripButton = container.querySelector('[data-action="trip"]');
   const map = L.map(mapElement).setView([mappedPlaces[0].latitude, mappedPlaces[0].longitude], 12);
@@ -522,12 +534,11 @@ function renderNearby(container, template, places) {
     ordered.sort((a, b) => a.distance - b.distance);
     const list = document.createDocumentFragment();
     for (const {place, distance} of ordered.slice(0, 5)) {
+      const details = placesByCode.get(place.sourceCode);
       const item = document.createElement('li');
       const link = document.createElement('a');
-      link.href = place.nearbyMapUrl ?? place.mapUrl;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.textContent = `${place.name} — ${distance.toFixed(1)} km straight-line (open in Google Maps)`;
+      link.href = `madinah/?place=${encodeURIComponent(details.slug)}`;
+      link.textContent = `${details.name} — ${distance.toFixed(1)} km straight-line (view place)`;
       item.append(link);
       list.append(item);
     }
@@ -547,20 +558,21 @@ function renderNearby(container, template, places) {
     }).addTo(map).bindTooltip('Your selected location', {
       permanent: true, direction: 'top', offset: [0, -8], className: 'nearby-origin-label'
     });
-    status.textContent = `${source}: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}. Select a place to open it in Google Maps.`;
+    status.textContent = `${source}: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}. Select a nearby place to view its description.`;
     map.setView([latitude, longitude], map.getZoom());
     showResults();
     scheduleLabels();
   }
 
   for (const place of mappedPlaces) {
+    const details = placesByCode.get(place.sourceCode);
     const label = document.createElement('span');
-    label.textContent = place.name;
-    const marker = L.marker([place.latitude, place.longitude], {icon: pin, title: place.name, alt: place.name})
+    label.textContent = details.name;
+    const marker = L.marker([place.latitude, place.longitude], {icon: pin, title: details.name, alt: details.name})
       .addTo(map)
       .bindTooltip(label, {permanent: true, direction: 'top', offset: [0, -16], className: 'nearby-place-label'})
       .on('click', () => {
-        window.open(place.nearbyMapUrl ?? place.mapUrl, '_blank', 'noopener,noreferrer');
+        window.open(details.nearbyMapUrl ?? details.mapUrl, '_blank', 'noopener,noreferrer');
       });
     marker.on('mouseover', () => {
       const tooltip = marker.getTooltip()?.getElement();
@@ -579,7 +591,7 @@ function renderNearby(container, template, places) {
       setOrigin(centre.lat, centre.lng, 'Selected location');
     }
   });
-  container.querySelector('[data-action="locate"]').addEventListener('click', () => {
+  function requestCurrentLocation() {
     const request = ++locationRequest;
     if (!navigator.geolocation) {
       status.textContent = 'Location is unavailable. Select a point on the map instead.';
@@ -595,10 +607,9 @@ function renderNearby(container, template, places) {
         error.code === 3 ? 'The location request timed out.' : 'Your location could not be determined.';
       status.textContent = `${reason} Select a point on the map instead.`;
     }, {timeout: 10000, maximumAge: 0});
-  });
+  }
+  container.querySelector('[data-action="locate"]').addEventListener('click', requestCurrentLocation);
   tripButton.addEventListener('click', () => {
-    trip.replaceChildren();
-    trip.hidden = true;
     if (!navigator.geolocation) {
       tripStatus.textContent = 'Current location is unavailable. A trip requires your current location.';
       return;
@@ -613,41 +624,8 @@ function renderNearby(container, template, places) {
         return;
       }
       const stops = nearestTripPlaces(current, mappedPlaces);
-      const content = document.createDocumentFragment();
-      const explanation = document.createElement('p');
-      explanation.textContent = 'Stops are ordered by straight-line distance, not roads. Some Google Maps products limit or ignore waypoints; use the shorter route parts or individual stops if needed.';
-      content.append(explanation);
-      const routes = document.createElement('div');
-      routes.className = 'nearby-trip-routes';
-      function addRoute(label, routeOrigin, routeStops) {
-        const link = document.createElement('a');
-        link.href = tripDirectionsUrl(routeOrigin, routeStops);
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.textContent = label;
-        routes.append(link);
-      }
-      addRoute('Open full trip in Google Maps', current, stops);
-      if (stops.length > 4) {
-        addRoute('Open trip part 1', current, stops.slice(0, 4));
-        addRoute('Open trip part 2', stops[3], stops.slice(4));
-      }
-      content.append(routes);
-      const list = document.createElement('ol');
-      for (const place of stops) {
-        const item = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = place.nearbyMapUrl ?? place.mapUrl;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.textContent = place.name;
-        item.append(link);
-        list.append(item);
-      }
-      content.append(list);
-      trip.replaceChildren(content);
-      trip.hidden = false;
-      tripStatus.textContent = 'Trip ready. Open a route or an individual stop in Google Maps.';
+      tripStatus.textContent = 'Opening Google Maps…';
+      window.location.assign(tripDirectionsUrl(current, stops));
     }, error => {
       tripButton.disabled = false;
       const reason = error.code === 1 ? 'Location permission was denied.' :
@@ -656,6 +634,7 @@ function renderNearby(container, template, places) {
     }, {timeout: 10000, maximumAge: 0});
   });
   showResults();
+  requestCurrentLocation();
 }
 
 async function start() {
