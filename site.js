@@ -738,4 +738,52 @@ async function start() {
   }
 }
 
+function setupInstall() {
+  const container = document.getElementById('install-app');
+  if (!container) return;
+  const button = document.getElementById('install-button');
+  const help = document.getElementById('install-help');
+  const status = document.getElementById('install-status');
+  const standalone = window.matchMedia?.('(display-mode: standalone)');
+  let promptEvent = null;
+  let installed = false;
+  const refresh = () => {
+    container.hidden = installed || Boolean(standalone?.matches) || navigator.standalone === true;
+  };
+  refresh();
+  standalone?.addEventListener?.('change', refresh);
+  window.addEventListener('beforeinstallprompt', event => {
+    if (installed || standalone?.matches || navigator.standalone === true) return;
+    event.preventDefault();
+    promptEvent = event;
+    refresh();
+  });
+  window.addEventListener('appinstalled', () => {
+    installed = true;
+    promptEvent = null;
+    refresh();
+  });
+  button.addEventListener('click', async () => {
+    status.textContent = '';
+    if (!promptEvent) {
+      help.hidden = !help.hidden;
+      button.setAttribute('aria-expanded', String(!help.hidden));
+      return;
+    }
+    const event = promptEvent;
+    promptEvent = null;
+    button.disabled = true;
+    try {
+      await event.prompt();
+      const choice = await event.userChoice;
+      if (choice.outcome !== 'accepted') status.textContent = 'Installation canceled. You can try your browser’s install menu.';
+    } catch {
+      status.textContent = 'Could not open the install prompt. Use your browser’s install menu.';
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
+setupInstall();
 start();

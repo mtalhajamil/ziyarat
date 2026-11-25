@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 
 const places = JSON.parse(fs.readFileSync('data/madinah.json')).places;
-const script = fs.readFileSync('site.js', 'utf8').replace(/\nstart\(\);\s*$/, '');
+const script = fs.readFileSync('site.js', 'utf8').replace(/\nsetupInstall\(\);\nstart\(\);\s*$/, '');
 
 test('nearby introduction stays available to assistive technology without taking up layout space', () => {
   const template = fs.readFileSync('templates.html', 'utf8');
