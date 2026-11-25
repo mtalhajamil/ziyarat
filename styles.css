@@ -761,6 +761,23 @@ h2 {
   background: var(--place-control-hover);
 }
 
+.map-link[hidden] {
+  display: none;
+}
+
+.map-unavailable:not([hidden]) {
+  display: flex;
+  flex: 2 1 14rem;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--place-border);
+  border-radius: 0.75rem;
+  color: var(--place-secondary);
+  text-align: center;
+}
+
 .video-link {
   display: flex;
   flex: 1 1 10rem;

@@ -185,7 +185,7 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
         throw new Error('Video URL must be a YouTube HTTPS link.');
       }
     }
-    validateMapUrl(place.mapUrl);
+    if (place.mapUrl !== undefined) validateMapUrl(place.mapUrl);
   }
 
   const content = document.importNode(template.content, true);
@@ -196,6 +196,7 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
   const imageSource = field(content, 'image-source');
   const imageLicense = field(content, 'image-license');
   const map = field(content, 'map');
+  const mapUnavailable = field(content, 'map-unavailable');
   const video = field(content, 'video');
   const english = field(content, 'english');
   const urdu = field(content, 'urdu');
@@ -238,7 +239,12 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
     imageLicense.href = place.image.credit.licenseUrl;
     credit.hidden = false;
   }
-  map.href = place.mapUrl;
+  if (place.mapUrl) {
+    map.href = place.mapUrl;
+  } else {
+    map.hidden = true;
+    mapUnavailable.hidden = false;
+  }
   if (place.videoUrl) {
     video.href = place.videoUrl;
     video.hidden = false;
@@ -392,7 +398,7 @@ function renderNearby(container, template, places) {
       throw new Error('Invalid place slug.');
     }
     requireText(place.name, 'place name');
-    validateMapUrl(place.nearbyMapUrl ?? place.mapUrl);
+    validateMapUrl(place.mapUrl);
     return {sourceCode: place.sourceCode, latitude: place.latitude, longitude: place.longitude};
   });
   if (!mappedPlaces.length) throw new Error('No places with coordinates.');
@@ -576,7 +582,7 @@ function renderNearby(container, template, places) {
       .addTo(map)
       .bindTooltip(label, {permanent: true, direction: 'top', offset: [0, -16], className: 'nearby-place-label'})
       .on('click', () => {
-        window.open(details.nearbyMapUrl ?? details.mapUrl, '_blank', 'noopener,noreferrer');
+        window.open(details.mapUrl, '_blank', 'noopener,noreferrer');
       });
     marker.on('mouseover', () => {
       const tooltip = marker.getTooltip()?.getElement();
