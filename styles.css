@@ -523,15 +523,15 @@ h2 {
   padding: 0.8rem 1rem;
   border: 1px solid #245c3e;
   border-radius: 0.75rem;
-  background: #f6fcf3;
-  color: #245c3e;
+  background: #245c3e;
+  color: #fffefa;
   font-weight: 600;
   text-align: center;
   text-decoration: none;
 }
 
 .video-link:hover {
-  background: #e3f2e0;
+  background: #19452e;
 }
 
 .video-link[hidden] {
