@@ -43,7 +43,7 @@ function fragment(kind) {
   const node = new Element();
   const fields = kind === 'destination'
     ? ['name', 'image', 'status']
-    : ['name', 'image', 'map', 'english', 'urdu', 'image-credit', 'image-source', 'image-license',
+    : ['name', 'image', 'map', 'map-unavailable', 'english', 'urdu', 'image-credit', 'image-source', 'image-license',
       'image-placeholder', 'descriptions', 'description-empty',
       'english-panel', 'urdu-panel', 'language-en', 'language-ur',
       'english-more', 'urdu-more', 'video'];
@@ -51,6 +51,7 @@ function fragment(kind) {
   if (kind === 'place') {
     node.fields['.place-preview'] = node;
     node.fields['[data-field="image-credit"]'].hidden = true;
+    node.fields['[data-field="map-unavailable"]'].hidden = true;
     node.fields['[data-field="image-placeholder"]'].hidden = true;
     node.fields['[data-field="description-empty"]'].hidden = true;
     for (const name of ['previous', 'next']) node.fields[`[data-action="${name}"]`] = new Element();
@@ -227,6 +228,8 @@ test('renders each supplied place and navigates using shared page URLs', async (
     assert.equal(view.fields['[data-field="video"]'].hidden, !place.videoUrl);
     if (place.videoUrl) assert.equal(view.fields['[data-field="video"]'].href, place.videoUrl);
     assert.equal(view.fields['[data-field="map"]'].href, place.mapUrl);
+    assert.equal(view.fields['[data-field="map"]'].hidden, !place.mapUrl);
+    assert.equal(view.fields['[data-field="map-unavailable"]'].hidden, Boolean(place.mapUrl));
     if (place.image) {
       assert.equal(view.fields['[data-field="image"]'].src, place.image.src);
       assert.ok(fs.existsSync(place.image.src));
@@ -323,7 +326,7 @@ test('includes every named Madinah source site and supplied video URL without bl
     ['banu-unaif', 'https://www.youtube.com/shorts/u4c0VYG7mFI']
   ]);
   for (const place of places) {
-    assert.ok(place.mapUrl);
+    assert.equal(Boolean(place.mapUrl), place.sourceCode !== 'MED-TOOBA');
   }
 });
 
@@ -519,7 +522,7 @@ test('supports Urdu-only descriptions without inventing an English translation',
 test('places map and video actions in a responsive shared row', () => {
   const template = fs.readFileSync('templates.html', 'utf8');
   const css = fs.readFileSync('styles.css', 'utf8');
-  assert.match(template, /<div class="place-actions">\s*<a class="map-link"[\s\S]*?<\/a>\s*<a class="video-link"[\s\S]*?<\/a>\s*<\/div>/);
+  assert.match(template, /<div class="place-actions">\s*<a class="map-link"[\s\S]*?<\/a>\s*<span class="map-unavailable"[\s\S]*?<\/span>\s*<a class="video-link"[\s\S]*?<\/a>\s*<\/div>/);
   assert.match(css, /\.place-actions\s*\{[^}]*display:\s*flex;[^}]*flex-wrap:\s*wrap/s);
   assert.match(css, /\.map-link\s*\{[^}]*flex:\s*[^;]+;/s);
   assert.match(css, /\.video-link\s*\{[^}]*flex:\s*[^;]+;/s);
@@ -661,18 +664,29 @@ test('missing content messages remain visible without displaying empty fields', 
   assert.match(css, /\.place-image\[hidden\],[\s\S]*?\.description-grid\[hidden\]\s*\{\s*display:\s*none/);
 });
 
-test('uses the supplied Google Maps searches for all places', () => {
-  const queries = [
-    'Masjid Quba, Madinah', 'Masjid Jummah, Madinah', 'Masjid Qiblatain, Madinah',
-    'Masjid Ghamama, Madinah', 'Masjid al-Saqia, Madinah', 'Masjid Umar (R.A), Madinah',
-    "Ka'b bin Ashraf Ka Qila, Madinah", 'Masjid-e-Shaykhain, Madinah', 'Jabal-e-Uhud, Madinah',
-    'Jabal-e-Ruma, Madinah', 'Masjid Fasih, Madinah', 'Masjid-e-Rayah, Madinah',
-    "Masjid-e-Sab'ah, Madinah", 'Masjid-e-Fath, Madinah', 'Masjid-e-Utban bin Malik (R.A), Madinah',
-    'Masjid Banu Unaif, Madinah', 'Masjid Al-Mustarāh (Masjid Bani Harisa), Madinah'
-  ];
+test('Madinah map links match the supplied URLs by location code', () => {
+  const expected = {
+    'MED-QUBA': 'SH9X9YQdMf5zYoNH7', 'MED-JUMMA': 'u8TGoWEyUQp3eMUp8',
+    'MED-QIBLAT': 'FniuW7U3XhHsnriS9', 'MED-GHAMAMA': '6FNSMnKMmpZGmiwS6',
+    'MED-SAQIA': '4WcJY2xV8i1d1fHT9', 'MED-UMAR': '4a4qVUa49Le6cQnAA',
+    'MED-KAB-ASHRAF': 'BCspXKzvBEVFChHy8', 'MED-SHAYKHAIN': 'Bvg6KFKvweJ4NaaU7',
+    'MED-UHUD': '9iXEReg7LvvTQdqU9', 'MED-RUMA': 'SaisKPuBdzHKNkVr8',
+    'MED-FASIH': 'A6F8JfAfKWPEUQxc6', 'MED-RAYA': 'KcWNNMFRQTv7zPPo9',
+    'MED-SABA': 'iuy5qYSdj69uD7B6A', 'MED-FATAH': 'FQccRvXhehsB4b8D7',
+    'MED-UTBAN': '58oY6e86PCrm3BU66', 'MED-BANU-UNAIF': 'kAi9KiVJ9TmNNdgq6',
+    'MED-MUSTARAH': 'htubBMwxPwy3X4Ld8', 'MED-ABUZAR': 'DM47iRnR1nqCc9jz5',
+    'MED-IJABA': 'fynkguSA1672jjsD7', 'MED-BANU-ZAFAR': 'mqCjupjqLKMXPzvn8',
+    'MED-SABQ': '8Cf44FcngkxwJETy5', 'MED-SAQIFAH': '7Zogpi26hxu3v4Kw7',
+    'MED-MINARTEEN': 'Dnp821SuW7B7PMZu9', 'MED-ARES-WELL': 'eK96DyGX7t2p58X19',
+    'MED-UTHMAN-WELL': 'oNodQTQT3q7wQxkW9', 'MED-GHARS-WELL': 'HWghDSW3XnnSTmWm8',
+    'MED-KHAAKE-SHIFA': 'sj6GjPCsvNyqRb2q6'
+  };
   const places = data['data/madinah.json'];
-  assert.deepEqual(places.slice(0, queries.length).map(place => new URL(place.mapUrl).searchParams.get('query')), queries);
-  assert.ok(places.slice(17).every(place => new URL(place.mapUrl).hostname === 'maps.app.goo.gl'));
+  assert.equal(places.length, Object.keys(expected).length + 1);
+  for (const place of places) {
+    if (place.sourceCode === 'MED-TOOBA') assert.equal(place.mapUrl, undefined);
+    else assert.equal(place.mapUrl, `https://maps.app.goo.gl/${expected[place.sourceCode]}`);
+  }
 });
 
 test('place template announces its title without a preview label', () => {

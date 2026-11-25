@@ -119,7 +119,7 @@ test('supplied locations exclude Tooba and validate coordinate pairs', () => {
     ['khaake-shifa', 24.448060, 39.623774]
   ];
   assert.deepEqual(mapped.map(({slug, latitude, longitude}) => [slug, latitude, longitude]), expected);
-  assert.deepEqual(mapped.slice(0, 17).map(place => place.nearbyMapUrl), [
+  assert.deepEqual(mapped.slice(0, 17).map(place => place.mapUrl), [
     'https://maps.app.goo.gl/SH9X9YQdMf5zYoNH7', 'https://maps.app.goo.gl/u8TGoWEyUQp3eMUp8',
     'https://maps.app.goo.gl/FniuW7U3XhHsnriS9', 'https://maps.app.goo.gl/6FNSMnKMmpZGmiwS6',
     'https://maps.app.goo.gl/4WcJY2xV8i1d1fHT9', 'https://maps.app.goo.gl/4a4qVUa49Le6cQnAA',
@@ -164,7 +164,7 @@ test('pins open supplied maps links while nearby results open place descriptions
   assert.equal(opened[1][0], opened[0][0]);
   const mapped = places.filter(place => place.latitude !== undefined);
   for (const [index, marker] of markers.entries()) marker.events.click();
-  assert.deepEqual(opened.slice(2).map(args => args[0]), mapped.map(place => place.nearbyMapUrl ?? place.mapUrl));
+  assert.deepEqual(opened.slice(2).map(args => args[0]), mapped.map(place => place.mapUrl));
   assert.throws(() => setupWithInvalidMapUrl(), /Google Maps HTTPS link/);
 });
 
@@ -283,7 +283,7 @@ test('trip loading resets on app switch or delayed handoff, without cancelling l
 function setupWithInvalidMapUrl() {
   const {context} = setup();
   const container = new Element();
-  context.renderNearby(container, {content: {}}, [{...places[0], nearbyMapUrl: 'https://example.com/'}]);
+  context.renderNearby(container, {content: {}}, [{...places[0], mapUrl: 'https://example.com/'}]);
 }
 
 test('overlapping place labels are hidden and reappear after moving apart', () => {
