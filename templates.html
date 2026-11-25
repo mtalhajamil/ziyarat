@@ -28,8 +28,13 @@
           <div class="nearby-map" data-field="map" aria-label="Map of Madinah places" aria-describedby="nearby-instructions"></div>
           <button type="button" class="nearby-fullscreen" data-action="fullscreen" aria-pressed="false">Full screen</button>
         </div>
-        <p class="nearby-privacy">Map tiles are provided by OpenStreetMap; viewing the map reveals the approximate viewed area to its tile provider. Selecting a place opens it in Google Maps.</p>
-        <h2>Nearby places</h2>
+        <p class="nearby-privacy">Map tiles are provided by OpenStreetMap; viewing the map reveals the approximate viewed area to its tile provider. Selecting a place opens it in Google Maps. Opening a trip shares its starting location and stops with Google.</p>
+        <div class="nearby-heading">
+          <h2>Nearby places</h2>
+          <button type="button" data-action="trip">Trip to nearest 5 places</button>
+        </div>
+        <p class="nearby-status" data-field="trip-status" role="status"></p>
+        <div class="nearby-trip" data-field="trip" hidden></div>
         <p>Choose a location to see the five closest places by straight-line distance.</p>
         <ul class="nearby-results" data-field="results"></ul>
       </section>
