@@ -39,14 +39,12 @@ The homepage's Open Graph and Twitter Card metadata is in the initial `index.htm
 
 ## Destination theme guide
 
-The homepage has its own existing warm-neutral theme (`#f7f6f0` background, `#242d26` text). All implemented place pages currently reuse the Madinah light-green theme (`#f2f8ef` background), deep green (`#1c4935` text and `#245c3e` map button), muted gold accents, softly translucent cards and rounded images. Makkah and Badr do not yet have distinct themes. See `styles.css` for the actual gradients, colors and responsive layout.
+The homepage has its own warm-neutral theme (`#f7f6f0` background, `#242d26` text). Place pages share a layout but use destination-specific palettes: Madinah is light green with deep-green controls, Makkah is warm ivory and charcoal, and Badr is sand and muted olive. Video buttons use a contrasting warm accent. The destination selected by `data-destination` on the place content container also selects the theme; legacy Madinah pages without the attribute use the Madinah default. See `styles.css` for gradients, colors and responsive layout.
 
-The following are **proposed starting palettes**, not implemented themes; confirm the direction with the owner before introducing a distinct destination design. Taif and Turkiye are still coming soon:
+The following are proposed starting palettes for destinations that are still coming soon; confirm the direction with the owner when implementing them:
 
 | Destination | Background | Main text | Dark control | Direction |
 | --- | --- | --- | --- | --- |
-| Makkah | `#faf7ef` | `#302b26` | `#51432f` | Warm ivory, charcoal and restrained gold. |
-| Badr | `#f8f3e8` | `#403b2e` | `#56523a` | Sand and muted olive. |
 | Taif | `#faf3f1` | `#443436` | `#6c4046` | Soft rose and warm neutrals. |
 | Turkiye | `#f2f6f7` | `#293e45` | `#305764` | Pale blue-gray and muted teal. |
 

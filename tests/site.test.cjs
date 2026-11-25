@@ -499,6 +499,18 @@ test('places map and video actions in a responsive shared row', () => {
   assert.match(css, /\.video-link\[hidden\]\s*\{\s*display:\s*none;/);
 });
 
+test('destination themes provide distinct controls while retaining the Madinah default', () => {
+  const css = fs.readFileSync('styles.css', 'utf8');
+  const theme = selector => css.match(new RegExp(`${selector}\\s*\\{([^}]+)\\}`))[1];
+  const control = rule => rule.match(/--place-control:\s*([^;]+);/)[1];
+  const madinah = theme('\\.place-body');
+  const makkah = theme('\\.place-body:has\\(#place-content\\[data-destination="makkah"\\]\\)');
+  const badr = theme('\\.place-body:has\\(#place-content\\[data-destination="badr"\\]\\)');
+  assert.equal(new Set([madinah, makkah, badr].map(control)).size, 3);
+  assert.match(css, /\.map-link\s*\{[^}]*background:\s*var\(--place-control\)/s);
+  assert.match(css, /\.video-link\s*\{[^}]*background:\s*var\(--place-video\)/s);
+});
+
 test('renders only validated optional YouTube video links', async () => {
   const {context} = await loadPage('place');
   context.container = new Element();
