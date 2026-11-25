@@ -363,6 +363,8 @@ function renderNearby(container, template, places) {
   const content = document.importNode(template.content, true);
   container.replaceChildren(content);
   const mapElement = field(container, 'map');
+  const mapFrame = field(container, 'map-frame');
+  const fullscreenButton = container.querySelector('[data-action="fullscreen"]');
   const status = field(container, 'origin-status');
   const tileStatus = field(container, 'tile-status');
   const results = field(container, 'results');
@@ -400,25 +402,107 @@ function renderNearby(container, template, places) {
     window.requestAnimationFrame(layoutLabels);
   }
 
+  let fullscreenMode = null;
+  let viewBeforeResize = null;
+  let lastView = {center: map.getCenter(), zoom: map.getZoom()};
+  map.on('moveend zoomend', () => {
+    lastView = {center: map.getCenter(), zoom: map.getZoom()};
+  });
+
+  function resizeMap() {
+    const view = viewBeforeResize || lastView;
+    viewBeforeResize = null;
+    window.requestAnimationFrame(() => {
+      map.invalidateSize({pan: false});
+      map.setView(view.center, view.zoom, {animate: false});
+      scheduleLabels();
+    });
+  }
+
+  function setFullscreen(active, mode) {
+    fullscreenMode = active ? mode : null;
+    mapFrame.classList.toggle('is-fullscreen', active && mode === 'fallback');
+    document.body.classList.toggle('nearby-fullscreen-open', active);
+    fullscreenButton.textContent = active ? 'Exit full screen' : 'Full screen';
+    fullscreenButton.setAttribute('aria-pressed', String(active));
+    if (active) {
+      mapFrame.setAttribute('role', 'dialog');
+      mapFrame.setAttribute('aria-modal', 'true');
+      mapFrame.setAttribute('aria-label', 'Full screen map');
+    } else {
+      mapFrame.removeAttribute('role');
+      mapFrame.removeAttribute('aria-modal');
+      mapFrame.removeAttribute('aria-label');
+    }
+    fullscreenButton.focus();
+    resizeMap();
+  }
+
+  fullscreenButton.addEventListener('click', async () => {
+    viewBeforeResize = {center: map.getCenter(), zoom: map.getZoom()};
+    if (fullscreenMode === 'native') {
+      try {
+        await document.exitFullscreen();
+      } catch {
+        status.textContent = 'Could not exit full screen. Try pressing Escape.';
+      }
+    } else if (fullscreenMode === 'fallback') {
+      setFullscreen(false);
+    } else if (mapFrame.requestFullscreen) {
+      try {
+        await mapFrame.requestFullscreen();
+      } catch {
+        setFullscreen(true, 'fallback');
+      }
+    } else {
+      setFullscreen(true, 'fallback');
+    }
+  });
+  document.addEventListener('fullscreenchange', () => {
+    if (document.fullscreenElement === mapFrame) setFullscreen(true, 'native');
+    else if (fullscreenMode === 'native') setFullscreen(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (!fullscreenMode) return;
+    if (event.key === 'Escape' && fullscreenMode === 'fallback') {
+      event.preventDefault();
+      viewBeforeResize = {center: map.getCenter(), zoom: map.getZoom()};
+      setFullscreen(false);
+    } else if (event.key === 'Tab') {
+      const focusable = [...mapFrame.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+        .filter(element => element.getClientRects().length);
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  });
+
   function showResults() {
+    if (!origin) {
+      results.replaceChildren();
+      return;
+    }
     const ordered = mappedPlaces.map(place => ({
       place,
-      distance: origin ? straightLineKm(origin, place) : null
+      distance: straightLineKm(origin, place)
     }));
-    if (origin) ordered.sort((a, b) => a.distance - b.distance);
+    ordered.sort((a, b) => a.distance - b.distance);
     const list = document.createDocumentFragment();
-    for (const {place, distance} of ordered) {
+    for (const {place, distance} of ordered.slice(0, 5)) {
       const item = document.createElement('li');
-      if (origin) {
-        const link = document.createElement('a');
-        link.href = directionsUrl(origin, place);
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.textContent = `${place.name} — ${distance.toFixed(1)} km straight-line (directions)`;
-        item.append(link);
-      } else {
-        item.textContent = place.name;
-      }
+      const link = document.createElement('a');
+      link.href = directionsUrl(origin, place);
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = `${place.name} — ${distance.toFixed(1)} km straight-line (directions)`;
+      item.append(link);
       list.append(item);
     }
     results.replaceChildren(list);

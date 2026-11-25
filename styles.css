@@ -136,8 +136,16 @@ h1 {
   padding: 2rem clamp(1.25rem, 6vw, 6rem) 4rem;
 }
 
-.nearby-page h1 {
-  font-size: clamp(2.25rem, 6vw, 4rem);
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .nearby-page p {
@@ -156,12 +164,58 @@ h1 {
   display: none;
 }
 
+.nearby-map-frame {
+  position: relative;
+}
+
+.nearby-map-frame:fullscreen,
+.nearby-map-frame.is-fullscreen {
+  width: 100%;
+  height: 100%;
+  background: #e4f0e2;
+}
+
+.nearby-map-frame.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  height: 100vh;
+  height: 100dvh;
+}
+
+body.nearby-fullscreen-open {
+  overflow: hidden;
+}
+
+.nearby-fullscreen {
+  position: absolute;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+  z-index: 1000;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #245c3e;
+  border-radius: 0.4rem;
+  background: #fffefa;
+  color: #19452e;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .nearby-map {
   width: 100%;
   height: clamp(20rem, 55vh, 36rem);
   border: 1px solid #b6d2b7;
   border-radius: 0.75rem;
   background: #e4f0e2;
+}
+
+.nearby-map-frame:fullscreen .nearby-map,
+.nearby-map-frame.is-fullscreen .nearby-map {
+  height: 100%;
+  border-radius: 0;
 }
 
 .nearby-map:focus-visible {

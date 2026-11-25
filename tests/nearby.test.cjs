@@ -6,30 +6,48 @@ const vm = require('node:vm');
 const places = JSON.parse(fs.readFileSync('data/madinah.json')).places;
 const script = fs.readFileSync('site.js', 'utf8').replace(/\nstart\(\);\s*$/, '');
 
+test('nearby introduction stays available to assistive technology without taking up layout space', () => {
+  const template = fs.readFileSync('templates.html', 'utf8');
+  const css = fs.readFileSync('styles.css', 'utf8');
+  assert.match(template, /id="nearby-title" class="visually-hidden"/);
+  assert.match(template, /id="nearby-instructions" class="visually-hidden"/);
+  assert.match(template, /aria-describedby="nearby-instructions"/);
+  assert.match(css, /\.visually-hidden\s*\{[^}]*position:\s*absolute;[^}]*clip:\s*rect\(0, 0, 0, 0\)/s);
+});
+
 class Element {
   constructor() {
     this.children = [];
     this.events = {};
     this.textContent = '';
     this.value = '';
+    this.attributes = {};
+    this.classes = new Set();
+    this.classList = {toggle: (name, enabled) => enabled ? this.classes.add(name) : this.classes.delete(name)};
   }
   append(node) { this.children.push(node); }
   replaceChildren(...nodes) { this.children = nodes; }
   addEventListener(type, handler) { this.events[type] = handler; }
+  setAttribute(name, value) { this.attributes[name] = value; }
+  removeAttribute(name) { delete this.attributes[name]; }
+  focus() { this.focused = true; }
+  querySelectorAll() { return []; }
 }
 
 function setup(geolocation) {
-  const fields = Object.fromEntries(['map', 'origin-status', 'tile-status', 'results']
+  const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'tile-status', 'results']
     .map(name => [`[data-field="${name}"]`, new Element()]));
   fields['[data-action="locate"]'] = new Element();
+  fields['[data-action="fullscreen"]'] = new Element();
   const container = new Element();
   container.querySelector = selector => fields[selector];
   const markers = [];
   const map = {
     events: {},
-    setView() { return this; },
+    setView(center, zoom) { this.lastView = {center, zoom}; return this; },
     getZoom() { return 12; },
     getCenter() { return {lat: 24.5, lng: 39.6}; },
+    invalidateSize() { this.resized = (this.resized || 0) + 1; },
     on(name, fn) { this.events[name] = fn; return this; },
     removeLayer() {}
   };
@@ -54,10 +72,13 @@ function setup(geolocation) {
     }
   };
   const opened = [];
+  const documentEvents = {};
   const context = vm.createContext({
     L, URLSearchParams, navigator: {geolocation},
     window: {open: (...args) => opened.push(args), requestAnimationFrame: callback => callback()},
     document: {
+      body: new Element(),
+      addEventListener: (type, handler) => { documentEvents[type] = handler; },
       importNode: () => new Element(),
       createElement: () => new Element(),
       createDocumentFragment: () => new Element()
@@ -65,7 +86,7 @@ function setup(geolocation) {
   });
   vm.runInContext(script, context);
   context.renderNearby(container, {content: {}}, places);
-  return {context, fields, map, tiles, markers, opened};
+  return {context, fields, map, tiles, markers, opened, documentEvents};
 }
 
 test('supplied locations exclude Tooba and validate coordinate pairs', () => {
@@ -100,16 +121,24 @@ test('manual origin sorts results and both links and pins use that origin for di
   assert.equal(markers.length, 27);
   assert.equal(markers[0].tooltip.content.textContent, 'Masjid Quba');
   assert.equal(markers[0].tooltip.options.permanent, true);
+  assert.equal(fields['[data-field="results"]'].children.length, 0);
   markers[0].events.click();
   assert.match(fields['[data-field="origin-status"]'].textContent, /Choose a location first/);
   map.events.click({latlng: {lat: 24.439391, lng: 39.617301}});
-  const first = fields['[data-field="results"]'].children[0].children[0].children[0];
+  const results = fields['[data-field="results"]'];
+  assert.equal(results.children[0].children.length, 5);
+  const first = results.children[0].children[0].children[0];
   assert.match(first.textContent, /Masjid Quba — 0.0 km straight-line/);
   const url = new URL(first.href);
   assert.equal(url.searchParams.get('origin'), '24.439391,39.617301');
   assert.equal(url.searchParams.get('destination'), '24.439391,39.617301');
   const mapElement = fields['[data-field="map"]'];
   mapElement.events.keydown({target: mapElement, key: 'Enter', preventDefault() {}});
+  const nearest = places.filter(place => place.latitude !== undefined)
+    .map(place => ({place, distance: Math.hypot(place.latitude - 24.5, (place.longitude - 39.6) * Math.cos(24.5 * Math.PI / 180))}))
+    .sort((a, b) => a.distance - b.distance)
+    .slice(0, 5).map(({place}) => place.name);
+  assert.deepEqual(results.children[0].children.map(item => item.children[0].textContent.split(' — ')[0]), nearest);
   markers[0].events.click();
   assert.equal(new URL(opened[0][0]).searchParams.get('origin'), '24.5,39.6');
 });
@@ -127,6 +156,59 @@ test('overlapping place labels are hidden and reappear after moving apart', () =
   secondLeft = 100;
   map.events['zoomend moveend']();
   assert.equal(second.style.visibility, 'visible');
+});
+
+test('fullscreen fallback opens and Escape restores the map', async () => {
+  const {context, fields, map, documentEvents} = setup();
+  const button = fields['[data-action="fullscreen"]'];
+  const frame = fields['[data-field="map-frame"]'];
+  await button.events.click();
+  assert.equal(frame.classes.has('is-fullscreen'), true);
+  assert.equal(context.document.body.classes.has('nearby-fullscreen-open'), true);
+  assert.equal(button.textContent, 'Exit full screen');
+  assert.equal(button.attributes['aria-pressed'], 'true');
+  assert.equal(frame.attributes['aria-modal'], 'true');
+  assert.equal(map.resized, 1);
+  assert.deepEqual(map.lastView, {center: {lat: 24.5, lng: 39.6}, zoom: 12});
+  documentEvents.keydown({key: 'Escape', preventDefault() {}});
+  assert.equal(frame.classes.has('is-fullscreen'), false);
+  assert.equal(context.document.body.classes.has('nearby-fullscreen-open'), false);
+  assert.equal(button.textContent, 'Full screen');
+  assert.equal(button.attributes['aria-pressed'], 'false');
+  assert.equal(frame.attributes['aria-modal'], undefined);
+  assert.equal(button.focused, true);
+  assert.equal(map.resized, 2);
+  assert.deepEqual(map.lastView, {center: {lat: 24.5, lng: 39.6}, zoom: 12});
+});
+
+test('fullscreen falls back to viewport mode when the native request fails', async () => {
+  const {fields} = setup();
+  const button = fields['[data-action="fullscreen"]'];
+  const frame = fields['[data-field="map-frame"]'];
+  frame.requestFullscreen = async () => { throw new Error('Fullscreen unavailable'); };
+  await button.events.click();
+  assert.equal(frame.classes.has('is-fullscreen'), true);
+  assert.equal(button.textContent, 'Exit full screen');
+});
+
+test('native fullscreen enters and exits through fullscreenchange', async () => {
+  const {context, fields, map, documentEvents} = setup();
+  const button = fields['[data-action="fullscreen"]'];
+  const frame = fields['[data-field="map-frame"]'];
+  frame.requestFullscreen = async () => {
+    context.document.fullscreenElement = frame;
+    documentEvents.fullscreenchange();
+  };
+  context.document.exitFullscreen = async () => {
+    context.document.fullscreenElement = null;
+    documentEvents.fullscreenchange();
+  };
+  await button.events.click();
+  assert.equal(button.textContent, 'Exit full screen');
+  assert.equal(frame.classes.has('is-fullscreen'), false);
+  await button.events.click();
+  assert.equal(button.textContent, 'Full screen');
+  assert.equal(map.resized, 2);
 });
 
 test('geolocation errors preserve manual fallback and a stale response cannot override it', () => {
