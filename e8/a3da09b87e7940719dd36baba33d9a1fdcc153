@@ -1,0 +1,117 @@
+badr/malaikah/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/banu-unaif/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/quba/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/umar/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/utban/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/jummah/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah.html
+  s_a70902b9386716::t_12c351859bbcb2 9
+makkah/bayah/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+makkah/hudaybiyyah/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/sabah/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/ruma/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+makkah/ibn-umar/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+makkah/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/saqia/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+makkah/khubayb/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/abuzar-ghifari/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/al-sabq/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/khaake-shifa/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/banu-zafar/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+makkah/maimoona/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/tooba/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/ijaba/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/mustarah/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/fath/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+badr/hamrah/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+makkah/abu-bakr/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/shaykhain/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/uhud/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/qiblatain/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+makkah/hijrah/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+makkah/ibn-zubair/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+badr/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+badr/shuhada/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/ghamama/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+styles.css
+  s_a70902b9386716::t_07e77ee6d50cb0 526-527,534
+madinah/kab-ashraf/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/saqifah-bani-saedah/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/uthman-farm-well/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+makkah/thawr/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+badr/areesh/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+badr/muztaliq/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+badr/anas-bin-malik/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+makkah/asma-abi-bakr/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/minarteen/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+index.html
+  s_a70902b9386716::t_12c351859bbcb2 25
+madinah/ares-well/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/fasih/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/ghars-well/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+madinah/rayah/index.html
+  s_a70902b9386716::t_12c351859bbcb2 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e8a3da09b87e7940719dd36baba33d9a1fdcc153",
+  "prompts": {},
+  "sessions": {
+    "s_a70902b9386716": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "311ba99e-a886-4d45-bf5f-e61a56b682ee",
+        "model": "unknown"
+      },
+      "human_author": "mtalhajamil <muhammad.jamil@hungerstation.com>"
+    }
+  }
+}
