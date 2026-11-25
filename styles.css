@@ -141,7 +141,8 @@ h1 {
 }
 
 .install-button,
-.install-close {
+.install-close,
+.trip-close {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -157,7 +158,8 @@ h1 {
 }
 
 .install-button:hover,
-.install-close:hover {
+.install-close:hover,
+.trip-close:hover {
   background: #e7ece5;
 }
 
@@ -177,7 +179,8 @@ h1 {
   background: rgb(20 30 22 / 55%);
 }
 
-.install-dialog-heading {
+.install-dialog-heading,
+.trip-dialog-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -189,7 +192,9 @@ h1 {
   font-size: 1.6rem;
 }
 
-.install-close {
+.install-close,
+.trip-close {
+  flex: 0 0 44px;
   font-size: 1.8rem;
 }
 
@@ -207,6 +212,10 @@ h1 {
   font-size: 1.6rem;
 }
 
+.trip-dialog-heading {
+  align-items: flex-start;
+}
+
 .trip-dialog ol {
   padding-left: 1.5rem;
   line-height: 1.6;
@@ -217,13 +226,11 @@ h1 {
 }
 
 .trip-dialog-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 0.75rem;
+  width: 100%;
 }
 
 .trip-dialog-actions button {
+  width: 100%;
   min-height: 44px;
   padding: 0.65rem 1rem;
   border: 1px solid #245c3e;
@@ -232,18 +239,8 @@ h1 {
   color: #fffefa;
   font: inherit;
   font-weight: 600;
+  text-align: center;
   cursor: pointer;
-}
-
-.trip-dialog-actions .trip-cancel {
-  background: transparent;
-  color: #245c3e;
-}
-
-@media (max-width: 360px) {
-  .trip-dialog-actions button {
-    width: 100%;
-  }
 }
 
 .nearby-page {

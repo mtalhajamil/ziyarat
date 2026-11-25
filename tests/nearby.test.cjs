@@ -17,6 +17,14 @@ test('nearby introduction stays available to assistive technology without taking
   assert.match(css, /\.visually-hidden\s*\{[^}]*position:\s*absolute;[^}]*clip:\s*rect\(0, 0, 0, 0\)/s);
 });
 
+test('trip preview provides an accessible close control and a full-width map action', () => {
+  const template = fs.readFileSync('templates.html', 'utf8');
+  const css = fs.readFileSync('styles.css', 'utf8');
+  assert.match(template, /data-action="close-trip" aria-label="Close trip preview"/);
+  assert.doesNotMatch(template, /data-action="cancel-trip"/);
+  assert.match(css, /\.trip-dialog-actions button\s*\{[^}]*width:\s*100%;[^}]*text-align:\s*center;/s);
+});
+
 class Element {
   constructor() {
     this.children = [];
@@ -38,23 +46,33 @@ class Element {
   querySelectorAll() { return []; }
 }
 
-function setup(geolocation, sourcePlaces = places) {
+function setup(geolocation, sourcePlaces = places, options = {}) {
   const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'map-origin-status', 'origin-announcement', 'map-origin-announcement', 'tile-status', 'results', 'trip-status', 'map-trip-status', 'trip-progress', 'map-trip-progress', 'map-trip-spinner', 'trip-dialog', 'trip-origin', 'trip-stops', 'trip-dialog-status', 'trip-open-spinner', 'trip-open-progress']
     .map(name => [`[data-field="${name}"]`, new Element()]));
   fields['[data-action="locate"]'] = new Element();
   fields['[data-action="open-map"]'] = new Element();
   fields['[data-action="close-map"]'] = new Element();
   fields['[data-action="map-trip"]'] = new Element();
-  fields['[data-action="cancel-trip"]'] = new Element();
+  fields['[data-action="close-trip"]'] = new Element();
   fields['[data-action="open-trip"]'] = new Element();
   const container = new Element();
   container.querySelector = selector => fields[selector];
   const markers = [];
   const map = {
     events: {},
-    setView(center, zoom) { this.lastView = {center, zoom}; return this; },
-    getZoom() { return 12; },
-    getCenter() { return {lat: 24.5, lng: 39.6}; },
+    setView(center, zoom, settings) {
+      this.lastView = {center, zoom};
+      if (options.realisticMap) {
+        this.center = Array.isArray(center) ? {lat: center[0], lng: center[1]} : center;
+        this.zoom = zoom;
+        this.settings = settings;
+        this.events['moveend zoomend']?.();
+        this.events['zoomend moveend']?.();
+      }
+      return this;
+    },
+    getZoom() { return options.realisticMap ? this.zoom : 12; },
+    getCenter() { return options.realisticMap ? this.center : {lat: 24.5, lng: 39.6}; },
     invalidateSize() { this.resized = (this.resized || 0) + 1; },
     on(name, fn) { this.events[name] = fn; return this; },
     removeLayer() {}
@@ -84,11 +102,12 @@ function setup(geolocation, sourcePlaces = places) {
   const documentEvents = {};
   const windowEvents = {};
   const timers = [];
+  const animationFrames = [];
   const context = vm.createContext({
     L, URL, URLSearchParams, navigator: {geolocation},
     window: {
       open: (...args) => opened.push(args), location: {assign: url => navigated.push(url)},
-      requestAnimationFrame: callback => callback(),
+      requestAnimationFrame: callback => options.deferFrames ? animationFrames.push(callback) : callback(),
       addEventListener: (type, handler) => { windowEvents[type] = handler; },
       setTimeout: callback => { timers.push(callback); }
     },
@@ -103,7 +122,7 @@ function setup(geolocation, sourcePlaces = places) {
   });
   vm.runInContext(script, context);
   context.renderNearby(container, {content: {}}, sourcePlaces);
-  return {context, fields, map, tiles, markers, opened, navigated, documentEvents, windowEvents, timers};
+  return {context, fields, map, tiles, markers, opened, navigated, documentEvents, windowEvents, timers, animationFrames};
 }
 
 test('supplied locations exclude Tooba and validate coordinate pairs', () => {
@@ -250,7 +269,7 @@ test('trip previews ordered places before opening the route or cancelling', () =
   const candidates = places.filter(place => place.latitude !== undefined);
   const ordered = setup().context.nearestTripPlaces({latitude: 24.5, longitude: 39.7}, candidates);
   assert.deepEqual(names, Array.from(ordered, place => expected.get(place.sourceCode)));
-  fields['[data-action="cancel-trip"]'].events.click();
+  fields['[data-action="close-trip"]'].events.click();
   assert.equal(dialog.open, false);
   assert.equal(button.focused, true);
   assert.equal(navigated.length, 0);
@@ -384,7 +403,7 @@ test('trip confirmation returns focus to the map opener if the map was closed du
   success({coords: {latitude: 24.5, longitude: 39.7}});
   const opener = fields['[data-action="open-map"]'];
   opener.focused = false;
-  fields['[data-action="cancel-trip"]'].events.click();
+  fields['[data-action="close-trip"]'].events.click();
   assert.equal(opener.focused, true);
 });
 
@@ -427,6 +446,33 @@ test('map view opens as a modal, resizes and restores focus on close and reopen'
   button.events.click();
   assert.equal(map.resized, 2);
   assert.deepEqual(map.lastView, {center: {lat: 24.5, lng: 39.6}, zoom: 12});
+});
+
+test('a pending resize cannot restore an older view over a newly selected origin', () => {
+  const requests = [];
+  const {context, fields, map, navigated, animationFrames} = setup({
+    getCurrentPosition(ok, fail) { requests.push({ok, fail}); }
+  }, places, {realisticMap: true, deferFrames: true});
+  fields['[data-action="open-map"]'].events.click();
+  map.events.click({latlng: {lat: 24.4, lng: 39.6}});
+  requests[0].ok({coords: {latitude: 51.5, longitude: -0.1}});
+  while (animationFrames.length) animationFrames.shift()();
+  assert.equal(map.getCenter().lat, 24.4);
+  assert.equal(map.getCenter().lng, 39.6);
+  assert.equal(map.settings.animate, false);
+  fields['[data-action="close-map"]'].events.click();
+  fields['[data-action="open-map"]'].events.click();
+  while (animationFrames.length) animationFrames.shift()();
+  assert.equal(map.getCenter().lat, 24.4);
+  assert.equal(map.getCenter().lng, 39.6);
+  fields['[data-action="map-trip"]'].events.click();
+  assert.equal(requests.length, 1);
+  assert.match(fields['[data-field="trip-origin"]'].textContent, /selected map location/);
+  const expected = context.nearestTripPlaces({latitude: 24.4, longitude: 39.6}, places.filter(place => place.latitude !== undefined));
+  assert.deepEqual(fields['[data-field="trip-stops"]'].children[0].children.map(item => item.textContent),
+    Array.from(expected, place => place.name));
+  fields['[data-action="open-trip"]'].events.click();
+  assert.equal(new URL(navigated[0]).searchParams.get('origin'), '24.4,39.6');
 });
 
 test('geolocation errors preserve manual fallback and a stale response cannot override it', () => {

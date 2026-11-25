@@ -425,7 +425,7 @@ function renderNearby(container, template, places) {
   const tripDialogStatus = field(container, 'trip-dialog-status');
   const tripOpenProgress = field(container, 'trip-open-progress');
   const tripOpenSpinner = field(container, 'trip-open-spinner');
-  const cancelTrip = container.querySelector('[data-action="cancel-trip"]');
+  const closeTrip = container.querySelector('[data-action="close-trip"]');
   const openTrip = container.querySelector('[data-action="open-trip"]');
   const setOriginStatus = message => { status.textContent = message; mapOriginStatus.textContent = message; };
   const setTripStatus = message => { for (const element of tripStatuses) element.textContent = message; };
@@ -465,16 +465,20 @@ function renderNearby(container, template, places) {
   }
 
   let lastView = {center: map.getCenter(), zoom: map.getZoom()};
+  let viewRevision = 0;
   map.on('moveend zoomend', () => {
     lastView = {center: map.getCenter(), zoom: map.getZoom()};
+    viewRevision++;
   });
 
   function resizeMap() {
     const view = lastView;
+    const revision = viewRevision;
     window.requestAnimationFrame(() => {
       if (!mapFrame.open) return;
+      const currentView = revision === viewRevision ? view : lastView;
       map.invalidateSize({pan: false});
-      map.setView(view.center, view.zoom, {animate: false});
+      map.setView(currentView.center, currentView.zoom, {animate: false});
       scheduleLabels();
     });
   }
@@ -533,7 +537,7 @@ function renderNearby(container, template, places) {
     for (const announcement of originAnnouncements) {
       announcement.textContent = `${source}: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}. Nearby places updated.`;
     }
-    map.setView([latitude, longitude], map.getZoom());
+    map.setView([latitude, longitude], map.getZoom(), {animate: false});
     showResults();
     scheduleLabels();
   }
@@ -602,7 +606,7 @@ function renderNearby(container, template, places) {
     resetTrip();
     if (tripDialog.open) tripDialog.close();
   }
-  cancelTrip.addEventListener('click', () => tripDialog.close());
+  closeTrip.addEventListener('click', () => tripDialog.close());
   tripDialog.addEventListener('close', () => {
     pendingTripUrl = null;
     resetTrip();
