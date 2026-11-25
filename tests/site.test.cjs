@@ -466,6 +466,14 @@ test('description previews expand after three lines and omit redundant controls'
   assert.equal(context.container.children[0].fields['[data-field="english"]'].dataset.collapsed, 'true');
 });
 
+test('all supplied Urdu descriptions have English translations', () => {
+  for (const destination of ['madinah', 'makkah', 'badr']) {
+    for (const place of data[`data/${destination}.json`]) {
+      if (place.urdu) assert.ok(place.english?.trim(), `${destination}/${place.slug}`);
+    }
+  }
+});
+
 test('supports Urdu-only descriptions without inventing an English translation', async () => {
   const {context} = await loadPage('place');
   context.container = new Element();
