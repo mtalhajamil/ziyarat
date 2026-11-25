@@ -132,34 +132,73 @@ h1 {
   background: #19452e;
 }
 
-.install-app {
-  margin-top: 0.75rem;
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.install-app[hidden],
-.install-app p[hidden] {
+.install-button[hidden] {
   display: none;
 }
 
-.install-app button {
+.install-button,
+.install-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
   min-height: 44px;
-  padding: 0.65rem 1rem;
-  border: 1px solid #245c3e;
+  padding: 0;
+  border: 0;
   border-radius: 0.6rem;
   background: transparent;
   color: #245c3e;
   font: inherit;
-  font-weight: 600;
   cursor: pointer;
 }
 
-.install-app p {
-  max-width: 34rem;
+.install-button:hover,
+.install-close:hover {
+  background: #e7ece5;
+}
+
+.install-dialog {
+  width: min(28rem, calc(100% - 2rem));
+  max-height: calc(100% - 2rem);
+  padding: 1.5rem;
+  border: 1px solid #ccd5ca;
+  border-radius: 0.8rem;
+  background: #fffefa;
+  color: #242d26;
+}
+
+.install-dialog::backdrop {
+  background: rgb(20 30 22 / 55%);
+}
+
+.install-dialog-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.install-dialog h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.install-close {
+  font-size: 1.8rem;
+}
+
+.install-dialog p {
   color: #405d48;
   line-height: 1.6;
 }
 
-.install-app p:empty {
+.install-dialog p:empty {
   display: none;
 }
 
@@ -198,33 +237,36 @@ h1 {
 }
 
 .nearby-map-frame {
-  position: relative;
-}
-
-.nearby-map-frame:fullscreen,
-.nearby-map-frame.is-fullscreen {
+  position: fixed;
+  inset: 0;
   width: 100%;
-  height: 100%;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
   background: #e4f0e2;
 }
 
-.nearby-map-frame.is-fullscreen {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  height: 100vh;
-  height: 100dvh;
-}
-
-body.nearby-fullscreen-open {
+html.nearby-map-open,
+body.nearby-map-open {
   overflow: hidden;
 }
 
-.nearby-fullscreen {
+.nearby-map-controls {
   position: absolute;
   top: max(0.75rem, env(safe-area-inset-top));
   right: max(0.75rem, env(safe-area-inset-right));
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.nearby-map-controls button {
   min-width: 44px;
   min-height: 44px;
   padding: 0.5rem 0.75rem;
@@ -237,18 +279,53 @@ body.nearby-fullscreen-open {
   cursor: pointer;
 }
 
+.nearby-map-controls [data-action="close-map"] {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.nearby-map-controls .map-trip {
+  background: #245c3e;
+  color: #fffefa;
+}
+
+.nearby-map-feedback {
+  position: absolute;
+  z-index: 1000;
+  left: max(0.75rem, env(safe-area-inset-left));
+  bottom: calc(3.5rem + env(safe-area-inset-bottom));
+  width: min(25rem, calc(100% - 1.5rem));
+  pointer-events: none;
+}
+
+.nearby-map-feedback p:not(:empty) {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.4rem;
+  background: #fffefa;
+  color: #242d26;
+}
+
 .nearby-map {
   width: 100%;
-  height: clamp(20rem, 55vh, 36rem);
-  border: 1px solid #b6d2b7;
-  border-radius: 0.75rem;
+  height: 100%;
   background: #e4f0e2;
 }
 
-.nearby-map-frame:fullscreen .nearby-map,
-.nearby-map-frame.is-fullscreen .nearby-map {
-  height: 100%;
-  border-radius: 0;
+.nearby-map .leaflet-top {
+  top: env(safe-area-inset-top);
+}
+
+.nearby-map .leaflet-left {
+  left: env(safe-area-inset-left);
+}
+
+.nearby-map .leaflet-bottom {
+  bottom: env(safe-area-inset-bottom);
+}
+
+.nearby-map .leaflet-right {
+  right: env(safe-area-inset-right);
 }
 
 .nearby-map:focus-visible {
@@ -307,11 +384,6 @@ body.nearby-fullscreen-open {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-}
-
-.nearby-privacy {
-  color: #405d48;
-  font-size: 0.875rem;
 }
 
 .nearby-heading {

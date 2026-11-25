@@ -408,14 +408,19 @@ function renderNearby(container, template, places) {
   container.replaceChildren(content);
   const mapElement = field(container, 'map');
   const mapFrame = field(container, 'map-frame');
-  const fullscreenButton = container.querySelector('[data-action="fullscreen"]');
+  const openMapButton = container.querySelector('[data-action="open-map"]');
+  const closeMapButton = container.querySelector('[data-action="close-map"]');
   const status = field(container, 'origin-status');
+  const mapOriginStatus = field(container, 'map-origin-status');
+  const originAnnouncements = [field(container, 'origin-announcement'), field(container, 'map-origin-announcement')];
   const tileStatus = field(container, 'tile-status');
   const results = field(container, 'results');
-  const tripStatus = field(container, 'trip-status');
-  const tripProgress = field(container, 'trip-progress');
-  const tripSpinner = field(container, 'trip-spinner');
-  const tripButton = container.querySelector('[data-action="trip"]');
+  const tripStatuses = [field(container, 'trip-status'), field(container, 'map-trip-status')];
+  const tripProgresses = [field(container, 'trip-progress'), field(container, 'map-trip-progress')];
+  const tripSpinners = [field(container, 'trip-spinner'), field(container, 'map-trip-spinner')];
+  const tripButtons = [container.querySelector('[data-action="trip"]'), container.querySelector('[data-action="map-trip"]')];
+  const setOriginStatus = message => { status.textContent = message; mapOriginStatus.textContent = message; };
+  const setTripStatus = message => { for (const element of tripStatuses) element.textContent = message; };
   const map = L.map(mapElement).setView([mappedPlaces[0].latitude, mappedPlaces[0].longitude], 12);
   const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -450,86 +455,32 @@ function renderNearby(container, template, places) {
     window.requestAnimationFrame(layoutLabels);
   }
 
-  let fullscreenMode = null;
-  let viewBeforeResize = null;
   let lastView = {center: map.getCenter(), zoom: map.getZoom()};
   map.on('moveend zoomend', () => {
     lastView = {center: map.getCenter(), zoom: map.getZoom()};
   });
 
   function resizeMap() {
-    const view = viewBeforeResize || lastView;
-    viewBeforeResize = null;
+    const view = lastView;
     window.requestAnimationFrame(() => {
+      if (!mapFrame.open) return;
       map.invalidateSize({pan: false});
       map.setView(view.center, view.zoom, {animate: false});
       scheduleLabels();
     });
   }
 
-  function setFullscreen(active, mode) {
-    fullscreenMode = active ? mode : null;
-    mapFrame.classList.toggle('is-fullscreen', active && mode === 'fallback');
-    document.body.classList.toggle('nearby-fullscreen-open', active);
-    fullscreenButton.textContent = active ? 'Exit full screen' : 'Full screen';
-    fullscreenButton.setAttribute('aria-pressed', String(active));
-    if (active) {
-      mapFrame.setAttribute('role', 'dialog');
-      mapFrame.setAttribute('aria-modal', 'true');
-      mapFrame.setAttribute('aria-label', 'Full screen map');
-    } else {
-      mapFrame.removeAttribute('role');
-      mapFrame.removeAttribute('aria-modal');
-      mapFrame.removeAttribute('aria-label');
-    }
-    fullscreenButton.focus();
+  openMapButton.addEventListener('click', () => {
+    mapFrame.showModal();
+    document.body.classList.toggle('nearby-map-open', true);
+    document.documentElement.classList.toggle('nearby-map-open', true);
     resizeMap();
-  }
-
-  fullscreenButton.addEventListener('click', async () => {
-    viewBeforeResize = {center: map.getCenter(), zoom: map.getZoom()};
-    if (fullscreenMode === 'native') {
-      try {
-        await document.exitFullscreen();
-      } catch {
-        status.textContent = 'Could not exit full screen. Try pressing Escape.';
-      }
-    } else if (fullscreenMode === 'fallback') {
-      setFullscreen(false);
-    } else if (mapFrame.requestFullscreen) {
-      try {
-        await mapFrame.requestFullscreen();
-      } catch {
-        setFullscreen(true, 'fallback');
-      }
-    } else {
-      setFullscreen(true, 'fallback');
-    }
   });
-  document.addEventListener('fullscreenchange', () => {
-    if (document.fullscreenElement === mapFrame) setFullscreen(true, 'native');
-    else if (fullscreenMode === 'native') setFullscreen(false);
-  });
-  document.addEventListener('keydown', event => {
-    if (!fullscreenMode) return;
-    if (event.key === 'Escape' && fullscreenMode === 'fallback') {
-      event.preventDefault();
-      viewBeforeResize = {center: map.getCenter(), zoom: map.getZoom()};
-      setFullscreen(false);
-    } else if (event.key === 'Tab') {
-      const focusable = [...mapFrame.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')]
-        .filter(element => element.getClientRects().length);
-      if (!focusable.length) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
+  closeMapButton.addEventListener('click', () => mapFrame.close());
+  mapFrame.addEventListener('close', () => {
+    document.body.classList.toggle('nearby-map-open', false);
+    document.documentElement.classList.toggle('nearby-map-open', false);
+    openMapButton.focus();
   });
 
   function showResults() {
@@ -557,7 +508,7 @@ function renderNearby(container, template, places) {
 
   function setOrigin(latitude, longitude, source) {
     if (!validCoordinates(latitude, longitude)) {
-      status.textContent = 'That location is outside the supported map area. Please select another location.';
+      setOriginStatus('That location is outside the supported map area. Please select another location.');
       return;
     }
     locationRequest++;
@@ -568,7 +519,10 @@ function renderNearby(container, template, places) {
     }).addTo(map).bindTooltip('Your selected location', {
       permanent: true, direction: 'top', offset: [0, -8], className: 'nearby-origin-label'
     });
-    status.textContent = `${source}: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}. Select a nearby place to view its description.`;
+    setOriginStatus('');
+    for (const announcement of originAnnouncements) {
+      announcement.textContent = `${source}: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}. Nearby places updated.`;
+    }
     map.setView([latitude, longitude], map.getZoom());
     showResults();
     scheduleLabels();
@@ -604,10 +558,10 @@ function renderNearby(container, template, places) {
   function requestCurrentLocation() {
     const request = ++locationRequest;
     if (!navigator.geolocation) {
-      status.textContent = 'Location is unavailable. Select a point on the map instead.';
+      setOriginStatus('Location is unavailable. Select a point on the map instead.');
       return;
     }
-    status.textContent = 'Requesting your location…';
+    setOriginStatus('Requesting your location…');
     navigator.geolocation.getCurrentPosition(position => {
       if (request !== locationRequest) return;
       setOrigin(position.coords.latitude, position.coords.longitude, 'Current location');
@@ -615,7 +569,7 @@ function renderNearby(container, template, places) {
       if (request !== locationRequest) return;
       const reason = error.code === 1 ? 'Location permission was denied.' :
         error.code === 3 ? 'The location request timed out.' : 'Your location could not be determined.';
-      status.textContent = `${reason} Select a point on the map instead.`;
+      setOriginStatus(`${reason} Select a point on the map instead.`);
     }, {timeout: 10000, maximumAge: 0});
   }
   container.querySelector('[data-action="locate"]').addEventListener('click', requestCurrentLocation);
@@ -624,33 +578,31 @@ function renderNearby(container, template, places) {
   function resetTrip() {
     tripRequest++;
     handoffPending = false;
-    tripButton.disabled = false;
-    tripButton.removeAttribute('aria-busy');
-    tripSpinner.hidden = true;
-    tripProgress.textContent = '';
+    for (const button of tripButtons) { button.disabled = false; button.removeAttribute('aria-busy'); }
+    for (const spinner of tripSpinners) spinner.hidden = true;
+    for (const progress of tripProgresses) progress.textContent = '';
   }
   window.addEventListener('pagehide', resetTrip);
   window.addEventListener('pageshow', resetTrip);
   document.addEventListener('visibilitychange', () => {
     if (handoffPending && document.visibilityState === 'hidden') resetTrip();
   });
-  tripButton.addEventListener('click', () => {
+  function planTrip() {
     if (!navigator.geolocation) {
-      tripStatus.textContent = 'Current location is unavailable. A trip requires your current location.';
+      setTripStatus('Current location is unavailable. A trip requires your current location.');
       return;
     }
     const request = ++tripRequest;
-    tripStatus.textContent = '';
-    tripButton.disabled = true;
-    tripButton.setAttribute('aria-busy', 'true');
-    tripSpinner.hidden = false;
-    tripProgress.textContent = 'Requesting your current location and opening Google Maps.';
+    setTripStatus('');
+    for (const button of tripButtons) { button.disabled = true; button.setAttribute('aria-busy', 'true'); }
+    for (const spinner of tripSpinners) spinner.hidden = false;
+    for (const progress of tripProgresses) progress.textContent = 'Requesting your current location and opening Google Maps.';
     navigator.geolocation.getCurrentPosition(position => {
       if (request !== tripRequest) return;
       const current = {latitude: position.coords.latitude, longitude: position.coords.longitude};
       if (!validCoordinates(current.latitude, current.longitude)) {
         resetTrip();
-        tripStatus.textContent = 'Your current location is outside the supported map area.';
+        setTripStatus('Your current location is outside the supported map area.');
         return;
       }
       const stops = nearestTripPlaces(current, mappedPlaces);
@@ -662,16 +614,17 @@ function renderNearby(container, template, places) {
         }, 1500);
       } catch {
         resetTrip();
-        tripStatus.textContent = 'Google Maps could not be opened. Please try again.';
+        setTripStatus('Google Maps could not be opened. Please try again.');
       }
     }, error => {
       if (request !== tripRequest) return;
       resetTrip();
       const reason = error.code === 1 ? 'Location permission was denied.' :
         error.code === 3 ? 'The location request timed out.' : 'Your current location could not be determined.';
-      tripStatus.textContent = `${reason} A trip requires your current location.`;
+      setTripStatus(`${reason} A trip requires your current location.`);
     }, {timeout: 10000, maximumAge: 0});
-  });
+  }
+  for (const button of tripButtons) button.addEventListener('click', planTrip);
   showResults();
   requestCurrentLocation();
 }
@@ -739,18 +692,26 @@ async function start() {
 }
 
 function setupInstall() {
-  const container = document.getElementById('install-app');
-  if (!container) return;
   const button = document.getElementById('install-button');
-  const help = document.getElementById('install-help');
+  if (!button) return;
+  const dialog = document.getElementById('install-dialog');
   const status = document.getElementById('install-status');
   const standalone = window.matchMedia?.('(display-mode: standalone)');
   let promptEvent = null;
   let installed = false;
   const refresh = () => {
-    container.hidden = installed || Boolean(standalone?.matches) || navigator.standalone === true;
+    button.hidden = installed || Boolean(standalone?.matches) || navigator.standalone === true;
+    if (button.hidden && dialog.open) dialog.close();
+  };
+  const showHelp = message => {
+    if (button.hidden) return;
+    status.textContent = message;
+    dialog.showModal();
   };
   refresh();
+  dialog.addEventListener('close', () => {
+    if (!button.hidden) button.focus();
+  });
   standalone?.addEventListener?.('change', refresh);
   window.addEventListener('beforeinstallprompt', event => {
     if (installed || standalone?.matches || navigator.standalone === true) return;
@@ -766,8 +727,7 @@ function setupInstall() {
   button.addEventListener('click', async () => {
     status.textContent = '';
     if (!promptEvent) {
-      help.hidden = !help.hidden;
-      button.setAttribute('aria-expanded', String(!help.hidden));
+      showHelp('');
       return;
     }
     const event = promptEvent;
@@ -776,9 +736,9 @@ function setupInstall() {
     try {
       await event.prompt();
       const choice = await event.userChoice;
-      if (choice.outcome !== 'accepted') status.textContent = 'Installation canceled. You can try your browser’s install menu.';
+      if (choice.outcome !== 'accepted') showHelp('Installation canceled. You can try your browser’s install menu.');
     } catch {
-      status.textContent = 'Could not open the install prompt. Use your browser’s install menu.';
+      showHelp('Could not open the install prompt. Use your browser’s install menu.');
     } finally {
       button.disabled = false;
     }
