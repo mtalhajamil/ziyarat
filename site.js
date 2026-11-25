@@ -1,5 +1,7 @@
 'use strict';
 
+let placeResizeHandler = null;
+
 async function loadResource(path, type) {
   const response = await fetch(path, {cache: 'no-cache'});
   if (!response.ok) {
@@ -109,7 +111,7 @@ function placeDestination(container) {
   return destination;
 }
 
-function renderPlaces(container, template, places) {
+function renderPlaces(container, template, places, slug = container.dataset.placeSlug, animate = false) {
   const destination = placeDestination(container);
   if (!Array.isArray(places) || places.length === 0) {
     throw new Error('Place data must contain at least one place.');
@@ -123,9 +125,18 @@ function renderPlaces(container, template, places) {
     slugs.add(place.slug);
     requireText(place.name, 'place name');
     if (place.image !== undefined) validateImage(place.image);
-    if (place.english !== undefined || place.urdu !== undefined) {
-      requireText(place.english, 'English description');
-      requireText(place.urdu, 'Urdu description');
+    if (place.english !== undefined) requireText(place.english, 'English description');
+    if (place.urdu !== undefined) requireText(place.urdu, 'Urdu description');
+    if (place.videoUrl !== undefined) {
+      const video = new URL(requireText(place.videoUrl, 'video URL'));
+      const validYouTubePath =
+        (video.hostname === 'youtu.be' && video.pathname.length > 1) ||
+        (['youtube.com', 'www.youtube.com', 'm.youtube.com'].includes(video.hostname) &&
+          (/^\/(?:shorts|embed)\/[^/]+\/?$/.test(video.pathname) ||
+            (video.pathname === '/watch' && video.searchParams.has('v'))));
+      if (video.protocol !== 'https:' || !validYouTubePath || video.username || video.password) {
+        throw new Error('Video URL must be a YouTube HTTPS link.');
+      }
     }
     const map = new URL(requireText(place.mapUrl, 'map URL'));
     const isGoogleMaps = (
@@ -146,23 +157,32 @@ function renderPlaces(container, template, places) {
   const imageSource = field(content, 'image-source');
   const imageLicense = field(content, 'image-license');
   const map = field(content, 'map');
+  const video = field(content, 'video');
   const english = field(content, 'english');
   const urdu = field(content, 'urdu');
+  const englishMore = field(content, 'english-more');
+  const urduMore = field(content, 'urdu-more');
   const descriptions = field(content, 'descriptions');
   const descriptionEmpty = field(content, 'description-empty');
   const previous = content.querySelector('[data-action="previous"]');
   const next = content.querySelector('[data-action="next"]');
   if (!previous || !next) throw new Error('Missing place navigation controls.');
-  const slug = container.dataset.placeSlug;
   const index = slug ? places.findIndex(place => place.slug === slug) : 0;
   if (index === -1) throw new Error(`Unknown place: ${slug}.`);
+  let initializeDescriptions = () => {};
 
   function navigateTo(placeIndex) {
-    const path = `${destination}/${places[placeIndex].slug}/`;
-    window.location.assign(new URL(path, document.baseURI).href);
+    const nextPlace = places[placeIndex];
+    const url = new URL(`${destination}/${nextPlace.slug}/`, document.baseURI);
+    window.history.pushState({destination, slug: nextPlace.slug}, '', url.href);
+    renderPlaces(container, template, places, nextPlace.slug, true);
   }
 
   const place = places[index];
+  container.dataset.placeSlug = place.slug;
+  document.title = `${place.name} | Ziyarat`;
+  const currentBreadcrumb = document.querySelector('.breadcrumbs [aria-current="page"]');
+  if (currentBreadcrumb) currentBreadcrumb.textContent = place.name;
   name.textContent = place.name;
   if (place.image) {
     setImage(image, place.image);
@@ -178,23 +198,75 @@ function renderPlaces(container, template, places) {
     credit.hidden = false;
   }
   map.href = place.mapUrl;
-  if (place.english !== undefined) {
-    english.textContent = place.english;
-    urdu.textContent = place.urdu;
+  if (place.videoUrl) {
+    video.href = place.videoUrl;
+    video.hidden = false;
+    video.target = '_blank';
+    video.rel = 'noopener noreferrer';
+  } else {
+    video.hidden = true;
+  }
+  const hasDescriptions = place.english !== undefined || place.urdu !== undefined;
+  if (hasDescriptions) {
+    english.textContent = place.english ?? 'English translation coming soon.';
+    urdu.textContent = place.urdu ?? 'اردو تفصیل جلد شامل کی جائے گی۔';
     const englishPanel = field(content, 'english-panel');
     const urduPanel = field(content, 'urdu-panel');
     const englishButton = field(content, 'language-en');
     const urduButton = field(content, 'language-ur');
+    function preparePreview(panel, paragraph, button, moreLabel, lessLabel) {
+      if (panel.hidden) return;
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      paragraph.dataset.collapsed = 'false';
+      const lineHeight = Number.parseFloat(window.getComputedStyle(paragraph).lineHeight);
+      if (!Number.isFinite(lineHeight) || lineHeight <= 0) {
+        throw new Error('Could not measure description line height.');
+      }
+      const needsToggle = paragraph.scrollHeight > lineHeight * 3 + 1;
+      button.hidden = !needsToggle;
+      const keepExpanded = needsToggle && expanded;
+      paragraph.dataset.collapsed = String(needsToggle && !keepExpanded);
+      button.textContent = keepExpanded ? 'Show less' : 'Show more';
+      button.setAttribute('aria-expanded', String(keepExpanded));
+      button.setAttribute('aria-label', keepExpanded ? lessLabel : moreLabel);
+    }
+    function bindPreview(paragraph, button, moreLabel, lessLabel) {
+      button.addEventListener('click', () => {
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+        paragraph.dataset.collapsed = String(expanded);
+        button.setAttribute('aria-expanded', String(!expanded));
+        button.textContent = expanded ? 'Show more' : 'Show less';
+        button.setAttribute('aria-label', expanded ? moreLabel : lessLabel);
+      });
+    }
+    bindPreview(english, englishMore, 'Show more description', 'Show less description');
+    bindPreview(urdu, urduMore, 'مزید تفصیل دکھائیں', 'کم تفصیل دکھائیں');
     function setLanguage(language) {
       const isEnglish = language === 'en';
       englishPanel.hidden = !isEnglish;
       urduPanel.hidden = isEnglish;
       englishButton.ariaPressed = String(isEnglish);
       urduButton.ariaPressed = String(!isEnglish);
+      preparePreview(
+        isEnglish ? englishPanel : urduPanel,
+        isEnglish ? english : urdu,
+        isEnglish ? englishMore : urduMore,
+        isEnglish ? 'Show more description' : 'مزید تفصیل دکھائیں',
+        isEnglish ? 'Show less description' : 'کم تفصیل دکھائیں'
+      );
     }
-    setLanguage('en');
     englishButton.addEventListener('click', () => setLanguage('en'));
     urduButton.addEventListener('click', () => setLanguage('ur'));
+    if (placeResizeHandler) window.removeEventListener('resize', placeResizeHandler);
+    placeResizeHandler = () => {
+      if (englishPanel.hidden) {
+        preparePreview(urduPanel, urdu, urduMore, 'مزید تفصیل دکھائیں', 'کم تفصیل دکھائیں');
+      } else {
+        preparePreview(englishPanel, english, englishMore, 'Show more description', 'Show less description');
+      }
+    };
+    window.addEventListener('resize', placeResizeHandler);
+    initializeDescriptions = () => setLanguage('en');
   } else {
     descriptions.hidden = true;
     descriptionEmpty.hidden = false;
@@ -207,7 +279,12 @@ function renderPlaces(container, template, places) {
   next.addEventListener('click', () => {
     navigateTo((index + 1) % places.length);
   });
+  const placePreview = content.querySelector('.place-preview');
+  if (!placePreview) throw new Error('Missing place preview container.');
+  if (animate) placePreview.classList.add('place-changing');
   container.replaceChildren(content);
+  initializeDescriptions();
+  if (animate) name.focus({preventScroll: true});
 }
 
 async function start() {
@@ -224,7 +301,24 @@ async function start() {
     if (destinations) {
       renderDestinations(destinations, getTemplate(templates, 'destination-template'), data);
     } else if (places) {
-      renderPlaces(places, getTemplate(templates, 'place-template'), data);
+      const template = getTemplate(templates, 'place-template');
+      const destination = placeDestination(places);
+      renderPlaces(places, template, data);
+      window.history.replaceState(
+        {destination, slug: places.dataset.placeSlug},
+        '',
+        window.location.href
+      );
+      window.addEventListener('popstate', () => {
+        const basePath = new URL(document.baseURI).pathname;
+        const currentPath = new URL(window.location.href).pathname;
+        if (!currentPath.startsWith(basePath)) return;
+        const [currentDestination, slug] = currentPath.slice(basePath.length).split('/').filter(Boolean);
+        if (currentDestination !== destination ||
+            !data.some(place => place.slug === slug) ||
+            places.dataset.placeSlug === slug) return;
+        renderPlaces(places, template, data, slug, true);
+      });
     } else {
       throw new Error('No content container found.');
     }
