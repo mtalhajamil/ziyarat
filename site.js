@@ -287,19 +287,163 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
   if (animate) name.focus({preventScroll: true});
 }
 
+function validCoordinates(latitude, longitude) {
+  return Number.isFinite(latitude) && Math.abs(latitude) <= 85 &&
+    Number.isFinite(longitude) && Math.abs(longitude) <= 180;
+}
+
+function straightLineKm(origin, destination) {
+  const radians = degrees => degrees * Math.PI / 180;
+  const lat1 = radians(origin.latitude);
+  const lat2 = radians(destination.latitude);
+  const dLat = lat2 - lat1;
+  const dLon = radians(destination.longitude - origin.longitude);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
+}
+
+function directionsUrl(origin, place) {
+  const params = new URLSearchParams({
+    api: '1',
+    origin: `${origin.latitude},${origin.longitude}`,
+    destination: `${place.latitude},${place.longitude}`
+  });
+  return `https://www.google.com/maps/dir/?${params}`;
+}
+
+function renderNearby(container, template, places) {
+  if (!Array.isArray(places)) throw new Error('Invalid place data.');
+  const mappedPlaces = places.filter(place => {
+    const hasLatitude = place.latitude !== undefined;
+    const hasLongitude = place.longitude !== undefined;
+    if (hasLatitude !== hasLongitude || (hasLatitude && !validCoordinates(place.latitude, place.longitude))) {
+      throw new Error(`Invalid coordinates for ${place.slug}.`);
+    }
+    return hasLatitude;
+  });
+  if (!mappedPlaces.length) throw new Error('No places with coordinates.');
+  for (const place of mappedPlaces) requireText(place.name, 'place name');
+  if (typeof L === 'undefined') throw new Error('Map library could not be loaded.');
+
+  const content = document.importNode(template.content, true);
+  container.replaceChildren(content);
+  const mapElement = field(container, 'map');
+  const status = field(container, 'origin-status');
+  const tileStatus = field(container, 'tile-status');
+  const results = field(container, 'results');
+  const latInput = field(container, 'latitude');
+  const lonInput = field(container, 'longitude');
+  const map = L.map(mapElement).setView([mappedPlaces[0].latitude, mappedPlaces[0].longitude], 12);
+  const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+  tiles.on('tileerror', () => {
+    tileStatus.textContent = 'Some map tiles could not be loaded. Check your connection; the place list and coordinate fields are still available.';
+  });
+  let origin = null;
+  let originMarker = null;
+  let locationRequest = 0;
+  const pin = L.divIcon({className: 'nearby-pin', html: '', iconSize: [44, 44]});
+
+  function showResults() {
+    const ordered = mappedPlaces.map(place => ({
+      place,
+      distance: origin ? straightLineKm(origin, place) : null
+    }));
+    if (origin) ordered.sort((a, b) => a.distance - b.distance);
+    const list = document.createDocumentFragment();
+    for (const {place, distance} of ordered) {
+      const item = document.createElement('li');
+      if (origin) {
+        const link = document.createElement('a');
+        link.href = directionsUrl(origin, place);
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = `${place.name} — ${distance.toFixed(1)} km straight-line (directions)`;
+        item.append(link);
+      } else {
+        item.textContent = place.name;
+      }
+      list.append(item);
+    }
+    results.replaceChildren(list);
+  }
+
+  function setOrigin(latitude, longitude, source) {
+    if (!validCoordinates(latitude, longitude)) {
+      status.textContent = 'Enter a latitude between -85 and 85 and longitude between -180 and 180.';
+      return;
+    }
+    locationRequest++;
+    origin = {latitude, longitude};
+    latInput.value = String(latitude);
+    lonInput.value = String(longitude);
+    if (originMarker) map.removeLayer(originMarker);
+    originMarker = L.circleMarker([latitude, longitude], {
+      radius: 9, color: '#ffffff', weight: 3, fillColor: '#245c3e', fillOpacity: 1
+    }).addTo(map).bindTooltip('Your selected location');
+    status.textContent = `${source}: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}. Select a place for directions.`;
+    map.setView([latitude, longitude], 12);
+    showResults();
+  }
+
+  for (const place of mappedPlaces) {
+    L.marker([place.latitude, place.longitude], {icon: pin, title: place.name, alt: place.name})
+      .addTo(map)
+      .on('click', () => {
+        if (!origin) {
+          status.textContent = 'Choose a location first to open directions.';
+          return;
+        }
+        window.open(directionsUrl(origin, place), '_blank', 'noopener,noreferrer');
+      });
+  }
+  map.on('click', event => setOrigin(event.latlng.lat, event.latlng.lng, 'Selected location'));
+  field(container, 'origin-form').addEventListener('submit', event => {
+    event.preventDefault();
+    if (!latInput.value || !lonInput.value) {
+      status.textContent = 'Enter both latitude and longitude.';
+      return;
+    }
+    setOrigin(Number(latInput.value), Number(lonInput.value), 'Selected location');
+  });
+  container.querySelector('[data-action="locate"]').addEventListener('click', () => {
+    const request = ++locationRequest;
+    if (!navigator.geolocation) {
+      status.textContent = 'Location is unavailable. Select a point on the map or enter coordinates instead.';
+      return;
+    }
+    status.textContent = 'Requesting your location…';
+    navigator.geolocation.getCurrentPosition(position => {
+      if (request !== locationRequest) return;
+      setOrigin(position.coords.latitude, position.coords.longitude, 'Current location');
+    }, error => {
+      if (request !== locationRequest) return;
+      const reason = error.code === 1 ? 'Location permission was denied.' :
+        error.code === 3 ? 'The location request timed out.' : 'Your location could not be determined.';
+      status.textContent = `${reason} Select a point on the map or enter coordinates instead.`;
+    }, {timeout: 10000, maximumAge: 0});
+  });
+  showResults();
+}
+
 async function start() {
   const status = document.getElementById('load-status');
   const destinations = document.getElementById('destination-list');
   const places = document.getElementById('place-content');
+  const nearby = document.getElementById('nearby-content');
   status.textContent = 'Loading…';
   try {
     const [templateHtml, data] = await Promise.all([
       loadResource('templates.html', 'text'),
-      loadResource(destinations ? 'data/destinations.json' : `data/${placeDestination(places)}.json`, 'json')
+      loadResource(destinations ? 'data/destinations.json' : `data/${nearby ? 'madinah' : placeDestination(places)}.json`, 'json')
     ]);
     const templates = new DOMParser().parseFromString(templateHtml, 'text/html');
     if (destinations) {
       renderDestinations(destinations, getTemplate(templates, 'destination-template'), data);
+    } else if (nearby) {
+      renderNearby(nearby, getTemplate(templates, 'nearby-template'), data);
     } else if (places) {
       const template = getTemplate(templates, 'place-template');
       const destination = placeDestination(places);

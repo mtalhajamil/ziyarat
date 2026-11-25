@@ -590,7 +590,7 @@ test('revalidates templates and data instead of using stale cached content', asy
 });
 
 test('all pages use the same versioned stylesheet and script', () => {
-  const pages = ['index.html', 'madinah.html', 'madinah/index.html',
+  const pages = ['index.html', 'madinah.html', 'nearby/index.html', 'madinah/index.html',
     ...['madinah', 'makkah', 'badr'].flatMap(destination => [
       `${destination}/index.html`,
       ...data[`data/${destination}.json`].map(place => `${destination}/${place.slug}/index.html`)
