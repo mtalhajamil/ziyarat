@@ -1,28 +1,7 @@
 [
-  {
-    "name": "Makkah",
-    "page": "makkah/hudaybiyyah/",
-    "description": "Home to the Kaaba and the sacred destination of Hajj and Umrah.",
-    "image": { "src": "assets/images/makkah.jpg", "alt": "The Kaaba in Makkah at night", "width": 960, "height": 720 }
-  },
-  {
-    "name": "Madinah",
-    "image": { "src": "assets/images/madinah.jpg", "alt": "The Prophet's Mosque in Madinah", "width": 960, "height": 720 },
-    "description": "The city of the Prophet’s migration and home to the Prophet’s Mosque.",
-    "page": "madinah/quba/"
-  },
-  {
-    "name": "Badr",
-    "page": "badr/anas-bin-malik/",
-    "description": "The site of the Battle of Badr, a defining event in early Islamic history.",
-    "image": { "src": "assets/images/badr.jpg", "alt": "A monument to the martyrs of Badr", "width": 1280, "height": 960 }
-  },
-  {
-    "name": "Taif",
-    "image": { "src": "assets/images/taif.jpg", "alt": "Buildings in Taif, Saudi Arabia", "width": 960, "height": 540 }
-  },
-  {
-    "name": "Turkiye",
-    "image": { "src": "assets/images/turkiye.jpg", "alt": "Hagia Sophia in Istanbul, Turkiye", "width": 960, "height": 641 }
-  }
+  "makkah",
+  "madinah",
+  "badr",
+  "taif",
+  "turkiye"
 ]

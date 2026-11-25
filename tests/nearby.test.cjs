@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 
-const places = JSON.parse(fs.readFileSync('data/madinah.json'));
+const places = JSON.parse(fs.readFileSync('data/madinah.json')).places;
 const script = fs.readFileSync('site.js', 'utf8').replace(/\nstart\(\);\s*$/, '');
 
 class Element {
@@ -19,7 +19,7 @@ class Element {
 }
 
 function setup(geolocation) {
-  const fields = Object.fromEntries(['map', 'origin-status', 'tile-status', 'results', 'latitude', 'longitude', 'origin-form']
+  const fields = Object.fromEntries(['map', 'origin-status', 'tile-status', 'results']
     .map(name => [`[data-field="${name}"]`, new Element()]));
   fields['[data-action="locate"]'] = new Element();
   const container = new Element();
@@ -28,6 +28,8 @@ function setup(geolocation) {
   const map = {
     events: {},
     setView() { return this; },
+    getZoom() { return 12; },
+    getCenter() { return {lat: 24.5, lng: 39.6}; },
     on(name, fn) { this.events[name] = fn; return this; },
     removeLayer() {}
   };
@@ -35,7 +37,8 @@ function setup(geolocation) {
     events: {},
     addTo() { return this; },
     on(name, fn) { this.events[name] = fn; return this; },
-    bindTooltip() { return this; }
+    bindTooltip(content, options) { this.tooltip = {content, options, getElement: () => null}; return this; },
+    getTooltip() { return this.tooltip; }
   });
   const tiles = layer();
   const L = {
@@ -53,7 +56,7 @@ function setup(geolocation) {
   const opened = [];
   const context = vm.createContext({
     L, URLSearchParams, navigator: {geolocation},
-    window: {open: (...args) => opened.push(args)},
+    window: {open: (...args) => opened.push(args), requestAnimationFrame: callback => callback()},
     document: {
       importNode: () => new Element(),
       createElement: () => new Element(),
@@ -95,6 +98,8 @@ test('supplied locations exclude Tooba and validate coordinate pairs', () => {
 test('manual origin sorts results and both links and pins use that origin for directions', () => {
   const {fields, map, markers, opened} = setup();
   assert.equal(markers.length, 27);
+  assert.equal(markers[0].tooltip.content.textContent, 'Masjid Quba');
+  assert.equal(markers[0].tooltip.options.permanent, true);
   markers[0].events.click();
   assert.match(fields['[data-field="origin-status"]'].textContent, /Choose a location first/);
   map.events.click({latlng: {lat: 24.439391, lng: 39.617301}});
@@ -103,11 +108,25 @@ test('manual origin sorts results and both links and pins use that origin for di
   const url = new URL(first.href);
   assert.equal(url.searchParams.get('origin'), '24.439391,39.617301');
   assert.equal(url.searchParams.get('destination'), '24.439391,39.617301');
-  fields['[data-field="latitude"]'].value = '24.5';
-  fields['[data-field="longitude"]'].value = '39.6';
-  fields['[data-field="origin-form"]'].events.submit({preventDefault() {}});
+  const mapElement = fields['[data-field="map"]'];
+  mapElement.events.keydown({target: mapElement, key: 'Enter', preventDefault() {}});
   markers[0].events.click();
   assert.equal(new URL(opened[0][0]).searchParams.get('origin'), '24.5,39.6');
+});
+
+test('overlapping place labels are hidden and reappear after moving apart', () => {
+  const {map, markers} = setup();
+  const first = {style: {}, getBoundingClientRect: () => ({left: 0, right: 80, top: 0, bottom: 25})};
+  let secondLeft = 40;
+  const second = {style: {}, getBoundingClientRect: () => ({left: secondLeft, right: secondLeft + 80, top: 0, bottom: 25})};
+  markers[0].tooltip.getElement = () => first;
+  markers[1].tooltip.getElement = () => second;
+  map.events['zoomend moveend']();
+  assert.equal(first.style.visibility, 'visible');
+  assert.equal(second.style.visibility, 'hidden');
+  secondLeft = 100;
+  map.events['zoomend moveend']();
+  assert.equal(second.style.visibility, 'visible');
 });
 
 test('geolocation errors preserve manual fallback and a stale response cannot override it', () => {
@@ -117,7 +136,7 @@ test('geolocation errors preserve manual fallback and a stale response cannot ov
   const locate = fields['[data-action="locate"]'];
   locate.events.click();
   failure({code: 1});
-  assert.match(fields['[data-field="origin-status"]'].textContent, /denied.*map or enter coordinates/i);
+  assert.match(fields['[data-field="origin-status"]'].textContent, /denied.*map/i);
   locate.events.click();
   map.events.click({latlng: {lat: 24.4, lng: 39.6}});
   success({coords: {latitude: 1, longitude: 2}});

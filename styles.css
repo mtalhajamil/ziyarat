@@ -145,27 +145,11 @@ h1 {
   line-height: 1.6;
 }
 
-.nearby-controls,
-.nearby-controls form {
+.nearby-controls {
   display: flex;
   flex-wrap: wrap;
   align-items: end;
   gap: 0.75rem;
-}
-
-.nearby-controls label {
-  display: grid;
-  gap: 0.25rem;
-  font-weight: 600;
-}
-
-.nearby-controls input {
-  width: min(100%, 10rem);
-  min-height: 44px;
-  padding: 0.5rem;
-  border: 1px solid #68756a;
-  border-radius: 0.4rem;
-  font: inherit;
 }
 
 .nearby-status:empty {
@@ -178,6 +162,11 @@ h1 {
   border: 1px solid #b6d2b7;
   border-radius: 0.75rem;
   background: #e4f0e2;
+}
+
+.nearby-map:focus-visible {
+  outline: 3px solid #245c3e;
+  outline-offset: 3px;
 }
 
 .nearby-map .leaflet-control-zoom a {
@@ -204,6 +193,27 @@ h1 {
 .nearby-pin:focus-visible {
   outline: 3px solid #19452e;
   outline-offset: 3px;
+}
+
+.nearby-map .nearby-place-label,
+.nearby-map .nearby-origin-label {
+  width: max-content;
+  max-width: 10rem;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid #c5d3c4;
+  border-radius: 0.35rem;
+  background: #fffefa;
+  color: #242d26;
+  font: 600 0.75rem/1.3 system-ui, sans-serif;
+  white-space: normal;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.nearby-map .nearby-origin-label {
+  border-color: #245c3e;
+  background: #245c3e;
+  color: #fffefa;
 }
 
 .nearby-map .leaflet-control-attribution a {
@@ -340,77 +350,11 @@ h2 {
 }
 
 .place-body {
-  --place-text: #1c4935;
-  --place-secondary: #344f3c;
-  --place-disabled: #607966;
-  --place-accent: #a67b3f;
-  --place-border: #b6d2b7;
-  --place-breadcrumb-border: #d3e6d1;
-  --place-breadcrumb-bg: rgba(248, 253, 247, 0.82);
-  --place-card-bg: rgba(249, 253, 247, 0.78);
-  --place-details-bg: rgba(246, 252, 243, 0.82);
-  --place-panel-bg: rgba(227, 242, 224, 0.7);
-  --place-toggle-bg: #e3f2e0;
-  --place-image-bg: #e4f0e2;
-  --place-shadow: 28, 73, 53;
-  --place-control: #245c3e;
-  --place-control-hover: #19452e;
-  --place-video: #866044;
-  --place-video-hover: #6d4931;
-  --place-background:
-    radial-gradient(ellipse at 10% 20%, rgba(151, 199, 157, 0.32), transparent 45%),
-    radial-gradient(ellipse at 90% 55%, rgba(203, 222, 181, 0.38), transparent 45%),
-    #f2f8ef;
-  color: var(--place-text);
-  background: var(--place-background);
-}
-
-.place-body:has(#place-content[data-destination="makkah"]) {
-  --place-text: #302b26;
-  --place-secondary: #4c4032;
-  --place-disabled: #66594a;
-  --place-accent: #8b6326;
-  --place-border: #cbb99d;
-  --place-breadcrumb-border: #ded0b8;
-  --place-breadcrumb-bg: rgba(255, 251, 242, 0.86);
-  --place-card-bg: rgba(255, 251, 242, 0.82);
-  --place-details-bg: rgba(255, 250, 239, 0.88);
-  --place-panel-bg: rgba(241, 232, 212, 0.8);
-  --place-toggle-bg: #f1e8d4;
-  --place-image-bg: #e9dfcd;
-  --place-shadow: 81, 67, 47;
-  --place-control: #51432f;
-  --place-control-hover: #392e20;
-  --place-video: #854d3f;
-  --place-video-hover: #6e3c30;
-  --place-background:
-    radial-gradient(ellipse at 10% 20%, rgba(224, 199, 146, 0.3), transparent 45%),
-    radial-gradient(ellipse at 90% 55%, rgba(218, 198, 164, 0.3), transparent 45%),
-    #faf7ef;
-}
-
-.place-body:has(#place-content[data-destination="badr"]) {
-  --place-text: #51252b;
-  --place-secondary: #603039;
-  --place-disabled: #735058;
-  --place-accent: #9c3945;
-  --place-border: #d7aeb3;
-  --place-breadcrumb-border: #e7c1c5;
-  --place-breadcrumb-bg: rgba(255, 246, 246, 0.9);
-  --place-card-bg: rgba(255, 246, 246, 0.86);
-  --place-details-bg: rgba(255, 243, 244, 0.9);
-  --place-panel-bg: rgba(245, 220, 223, 0.8);
-  --place-toggle-bg: #f5dcdf;
-  --place-image-bg: #f0d0d4;
-  --place-shadow: 107, 39, 49;
-  --place-control: #892d38;
-  --place-control-hover: #68202a;
-  --place-video: #58354f;
-  --place-video-hover: #3f2539;
-  --place-background:
-    radial-gradient(ellipse at 10% 20%, rgba(220, 123, 137, 0.3), transparent 45%),
-    radial-gradient(ellipse at 90% 55%, rgba(230, 160, 169, 0.35), transparent 45%),
-    #f9e3e6;
+  color: var(--place-text, #242d26);
+  background:
+    radial-gradient(ellipse at 10% 20%, var(--place-glow-one, transparent), transparent 45%),
+    radial-gradient(ellipse at 90% 55%, var(--place-glow-two, transparent), transparent 45%),
+    var(--place-background-color, #f7f6f0);
 }
 
 .place-body :is(a, button):focus-visible {

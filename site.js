@@ -105,10 +105,44 @@ function renderDestinations(container, template, destinations) {
 
 function placeDestination(container) {
   const destination = container?.dataset.destination || 'madinah';
-  if (!['madinah', 'makkah', 'badr'].includes(destination)) {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(destination)) {
     throw new Error('Unsupported place destination.');
   }
   return destination;
+}
+
+function applyDestinationTheme(theme) {
+  const keys = [
+    'text', 'secondary', 'disabled', 'accent', 'border', 'breadcrumb-border', 'breadcrumb-bg',
+    'card-bg', 'details-bg', 'panel-bg', 'toggle-bg', 'image-bg', 'shadow', 'control',
+    'control-hover', 'video', 'video-hover', 'glow-one', 'glow-two', 'background-color'
+  ];
+  if (!theme || typeof theme !== 'object' || Array.isArray(theme) ||
+      Object.keys(theme).length !== keys.length) throw new Error('Invalid destination theme.');
+  for (const key of keys) {
+    const value = theme[key];
+    if (typeof value !== 'string') throw new Error(`Missing theme color: ${key}.`);
+    const rgba = value.match(/^rgba\(\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(0(?:\.\d+)?|1(?:\.0+)?)\s*\)$/);
+    const rgb = value.match(/^(\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})$/);
+    const validRgb = match => match && match.slice(1, 4).every(channel => Number(channel) <= 255);
+    const valid = key === 'shadow' ? validRgb(rgb) : /^#[0-9a-f]{6}$/i.test(value) || validRgb(rgba);
+    if (!valid) throw new Error(`Invalid theme color: ${key}.`);
+  }
+  for (const key of keys) document.body.style.setProperty(`--place-${key}`, theme[key]);
+}
+
+async function loadDestinations() {
+  const ids = await loadResource('data/destinations.json', 'json');
+  if (!Array.isArray(ids) || !ids.length ||
+      ids.some(id => typeof id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)) ||
+      new Set(ids).size !== ids.length) {
+    throw new Error('Invalid destination index.');
+  }
+  return Promise.all(ids.map(async id => {
+    const destination = await loadResource(`data/${id}.json`, 'json');
+    if (!destination || destination.id !== id) throw new Error(`Invalid destination: ${id}.`);
+    return destination;
+  }));
 }
 
 function renderPlaces(container, template, places, slug = container.dataset.placeSlug, animate = false) {
@@ -173,7 +207,8 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
 
   function navigateTo(placeIndex) {
     const nextPlace = places[placeIndex];
-    const url = new URL(`${destination}/${nextPlace.slug}/`, document.baseURI);
+    const url = new URL(`${destination}/`, document.baseURI);
+    url.searchParams.set('place', nextPlace.slug);
     window.history.pushState({destination, slug: nextPlace.slug}, '', url.href);
     renderPlaces(container, template, places, nextPlace.slug, true);
   }
@@ -331,20 +366,39 @@ function renderNearby(container, template, places) {
   const status = field(container, 'origin-status');
   const tileStatus = field(container, 'tile-status');
   const results = field(container, 'results');
-  const latInput = field(container, 'latitude');
-  const lonInput = field(container, 'longitude');
   const map = L.map(mapElement).setView([mappedPlaces[0].latitude, mappedPlaces[0].longitude], 12);
   const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
   tiles.on('tileerror', () => {
-    tileStatus.textContent = 'Some map tiles could not be loaded. Check your connection; the place list and coordinate fields are still available.';
+    tileStatus.textContent = 'Some map tiles could not be loaded. Check your connection; the place list is still available.';
   });
   let origin = null;
   let originMarker = null;
   let locationRequest = 0;
+  const placeMarkers = [];
   const pin = L.divIcon({className: 'nearby-pin', html: '', iconSize: [44, 44]});
+
+  function layoutLabels() {
+    const occupied = [];
+    const originLabel = originMarker?.getTooltip()?.getElement();
+    if (originLabel) occupied.push(originLabel.getBoundingClientRect());
+    for (const marker of placeMarkers) {
+      const label = marker.getTooltip()?.getElement();
+      if (!label) continue;
+      const rect = label.getBoundingClientRect();
+      const overlap = occupied.some(other =>
+        rect.left < other.right + 4 && rect.right + 4 > other.left &&
+        rect.top < other.bottom + 4 && rect.bottom + 4 > other.top);
+      label.style.visibility = overlap ? 'hidden' : 'visible';
+      if (!overlap) occupied.push(rect);
+    }
+  }
+
+  function scheduleLabels() {
+    window.requestAnimationFrame(layoutLabels);
+  }
 
   function showResults() {
     const ordered = mappedPlaces.map(place => ({
@@ -372,25 +426,29 @@ function renderNearby(container, template, places) {
 
   function setOrigin(latitude, longitude, source) {
     if (!validCoordinates(latitude, longitude)) {
-      status.textContent = 'Enter a latitude between -85 and 85 and longitude between -180 and 180.';
+      status.textContent = 'That location is outside the supported map area. Please select another location.';
       return;
     }
     locationRequest++;
     origin = {latitude, longitude};
-    latInput.value = String(latitude);
-    lonInput.value = String(longitude);
     if (originMarker) map.removeLayer(originMarker);
     originMarker = L.circleMarker([latitude, longitude], {
       radius: 9, color: '#ffffff', weight: 3, fillColor: '#245c3e', fillOpacity: 1
-    }).addTo(map).bindTooltip('Your selected location');
+    }).addTo(map).bindTooltip('Your selected location', {
+      permanent: true, direction: 'top', offset: [0, -8], className: 'nearby-origin-label'
+    });
     status.textContent = `${source}: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}. Select a place for directions.`;
-    map.setView([latitude, longitude], 12);
+    map.setView([latitude, longitude], map.getZoom());
     showResults();
+    scheduleLabels();
   }
 
   for (const place of mappedPlaces) {
-    L.marker([place.latitude, place.longitude], {icon: pin, title: place.name, alt: place.name})
+    const label = document.createElement('span');
+    label.textContent = place.name;
+    const marker = L.marker([place.latitude, place.longitude], {icon: pin, title: place.name, alt: place.name})
       .addTo(map)
+      .bindTooltip(label, {permanent: true, direction: 'top', offset: [0, -16], className: 'nearby-place-label'})
       .on('click', () => {
         if (!origin) {
           status.textContent = 'Choose a location first to open directions.';
@@ -398,20 +456,27 @@ function renderNearby(container, template, places) {
         }
         window.open(directionsUrl(origin, place), '_blank', 'noopener,noreferrer');
       });
+    marker.on('mouseover', () => {
+      const tooltip = marker.getTooltip()?.getElement();
+      if (tooltip) tooltip.style.visibility = 'visible';
+    });
+    marker.on('mouseout', scheduleLabels);
+    placeMarkers.push(marker);
   }
+  map.on('zoomend moveend', scheduleLabels);
+  scheduleLabels();
   map.on('click', event => setOrigin(event.latlng.lat, event.latlng.lng, 'Selected location'));
-  field(container, 'origin-form').addEventListener('submit', event => {
-    event.preventDefault();
-    if (!latInput.value || !lonInput.value) {
-      status.textContent = 'Enter both latitude and longitude.';
-      return;
+  mapElement.addEventListener('keydown', event => {
+    if (event.target === mapElement && event.key === 'Enter') {
+      event.preventDefault();
+      const centre = map.getCenter();
+      setOrigin(centre.lat, centre.lng, 'Selected location');
     }
-    setOrigin(Number(latInput.value), Number(lonInput.value), 'Selected location');
   });
   container.querySelector('[data-action="locate"]').addEventListener('click', () => {
     const request = ++locationRequest;
     if (!navigator.geolocation) {
-      status.textContent = 'Location is unavailable. Select a point on the map or enter coordinates instead.';
+      status.textContent = 'Location is unavailable. Select a point on the map instead.';
       return;
     }
     status.textContent = 'Requesting your location…';
@@ -422,7 +487,7 @@ function renderNearby(container, template, places) {
       if (request !== locationRequest) return;
       const reason = error.code === 1 ? 'Location permission was denied.' :
         error.code === 3 ? 'The location request timed out.' : 'Your location could not be determined.';
-      status.textContent = `${reason} Select a point on the map or enter coordinates instead.`;
+      status.textContent = `${reason} Select a point on the map instead.`;
     }, {timeout: 10000, maximumAge: 0});
   });
   showResults();
@@ -437,17 +502,22 @@ async function start() {
   try {
     const [templateHtml, data] = await Promise.all([
       loadResource('templates.html', 'text'),
-      loadResource(destinations ? 'data/destinations.json' : `data/${nearby ? 'madinah' : placeDestination(places)}.json`, 'json')
+      destinations ? loadDestinations() :
+        loadResource(`data/${nearby ? 'madinah' : placeDestination(places)}.json`, 'json')
     ]);
     const templates = new DOMParser().parseFromString(templateHtml, 'text/html');
     if (destinations) {
       renderDestinations(destinations, getTemplate(templates, 'destination-template'), data);
     } else if (nearby) {
-      renderNearby(nearby, getTemplate(templates, 'nearby-template'), data);
+      if (data.id !== 'madinah') throw new Error('Invalid Madinah data.');
+      renderNearby(nearby, getTemplate(templates, 'nearby-template'), data.places);
     } else if (places) {
       const template = getTemplate(templates, 'place-template');
       const destination = placeDestination(places);
-      renderPlaces(places, template, data);
+      if (data.id !== destination) throw new Error('Invalid destination data.');
+      applyDestinationTheme(data.theme);
+      const selectedSlug = new URL(window.location.href).searchParams.get('place') || undefined;
+      renderPlaces(places, template, data.places, selectedSlug);
       window.history.replaceState(
         {destination, slug: places.dataset.placeSlug},
         '',
@@ -457,11 +527,16 @@ async function start() {
         const basePath = new URL(document.baseURI).pathname;
         const currentPath = new URL(window.location.href).pathname;
         if (!currentPath.startsWith(basePath)) return;
-        const [currentDestination, slug] = currentPath.slice(basePath.length).split('/').filter(Boolean);
-        if (currentDestination !== destination ||
-            !data.some(place => place.slug === slug) ||
-            places.dataset.placeSlug === slug) return;
-        renderPlaces(places, template, data, slug, true);
+        const relative = currentPath.slice(basePath.length);
+        if (relative !== `${destination}/` && !(destination === 'madinah' && relative === 'madinah.html')) return;
+        const slug = new URL(window.location.href).searchParams.get('place') || data.places[0].slug;
+        if (places.dataset.placeSlug === slug) return;
+        if (!data.places.some(place => place.slug === slug)) {
+          status.textContent = 'This place could not be found.';
+          return;
+        }
+        status.textContent = '';
+        renderPlaces(places, template, data.places, slug, true);
       });
     } else {
       throw new Error('No content container found.');

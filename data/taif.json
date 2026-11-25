@@ -1,0 +1,10 @@
+{
+  "id": "taif",
+  "name": "Taif",
+  "image": {
+    "src": "assets/images/taif.jpg",
+    "alt": "Buildings in Taif, Saudi Arabia",
+    "width": 960,
+    "height": 540
+  }
+}
