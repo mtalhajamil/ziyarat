@@ -4,11 +4,14 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 
 const script = fs.readFileSync('site.js', 'utf8');
+const configs = Object.fromEntries(['madinah', 'makkah', 'badr', 'taif', 'turkiye'].map(id =>
+  [`data/${id}.json`, JSON.parse(fs.readFileSync(`data/${id}.json`))]));
+const destinationIds = JSON.parse(fs.readFileSync('data/destinations.json'));
 const data = {
-  'data/destinations.json': JSON.parse(fs.readFileSync('data/destinations.json')),
-  'data/madinah.json': JSON.parse(fs.readFileSync('data/madinah.json')),
-  'data/makkah.json': JSON.parse(fs.readFileSync('data/makkah.json')),
-  'data/badr.json': JSON.parse(fs.readFileSync('data/badr.json'))
+  'data/destinations.json': destinationIds.map(id => configs[`data/${id}.json`]),
+  'data/madinah.json': configs['data/madinah.json'].places,
+  'data/makkah.json': configs['data/makkah.json'].places,
+  'data/badr.json': configs['data/badr.json'].places
 };
 
 class Element {
@@ -63,7 +66,7 @@ async function loadPage(mode, fail = false, slug = '', destination = 'madinah') 
   const requests = [];
   const navigations = [];
   const initialSlug = slug || data[`data/${destination}.json`]?.[0]?.slug || 'quba';
-  const initialUrl = new URL(`${destination}/${initialSlug}/`, 'https://example.com/ziyarat/').href;
+  const initialUrl = new URL(`${destination}/?place=${initialSlug}`, 'https://example.com/ziyarat/').href;
   const historyEntries = [initialUrl];
   const historyStates = [null];
   let historyIndex = 0;
@@ -71,6 +74,7 @@ async function loadPage(mode, fail = false, slug = '', destination = 'madinah') 
   const document = {
     baseURI: 'https://example.com/ziyarat/',
     title: '',
+    body: {style: {setProperty() {}}},
     getElementById(id) {
       if (id === 'load-status') return status;
       return id === (mode === 'home' ? 'destination-list' : 'place-content') ? content : null;
@@ -127,7 +131,7 @@ async function loadPage(mode, fail = false, slug = '', destination = 'madinah') 
       return {
         ok: !fail, status: 503,
         text: async () => fs.readFileSync(path, 'utf8'),
-        json: async () => data[path]
+        json: async () => path === 'data/destinations.json' ? destinationIds : configs[path]
       };
     }
   });
@@ -170,7 +174,7 @@ test('renders destination data and links only available pages', async () => {
   }),
     ['Makkah', 'Madinah', 'Badr', 'Taif', 'Turkiye']);
   const link = cards[1].fields['[data-field="name"]'].children[0];
-  assert.equal(link.href, 'madinah/quba/');
+  assert.equal(link.href, 'madinah/');
   assert.equal(link.textContent, 'Madinah');
   assert.equal(cards[1].fields['[data-field="status"]'].textContent, data['data/destinations.json'][1].description);
   for (const index of [0, 2]) {
@@ -241,7 +245,7 @@ test('renders each supplied place and navigates between clean URLs', async () =>
     view.fields['[data-action="next"]'].events.click();
     const nextPlace = places[(index + 1) % places.length];
     assert.equal(content.children[0].fields['[data-field="name"]'].textContent, nextPlace.name);
-    assert.equal(historyEntries[1], `https://example.com/ziyarat/madinah/${nextPlace.slug}/`);
+    assert.equal(historyEntries[1], `https://example.com/ziyarat/madinah/?place=${nextPlace.slug}`);
     content.children[0].fields['[data-action="previous"]'].events.click();
     assert.equal(content.children[0].fields['[data-field="name"]'].textContent, place.name);
     assert.equal(navigations.length, 0);
@@ -257,7 +261,7 @@ test('previous and next update place content in-page and honor browser history',
 
   assert.equal(content.children[0].fields['[data-field="name"]'].textContent, places[1].name);
   assert.equal(historyEntries.length, 2);
-  assert.equal(historyEntries[1], `https://example.com/ziyarat/madinah/${places[1].slug}/`);
+  assert.equal(historyEntries[1], `https://example.com/ziyarat/madinah/?place=${places[1].slug}`);
   assert.equal(navigations.length, 0);
   assert.equal(context.document.title, `${places[1].name} | Ziyarat`);
   assert.equal(breadcrumb.textContent, places[1].name);
@@ -367,14 +371,13 @@ test('Makkah and Badr load their own data, placeholders and local navigation', a
       assert.equal(content.children[0].fields['[data-field="name"]'].textContent, nextPlace.name);
       assert.equal(
         historyEntries[1],
-        `https://example.com/ziyarat/${destination}/${nextPlace.slug}/`
+        `https://example.com/ziyarat/${destination}/?place=${nextPlace.slug}`
       );
       content.children[0].fields['[data-action="previous"]'].events.click();
       assert.equal(content.children[0].fields['[data-field="name"]'].textContent, place.name);
       assert.equal(navigations.length, 0);
       const page = fs.readFileSync(`${destination}/${place.slug}/index.html`, 'utf8');
-      assert.ok(page.includes('<base href="../../">'));
-      assert.ok(page.includes(`data-destination="${destination}" data-place-slug="${place.slug}"`));
+      assert.ok(page.includes(`content="0;url=../?place=${place.slug}"`));
     }
     const {content} = await loadPage('place', false, '', destination);
     assert.equal(content.children[0].fields['[data-field="name"]'].textContent, places[0].name);
@@ -499,14 +502,13 @@ test('places map and video actions in a responsive shared row', () => {
   assert.match(css, /\.video-link\[hidden\]\s*\{\s*display:\s*none;/);
 });
 
-test('destination themes provide distinct controls while retaining the Madinah default', () => {
+test('destination themes provide distinct validated controls', async () => {
   const css = fs.readFileSync('styles.css', 'utf8');
-  const theme = selector => css.match(new RegExp(`${selector}\\s*\\{([^}]+)\\}`))[1];
-  const control = rule => rule.match(/--place-control:\s*([^;]+);/)[1];
-  const madinah = theme('\\.place-body');
-  const makkah = theme('\\.place-body:has\\(#place-content\\[data-destination="makkah"\\]\\)');
-  const badr = theme('\\.place-body:has\\(#place-content\\[data-destination="badr"\\]\\)');
-  assert.equal(new Set([madinah, makkah, badr].map(control)).size, 3);
+  const themes = ['madinah', 'makkah', 'badr'].map(id => configs[`data/${id}.json`].theme);
+  assert.equal(new Set(themes.map(theme => theme.control)).size, 3);
+  const {context} = await loadPage('place');
+  for (const theme of themes) assert.doesNotThrow(() => context.applyDestinationTheme(theme));
+  assert.throws(() => context.applyDestinationTheme({...themes[0], control: 'red; background: url(https://example.com)'}), /Invalid theme color/);
   assert.match(css, /\.map-link\s*\{[^}]*background:\s*var\(--place-control\)/s);
   assert.match(css, /\.video-link\s*\{[^}]*background:\s*var\(--place-video\)/s);
 });
@@ -590,11 +592,8 @@ test('revalidates templates and data instead of using stale cached content', asy
 });
 
 test('all pages use the same versioned stylesheet and script', () => {
-  const pages = ['index.html', 'madinah.html', 'nearby/index.html', 'madinah/index.html',
-    ...['madinah', 'makkah', 'badr'].flatMap(destination => [
-      `${destination}/index.html`,
-      ...data[`data/${destination}.json`].map(place => `${destination}/${place.slug}/index.html`)
-    ])]
+  const pages = ['index.html', 'madinah.html', 'nearby/index.html',
+    ...['madinah', 'makkah', 'badr'].map(destination => `${destination}/index.html`)]
     .map(path => fs.readFileSync(path, 'utf8'));
   for (const asset of ['styles.css', 'site.js']) {
     const versioned = pages.map(page => page.match(new RegExp(`${asset.replace('.', '\\.')}\\?v=[\\w-]+`))?.[0]);
@@ -607,10 +606,7 @@ test('all pages use the same versioned stylesheet and script', () => {
 
 test('directory pages resolve resources and navigation from the project root', () => {
   for (const [path, url, base] of [
-    ['madinah/index.html', 'https://example.com/ziyarat/madinah/', '../'],
-    ...data['data/madinah.json'].map(place => [
-      `madinah/${place.slug}/index.html`, `https://example.com/ziyarat/madinah/${place.slug}/`, '../../'
-    ])
+    ['madinah/index.html', 'https://example.com/ziyarat/madinah/', '../']
   ]) {
     const html = fs.readFileSync(path, 'utf8');
     assert.ok(html.includes(`<base href="${base}">`));
@@ -620,13 +616,13 @@ test('directory pages resolve resources and navigation from the project root', (
     }
     assert.equal(new URL('./', root).href, 'https://example.com/ziyarat/');
   }
-  const quba = fs.readFileSync('madinah/quba/index.html', 'utf8');
-  assert.match(quba, /data-place-slug="quba"/);
-  assert.match(quba, /href="madinah\/">Madinah<\/a>/);
-  assert.match(quba, /aria-current="page">Quba/);
-  for (const place of data['data/madinah.json']) {
-    const page = fs.readFileSync(`madinah/${place.slug}/index.html`, 'utf8');
-    assert.ok(page.includes(`data-place-slug="${place.slug}"`));
+  for (const destination of ['madinah', 'makkah', 'badr']) {
+    for (const place of data[`data/${destination}.json`]) {
+      const page = fs.readFileSync(`${destination}/${place.slug}/index.html`, 'utf8');
+      assert.ok(page.includes(`content="0;url=../?place=${place.slug}"`));
+      assert.equal(new URL(`../?place=${place.slug}`, `https://example.com/ziyarat/${destination}/${place.slug}/`).href,
+        `https://example.com/ziyarat/${destination}/?place=${place.slug}`);
+    }
   }
 });
 

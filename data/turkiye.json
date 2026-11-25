@@ -1,0 +1,10 @@
+{
+  "id": "turkiye",
+  "name": "Turkiye",
+  "image": {
+    "src": "assets/images/turkiye.jpg",
+    "alt": "Hagia Sophia in Istanbul, Turkiye",
+    "width": 960,
+    "height": 641
+  }
+}

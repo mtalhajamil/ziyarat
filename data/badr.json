@@ -1,32 +1,66 @@
-[
-  {
-    "slug": "anas-bin-malik",
-    "name": "Masjid Anas Bin Malik (Udwat-ud-Dunya / العدوة الدنيا)",
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Anas%20Bin%20Malik%20%28Udwat-ud-Dunya%20%2F%20%D8%A7%D9%84%D8%B9%D8%AF%D9%88%D8%A9%20%D8%A7%D9%84%D8%AF%D9%86%D9%8A%D8%A7%29%2C%20Badr"
+{
+  "id": "badr",
+  "name": "Badr",
+  "page": "badr/",
+  "description": "The site of the Battle of Badr, a defining event in early Islamic history.",
+  "image": {
+    "src": "assets/images/badr.jpg",
+    "alt": "A monument to the martyrs of Badr",
+    "width": 1280,
+    "height": 960
   },
-  {
-    "slug": "areesh",
-    "name": "Masjid Al-Areesh (مسجد العريش)",
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Al-Areesh%20%28%D9%85%D8%B3%D8%AC%D8%AF%20%D8%A7%D9%84%D8%B9%D8%B1%D9%8A%D8%B4%29%2C%20Badr"
-  },
-  {
-    "slug": "malaikah",
-    "name": "Jabal Al-Malaikah (جبل الملائكة)",
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Jabal%20Al-Malaikah%20%28%D8%AC%D8%A8%D9%84%20%D8%A7%D9%84%D9%85%D9%84%D8%A7%D8%A6%D9%83%D8%A9%29%2C%20Badr"
-  },
-  {
-    "slug": "shuhada",
-    "name": "Maqbarat Shuhada-e-Badr (مقبرة شهداء بدر)",
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Maqbarat%20Shuhada-e-Badr%20%28%D9%85%D9%82%D8%A8%D8%B1%D8%A9%20%D8%B4%D9%87%D8%AF%D8%A7%D8%A1%20%D8%A8%D8%AF%D8%B1%29%2C%20Badr"
-  },
-  {
-    "slug": "hamrah",
-    "name": "Al-Hamrah (بدر الحمراء)",
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Al-Hamrah%20%28%D8%A8%D8%AF%D8%B1%20%D8%A7%D9%84%D8%AD%D9%85%D8%B1%D8%A7%D8%A1%29%2C%20Badr"
-  },
-  {
-    "slug": "muztaliq",
-    "name": "Wadi Al-Muztaliq (موقع توزيع الغنائم / وادی معترض)",
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Wadi%20Al-Muztaliq%20%28%D9%85%D9%88%D9%82%D8%B9%20%D8%AA%D9%88%D8%B2%D9%8A%D8%B9%20%D8%A7%D9%84%D8%BA%D9%86%D8%A7%D8%A6%D9%85%20%2F%20%D9%88%D8%A7%D8%AF%DB%8C%20%D9%85%D8%B9%D8%AA%D8%B1%D8%B6%29%2C%20Badr"
+  "places": [
+    {
+      "slug": "anas-bin-malik",
+      "name": "Masjid Anas Bin Malik (Udwat-ud-Dunya / العدوة الدنيا)",
+      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Anas%20Bin%20Malik%20%28Udwat-ud-Dunya%20%2F%20%D8%A7%D9%84%D8%B9%D8%AF%D9%88%D8%A9%20%D8%A7%D9%84%D8%AF%D9%86%D9%8A%D8%A7%29%2C%20Badr"
+    },
+    {
+      "slug": "areesh",
+      "name": "Masjid Al-Areesh (مسجد العريش)",
+      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Al-Areesh%20%28%D9%85%D8%B3%D8%AC%D8%AF%20%D8%A7%D9%84%D8%B9%D8%B1%D9%8A%D8%B4%29%2C%20Badr"
+    },
+    {
+      "slug": "malaikah",
+      "name": "Jabal Al-Malaikah (جبل الملائكة)",
+      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Jabal%20Al-Malaikah%20%28%D8%AC%D8%A8%D9%84%20%D8%A7%D9%84%D9%85%D9%84%D8%A7%D8%A6%D9%83%D8%A9%29%2C%20Badr"
+    },
+    {
+      "slug": "shuhada",
+      "name": "Maqbarat Shuhada-e-Badr (مقبرة شهداء بدر)",
+      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Maqbarat%20Shuhada-e-Badr%20%28%D9%85%D9%82%D8%A8%D8%B1%D8%A9%20%D8%B4%D9%87%D8%AF%D8%A7%D8%A1%20%D8%A8%D8%AF%D8%B1%29%2C%20Badr"
+    },
+    {
+      "slug": "hamrah",
+      "name": "Al-Hamrah (بدر الحمراء)",
+      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Al-Hamrah%20%28%D8%A8%D8%AF%D8%B1%20%D8%A7%D9%84%D8%AD%D9%85%D8%B1%D8%A7%D8%A1%29%2C%20Badr"
+    },
+    {
+      "slug": "muztaliq",
+      "name": "Wadi Al-Muztaliq (موقع توزيع الغنائم / وادی معترض)",
+      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Wadi%20Al-Muztaliq%20%28%D9%85%D9%88%D9%82%D8%B9%20%D8%AA%D9%88%D8%B2%D9%8A%D8%B9%20%D8%A7%D9%84%D8%BA%D9%86%D8%A7%D8%A6%D9%85%20%2F%20%D9%88%D8%A7%D8%AF%DB%8C%20%D9%85%D8%B9%D8%AA%D8%B1%D8%B6%29%2C%20Badr"
+    }
+  ],
+  "theme": {
+    "text": "#51252b",
+    "secondary": "#603039",
+    "disabled": "#735058",
+    "accent": "#9c3945",
+    "border": "#d7aeb3",
+    "breadcrumb-border": "#e7c1c5",
+    "breadcrumb-bg": "rgba(255, 246, 246, 0.9)",
+    "card-bg": "rgba(255, 246, 246, 0.86)",
+    "details-bg": "rgba(255, 243, 244, 0.9)",
+    "panel-bg": "rgba(245, 220, 223, 0.8)",
+    "toggle-bg": "#f5dcdf",
+    "image-bg": "#f0d0d4",
+    "shadow": "107, 39, 49",
+    "control": "#892d38",
+    "control-hover": "#68202a",
+    "video": "#58354f",
+    "video-hover": "#3f2539",
+    "glow-one": "rgba(220, 123, 137, 0.3)",
+    "glow-two": "rgba(230, 160, 169, 0.35)",
+    "background-color": "#f9e3e6"
   }
-]
+}

@@ -15,18 +15,14 @@
       <section class="nearby-page" aria-labelledby="nearby-title">
         <h1 id="nearby-title">Places near me</h1>
         <p>Explore user-supplied locations in Madinah. Pin locations have not been independently verified.</p>
-        <p>Choose an origin by clicking the map, entering coordinates, or using your current location. Distances are straight-line, not travel distances.</p>
+        <p>Tap the map or use your current location to choose an origin. To choose with a keyboard, focus the map, use the arrow keys to move it, then press Enter to select the centre. Distances are straight-line, not travel distances.</p>
+        <p>Zoom in to reveal more place labels when pins are close together.</p>
         <div class="nearby-controls">
           <button type="button" data-action="locate">Use my current location</button>
-          <form data-field="origin-form">
-            <label>Latitude <input data-field="latitude" type="number" step="any" min="-85" max="85" required></label>
-            <label>Longitude <input data-field="longitude" type="number" step="any" min="-180" max="180" required></label>
-            <button type="submit">Set location</button>
-          </form>
         </div>
         <p class="nearby-status" data-field="origin-status" role="status">Choose a location to see distances and directions.</p>
         <p class="nearby-status" data-field="tile-status" role="status"></p>
-        <div class="nearby-map" data-field="map" aria-label="Map of Madinah places"></div>
+        <div class="nearby-map" data-field="map" aria-label="Map of Madinah places. Use arrow keys to move and Enter to select the centre."></div>
         <p class="nearby-privacy">Map tiles are provided by OpenStreetMap; viewing the map reveals the approximate viewed area to its tile provider. Directions open in Google Maps with your selected origin and destination.</p>
         <h2>Places</h2>
         <p>All available pins are listed below, nearest first when an origin is selected.</p>
