@@ -103,6 +103,143 @@ h1 {
   line-height: 1.7;
 }
 
+.nearby-home-link,
+.nearby-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.7rem 1rem;
+  border: 1px solid #245c3e;
+  border-radius: 0.6rem;
+  background: #245c3e;
+  color: #fffefa;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nearby-home-link {
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.nearby-home-link:hover,
+.nearby-controls button:hover {
+  background: #19452e;
+}
+
+.nearby-page {
+  width: min(100%, 80rem);
+  margin: 0 auto;
+  padding: 2rem clamp(1.25rem, 6vw, 6rem) 4rem;
+}
+
+.nearby-page h1 {
+  font-size: clamp(2.25rem, 6vw, 4rem);
+}
+
+.nearby-page p {
+  max-width: 65rem;
+  line-height: 1.6;
+}
+
+.nearby-controls,
+.nearby-controls form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.75rem;
+}
+
+.nearby-controls label {
+  display: grid;
+  gap: 0.25rem;
+  font-weight: 600;
+}
+
+.nearby-controls input {
+  width: min(100%, 10rem);
+  min-height: 44px;
+  padding: 0.5rem;
+  border: 1px solid #68756a;
+  border-radius: 0.4rem;
+  font: inherit;
+}
+
+.nearby-status:empty {
+  display: none;
+}
+
+.nearby-map {
+  width: 100%;
+  height: clamp(20rem, 55vh, 36rem);
+  border: 1px solid #b6d2b7;
+  border-radius: 0.75rem;
+  background: #e4f0e2;
+}
+
+.nearby-map .leaflet-control-zoom a {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+}
+
+.nearby-pin {
+  display: grid;
+  place-items: center;
+}
+
+.nearby-pin::after {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #892d38;
+  box-shadow: 0 1px 5px #0008;
+  content: "";
+}
+
+.nearby-pin:focus-visible {
+  outline: 3px solid #19452e;
+  outline-offset: 3px;
+}
+
+.nearby-map .leaflet-control-attribution a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.nearby-privacy {
+  color: #405d48;
+  font-size: 0.875rem;
+}
+
+.nearby-results {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.nearby-results li {
+  padding: 0.75rem;
+  border: 1px solid #e1e4dc;
+  border-radius: 0.5rem;
+  background: #fffefa;
+  overflow-wrap: anywhere;
+}
+
+.nearby-results a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: #245c3e;
+  font-weight: 600;
+}
+
 .destination-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

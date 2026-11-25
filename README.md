@@ -16,16 +16,19 @@ Open `http://localhost:8000/`, or visit `http://localhost:8000/madinah/quba/` di
 
 | Path | Responsibility |
 | --- | --- |
-| `index.html`, `madinah.html`, `{madinah,makkah,badr}/**/index.html` | Static page shells, navigation, asset versions and content containers. Each place route has its own directory index. |
+| `index.html`, `madinah.html`, `nearby/index.html`, `{madinah,makkah,badr}/**/index.html` | Static page shells, navigation, asset versions and content containers. Each place route has its own directory index. |
 | `data/destinations.json` | Homepage cards, images, optional descriptions and links. |
 | `data/madinah.json`, `data/makkah.json`, `data/badr.json` | Ordered destination places, map links, optional images, credits and available English/Urdu descriptions. |
 | `templates.html` | Reusable destination and place markup, including missing-content states. |
 | `site.js` | Fetches and validates the data and templates, renders the page, and handles place navigation. |
-| `styles.css` | Shared responsive styles, the Madinah theme and locally hosted Urdu font. |
+| `styles.css` | Shared responsive styles, destination themes and locally hosted Urdu font. |
+| `assets/vendor/leaflet/` | Leaflet 1.9.4 map library, distributed under its included BSD-2-Clause license; source: https://github.com/Leaflet/Leaflet/tree/v1.9.4. |
 | `assets/images/`, `assets/fonts/`, `assets/favicon.svg` | Local site assets. The Noto Naskh Arabic font license is `assets/fonts/OFL.txt`. |
-| `tests/site.test.cjs` | Node tests for rendering, validation, routes and asset versions. |
+| `tests/*.test.cjs` | Node tests for rendering, validation, routes, nearby map behavior and asset versions. |
 
 The page shell loads `site.js`, which fetches `templates.html` and the relevant JSON with `cache: 'no-cache'`, clones a template and inserts text as text rather than HTML. Invalid data or failed requests produce an error message instead of partial content; inspect the browser console for details. All place entries for a destination are validated before a place is shown, so one invalid entry can prevent that destination's places from loading.
+
+“Places near me” plots the 27 user-supplied Madinah coordinate pairs in `data/madinah.json`; these pin locations have not been independently verified. Masjid-e-tooba is excluded because its supplied coordinates point to Karachi; its existing page remains available. The list is ordered by straight-line distance when a visitor selects an origin by map, coordinates or optional browser geolocation. Directions open in Google Maps with the selected origin and destination. Precise location is not stored or sent to this site; map tile requests reveal the approximate viewed area to OpenStreetMap, and opening directions shares the coordinates with Google. The map uses OpenStreetMap standard tiles with visible attribution and normal browser caching, without prefetching; see the [tile usage policy](https://operations.osmfoundation.org/policies/tiles/).
 
 Place descriptions show English by default. The compact, right-aligned EN/UR box toggle switches between available descriptions, with Urdu rendered right-to-left; the selection resets to English when a place opens. If a translation is missing, its panel displays a translation-coming-soon message rather than invented history. Descriptions longer than three rendered lines start clamped and get an accessible Show more/Show less button; shorter text has no redundant button. Places with neither description show “Description coming soon” without language controls. Supplied YouTube links appear as external “Watch place video” buttons beside the map link, wrapping on narrow screens.
 
@@ -62,7 +65,7 @@ Keep the existing light, calm visual language: centered place heading, proportio
 ## Validate and deploy
 
 ```sh
-node --test tests/site.test.cjs
+node --test tests/*.test.cjs
 git diff --check
 ```
 
