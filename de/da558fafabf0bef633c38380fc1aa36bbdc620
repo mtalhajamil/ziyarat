@@ -1,0 +1,63 @@
+nearby/index.html
+  s_a70902b9386716::t_4f5c01a0429984 8-10
+  s_a70902b9386716::t_b5056d7e0a0f6e 16,18
+AGENTS.md
+  s_a70902b9386716::t_0d79d8fd73b7e3 15-20
+manifest.webmanifest
+  s_a70902b9386716::t_4f5c01a0429984 1-15
+place.html
+  s_a70902b9386716::t_b5056d7e0a0f6e 14-15
+  s_a70902b9386716::t_4f5c01a0429984 7-9
+site.js
+  s_a70902b9386716::t_4f5c01a0429984 741-755,757-788
+  s_a70902b9386716::t_c2586ba3f4ecb7 756
+index.html
+  s_a70902b9386716::t_4f5c01a0429984 7-9,45-49
+  s_a70902b9386716::t_b5056d7e0a0f6e 30-31
+data/badr.json
+  s_a70902b9386716::t_8030c5b0cfb89e 15,39,45,51,57
+tests/install.test.cjs
+  s_a70902b9386716::t_c2586ba3f4ecb7 84-86
+  s_a70902b9386716::t_66b13bf1d52144 1-83,87-102
+tests/nearby.test.cjs
+  s_a70902b9386716::t_66b13bf1d52144 7
+tests/sheet-sync.test.cjs
+  s_a70902b9386716::t_7ea7826b78ebb1 75
+  s_a70902b9386716::t_8d81c419b22942 98-102
+  s_a70902b9386716::t_3a83f4ea14220a 58-60,74
+  s_a70902b9386716::t_bcb5cb40269133 5-8,94-97,103-117
+  s_a70902b9386716::t_74aa6dfc30101e 61-63
+  s_a70902b9386716::t_13a8f6b2d3ad1b 82
+  s_a70902b9386716::t_582d12e73cac14 1-4,9-57,64-73,76-81,83-93,118
+README.md
+  s_a70902b9386716::t_0d79d8fd73b7e3 23,66,69-80
+  s_a70902b9386716::t_74aa6dfc30101e 81
+  s_a70902b9386716::t_04b67a0c405242 20,43-44,92
+  s_a70902b9386716::t_3da3d26bc58740 82
+styles.css
+  s_a70902b9386716::t_4f5c01a0429984 135-165
+scripts/update-from-sheet.cjs
+  s_a70902b9386716::t_74aa6dfc30101e 158,160
+  s_a70902b9386716::t_3a83f4ea14220a 159,162-168,238-244
+  s_a70902b9386716::t_13a8f6b2d3ad1b 66
+  s_a70902b9386716::t_8655f0696188a0 161
+  s_a70902b9386716::t_bcb5cb40269133 175,179,184-187,199-204,257
+  s_a70902b9386716::t_7ea7826b78ebb1 155-157
+  s_a70902b9386716::t_8e77265d587c0d 1-65,67-154,169-174,176-178,180-183,188-198,205-237,245-256
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "deda558fafabf0bef633c38380fc1aa36bbdc620",
+  "prompts": {},
+  "sessions": {
+    "s_a70902b9386716": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "311ba99e-a886-4d45-bf5f-e61a56b682ee",
+        "model": "unknown"
+      },
+      "human_author": "mtalhajamil <muhammad.jamil@hungerstation.com>"
+    }
+  }
+}
