@@ -31,8 +31,8 @@
             <button type="button" data-action="locate" aria-label="Use my current location" title="Use my current location">
               <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
             </button>
-            <button type="button" class="map-trip" data-action="map-trip">Plan trip <span class="trip-spinner" data-field="map-trip-spinner" aria-hidden="true" hidden></span></button>
           </div>
+          <button type="button" class="map-trip" data-action="map-trip">Plan trip <span class="trip-spinner" data-field="map-trip-spinner" aria-hidden="true" hidden></span></button>
           <div class="nearby-map-feedback">
             <p data-field="map-origin-status" role="status"></p>
             <p data-field="tile-status" role="status"></p>
@@ -40,6 +40,17 @@
           </div>
           <span class="visually-hidden" data-field="map-origin-announcement" role="status"></span>
           <span class="visually-hidden" data-field="map-trip-progress" role="status"></span>
+        </dialog>
+        <dialog class="trip-dialog" data-field="trip-dialog" aria-labelledby="trip-title" aria-describedby="trip-description">
+          <h2 id="trip-title">Your nearest places trip</h2>
+          <p id="trip-description">From your current location, we select the five closest places and visit the nearest remaining stop each time. This uses straight-line distances, not road optimization. Google Maps may omit stops on some devices.</p>
+          <ol data-field="trip-stops"></ol>
+          <p class="trip-dialog-status" data-field="trip-dialog-status" role="status"></p>
+          <span class="visually-hidden" data-field="trip-open-progress" role="status"></span>
+          <div class="trip-dialog-actions">
+            <button type="button" class="trip-cancel" data-action="cancel-trip" autofocus>Cancel</button>
+            <button type="button" class="trip-open" data-action="open-trip">Open Google Maps <span class="trip-spinner" data-field="trip-open-spinner" aria-hidden="true" hidden></span></button>
+          </div>
         </dialog>
         <div class="nearby-heading">
           <h2>Nearby places</h2>
