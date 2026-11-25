@@ -1,0 +1,23 @@
+nearby/index.html
+  s_a70902b9386716::t_79791e53c68ef7 16
+place.html
+  s_a70902b9386716::t_79791e53c68ef7 14
+index.html
+  s_a70902b9386716::t_79791e53c68ef7 30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "69cec2ca55e0233c41f946d1d7f653540ee8fef8",
+  "prompts": {},
+  "sessions": {
+    "s_a70902b9386716": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "311ba99e-a886-4d45-bf5f-e61a56b682ee",
+        "model": "unknown"
+      },
+      "human_author": "mtalhajamil <muhammad.jamil@hungerstation.com>"
+    }
+  }
+}
