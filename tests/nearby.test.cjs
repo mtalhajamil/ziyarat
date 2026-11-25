@@ -31,14 +31,18 @@ class Element {
   setAttribute(name, value) { this.attributes[name] = value; }
   removeAttribute(name) { delete this.attributes[name]; }
   focus() { this.focused = true; }
+  showModal() { this.open = true; }
+  close() { this.open = false; this.events.close(); }
   querySelectorAll() { return []; }
 }
 
 function setup(geolocation, sourcePlaces = places) {
-  const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'tile-status', 'results', 'trip-status', 'trip-progress', 'trip-spinner']
+  const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'map-origin-status', 'origin-announcement', 'map-origin-announcement', 'tile-status', 'results', 'trip-status', 'map-trip-status', 'trip-progress', 'map-trip-progress', 'trip-spinner', 'map-trip-spinner']
     .map(name => [`[data-field="${name}"]`, new Element()]));
   fields['[data-action="locate"]'] = new Element();
-  fields['[data-action="fullscreen"]'] = new Element();
+  fields['[data-action="open-map"]'] = new Element();
+  fields['[data-action="close-map"]'] = new Element();
+  fields['[data-action="map-trip"]'] = new Element();
   fields['[data-action="trip"]'] = new Element();
   const container = new Element();
   container.querySelector = selector => fields[selector];
@@ -87,6 +91,7 @@ function setup(geolocation, sourcePlaces = places) {
     },
     document: {
       body: new Element(),
+      documentElement: new Element(),
       addEventListener: (type, handler) => { documentEvents[type] = handler; },
       importNode: () => new Element(),
       createElement: () => new Element(),
@@ -187,14 +192,15 @@ test('current location is requested on entry and populates nearby results', () =
   assert.match(fields['[data-field="origin-status"]'].textContent, /Requesting/);
   assert.equal(options.maximumAge, 0);
   success({coords: {latitude: 24.439391, longitude: 39.617301}});
-  assert.match(fields['[data-field="origin-status"]'].textContent, /Current location/);
+  assert.equal(fields['[data-field="origin-status"]'].textContent, '');
+  assert.match(fields['[data-field="origin-announcement"]'].textContent, /Current location/);
   assert.equal(fields['[data-field="results"]'].children[0].children[0].children[0].href, 'place.html?destination=madinah&place=quba');
 
   const pending = setup({getCurrentPosition(ok, fail) { success = ok; failure = fail; }});
   pending.map.events.click({latlng: {lat: 24.4, lng: 39.6}});
   success({coords: {latitude: 24.5, longitude: 39.7}});
   failure({code: 1});
-  assert.match(pending.fields['[data-field="origin-status"]'].textContent, /Selected location: 24.40000/);
+  assert.match(pending.fields['[data-field="origin-announcement"]'].textContent, /Selected location: 24.40000/);
   const denied = setup({getCurrentPosition(ok, fail) { fail({code: 1}); }});
   assert.match(denied.fields['[data-field="origin-status"]'].textContent, /denied.*map/i);
   denied.map.events.click({latlng: {lat: 24.439391, lng: 39.617301}});
@@ -223,8 +229,10 @@ test('trip opens one route using actual location and handles denied access', () 
   map.events.click({latlng: {lat: 24.4, lng: 39.6}});
   const button = fields['[data-action="trip"]'];
   const status = fields['[data-field="trip-status"]'];
+  assert.equal(fields['[data-action="map-trip"]'].events.click, button.events.click);
   button.events.click();
   assert.equal(button.disabled, true);
+  assert.equal(fields['[data-action="map-trip"]'].disabled, true);
   assert.equal(fields['[data-field="trip-spinner"]'].hidden, false);
   assert.match(fields['[data-field="trip-progress"]'].textContent, /opening Google Maps/i);
   assert.equal(status.textContent, '');
@@ -237,18 +245,19 @@ test('trip opens one route using actual location and handles denied access', () 
   assert.equal(route.searchParams.get('origin'), '24.5,39.7');
   assert.equal(route.searchParams.get('waypoints').split('|').length, 4);
   assert.equal(route.searchParams.get('destination'), '24.46761,39.62174');
-  assert.match(fields['[data-field="origin-status"]'].textContent, /24.40000, 39.60000/);
+  assert.match(fields['[data-field="origin-announcement"]'].textContent, /24.40000, 39.60000/);
   windowEvents.pagehide();
   windowEvents.pageshow();
   assert.equal(button.disabled, false);
   assert.equal(fields['[data-field="trip-spinner"]'].hidden, true);
   assert.equal(fields['[data-field="trip-progress"]'].textContent, '');
   timers[0]();
-  button.events.click();
+  fields['[data-action="map-trip"]'].events.click();
   failure({code: 1});
   assert.equal(button.disabled, false);
   assert.equal(fields['[data-field="trip-spinner"]'].hidden, true);
   assert.match(status.textContent, /denied.*requires your current location/i);
+  assert.equal(fields['[data-field="map-trip-status"]'].textContent, status.textContent);
   assert.equal(navigated.length, 1);
   button.events.click();
   windowEvents.pagehide();
@@ -301,57 +310,24 @@ test('overlapping place labels are hidden and reappear after moving apart', () =
   assert.equal(second.style.visibility, 'visible');
 });
 
-test('fullscreen fallback opens and Escape restores the map', async () => {
-  const {context, fields, map, documentEvents} = setup();
-  const button = fields['[data-action="fullscreen"]'];
+test('map view opens as a modal, resizes and restores focus on close and reopen', () => {
+  const {context, fields, map} = setup();
+  const button = fields['[data-action="open-map"]'];
   const frame = fields['[data-field="map-frame"]'];
-  await button.events.click();
-  assert.equal(frame.classes.has('is-fullscreen'), true);
-  assert.equal(context.document.body.classes.has('nearby-fullscreen-open'), true);
-  assert.equal(button.textContent, 'Exit full screen');
-  assert.equal(button.attributes['aria-pressed'], 'true');
-  assert.equal(frame.attributes['aria-modal'], 'true');
+  button.events.click();
+  assert.equal(frame.open, true);
+  assert.equal(context.document.body.classes.has('nearby-map-open'), true);
+  assert.equal(context.document.documentElement.classes.has('nearby-map-open'), true);
   assert.equal(map.resized, 1);
   assert.deepEqual(map.lastView, {center: {lat: 24.5, lng: 39.6}, zoom: 12});
-  documentEvents.keydown({key: 'Escape', preventDefault() {}});
-  assert.equal(frame.classes.has('is-fullscreen'), false);
-  assert.equal(context.document.body.classes.has('nearby-fullscreen-open'), false);
-  assert.equal(button.textContent, 'Full screen');
-  assert.equal(button.attributes['aria-pressed'], 'false');
-  assert.equal(frame.attributes['aria-modal'], undefined);
+  fields['[data-action="close-map"]'].events.click();
+  assert.equal(frame.open, false);
+  assert.equal(context.document.body.classes.has('nearby-map-open'), false);
+  assert.equal(context.document.documentElement.classes.has('nearby-map-open'), false);
   assert.equal(button.focused, true);
+  button.events.click();
   assert.equal(map.resized, 2);
   assert.deepEqual(map.lastView, {center: {lat: 24.5, lng: 39.6}, zoom: 12});
-});
-
-test('fullscreen falls back to viewport mode when the native request fails', async () => {
-  const {fields} = setup();
-  const button = fields['[data-action="fullscreen"]'];
-  const frame = fields['[data-field="map-frame"]'];
-  frame.requestFullscreen = async () => { throw new Error('Fullscreen unavailable'); };
-  await button.events.click();
-  assert.equal(frame.classes.has('is-fullscreen'), true);
-  assert.equal(button.textContent, 'Exit full screen');
-});
-
-test('native fullscreen enters and exits through fullscreenchange', async () => {
-  const {context, fields, map, documentEvents} = setup();
-  const button = fields['[data-action="fullscreen"]'];
-  const frame = fields['[data-field="map-frame"]'];
-  frame.requestFullscreen = async () => {
-    context.document.fullscreenElement = frame;
-    documentEvents.fullscreenchange();
-  };
-  context.document.exitFullscreen = async () => {
-    context.document.fullscreenElement = null;
-    documentEvents.fullscreenchange();
-  };
-  await button.events.click();
-  assert.equal(button.textContent, 'Exit full screen');
-  assert.equal(frame.classes.has('is-fullscreen'), false);
-  await button.events.click();
-  assert.equal(button.textContent, 'Full screen');
-  assert.equal(map.resized, 2);
 });
 
 test('geolocation errors preserve manual fallback and a stale response cannot override it', () => {
@@ -365,7 +341,7 @@ test('geolocation errors preserve manual fallback and a stale response cannot ov
   locate.events.click();
   map.events.click({latlng: {lat: 24.4, lng: 39.6}});
   success({coords: {latitude: 1, longitude: 2}});
-  assert.match(fields['[data-field="origin-status"]'].textContent, /24.40000, 39.60000/);
+  assert.match(fields['[data-field="origin-announcement"]'].textContent, /24.40000, 39.60000/);
   tiles.events.tileerror();
   assert.match(fields['[data-field="tile-status"]'].textContent, /could not be loaded/);
   const unavailable = setup();
@@ -373,5 +349,5 @@ test('geolocation errors preserve manual fallback and a stale response cannot ov
   assert.match(unavailable.fields['[data-field="origin-status"]'].textContent, /unavailable/);
   locate.events.click();
   success({coords: {latitude: 24.5, longitude: 39.7}});
-  assert.match(fields['[data-field="origin-status"]'].textContent, /Current location: 24.50000, 39.70000/);
+  assert.match(fields['[data-field="origin-announcement"]'].textContent, /Current location: 24.50000, 39.70000/);
 });
