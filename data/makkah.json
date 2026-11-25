@@ -1,7 +1,7 @@
 {
   "id": "makkah",
   "name": "Makkah",
-  "page": "makkah/",
+  "page": "place.html?destination=makkah",
   "description": "Home to the Kaaba and the sacred destination of Hajj and Umrah.",
   "image": {
     "src": "assets/images/makkah.jpg",
@@ -14,12 +14,36 @@
       "slug": "hudaybiyyah",
       "sourceCode": "MAK-HUDAYBIYYAH",
       "name": "Masjid Al-Hudaybiyyah (Al-Shumaisi)",
+      "image": {
+        "src": "assets/images/MAK-HUDAYBIYYAH.jpg",
+        "alt": "Exterior of Masjid Al-Hudaybiyyah",
+        "width": 1280,
+        "height": 960,
+        "credit": {
+          "description": "Masjid al-Hudaibiyah 01 by Sadrettin (resized)",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Masjid_al-Hudaibiyah_01.jpg",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        }
+      },
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Al-Hudaybiyyah%20%28Al-Shumaisi%29%2C%20Makkah"
     },
     {
       "slug": "thawr",
       "sourceCode": "MAK-THAWR",
       "name": "Ghar Thawr (Cave of Thawr / جبل ثور)",
+      "image": {
+        "src": "assets/images/MAK-THAWR.jpg",
+        "alt": "Entrance to the Cave of Thawr",
+        "width": 1280,
+        "height": 960,
+        "credit": {
+          "description": "Jabl e Thawr by King Eliot (resized)",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jabl_e_Thawr.jpg",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        }
+      },
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Ghar%20Thawr%20%28Cave%20of%20Thawr%20%2F%20%D8%AC%D8%A8%D9%84%20%D8%AB%D9%88%D8%B1%29%2C%20Makkah"
     },
     {

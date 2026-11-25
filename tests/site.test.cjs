@@ -65,18 +65,19 @@ async function loadPage(mode, fail = false, slug = '', destination = 'madinah') 
   content.dataset.destination = destination;
   const requests = [];
   const navigations = [];
-  const initialSlug = slug || data[`data/${destination}.json`]?.[0]?.slug || 'quba';
-  const initialUrl = new URL(`${destination}/?place=${initialSlug}`, 'https://example.com/ziyarat/').href;
+  const initialUrl = new URL(`place.html?destination=${encodeURIComponent(destination)}${slug ? `&place=${encodeURIComponent(slug)}` : ''}`, 'https://example.com/ziyarat/').href;
   const historyEntries = [initialUrl];
   const historyStates = [null];
   let historyIndex = 0;
   const breadcrumb = new Element();
+  const destinationBreadcrumb = new Element();
   const document = {
-    baseURI: 'https://example.com/ziyarat/',
+    baseURI: mode === 'home' ? 'https://example.com/ziyarat/' : initialUrl,
     title: '',
     body: {style: {setProperty() {}}},
     getElementById(id) {
       if (id === 'load-status') return status;
+      if (id === 'destination-breadcrumb') return destinationBreadcrumb;
       return id === (mode === 'home' ? 'destination-list' : 'place-content') ? content : null;
     },
     querySelector(selector) {
@@ -143,7 +144,7 @@ async function loadPage(mode, fail = false, slug = '', destination = 'madinah') 
     window.history.state = historyStates[index];
     window.events.popstate?.({state: historyStates[index]});
   }
-  return {context, status, content, requests, navigations, historyEntries, goToHistory, breadcrumb};
+  return {context, status, content, requests, navigations, historyEntries, goToHistory, breadcrumb, destinationBreadcrumb};
 }
 
 test('homepage provides a reachable social preview without JavaScript', () => {
@@ -174,7 +175,7 @@ test('renders destination data and links only available pages', async () => {
   }),
     ['Makkah', 'Madinah', 'Badr', 'Taif', 'Turkiye']);
   const link = cards[1].fields['[data-field="name"]'].children[0];
-  assert.equal(link.href, 'madinah/');
+  assert.equal(link.href, 'place.html?destination=madinah');
   assert.equal(link.textContent, 'Madinah');
   assert.equal(cards[1].fields['[data-field="status"]'].textContent, data['data/destinations.json'][1].description);
   for (const index of [0, 2]) {
@@ -196,7 +197,7 @@ test('available destination link covers the card and has a visible keyboard focu
   assert.match(css, /\.destination-card:focus-within\s*\{[^}]*outline:\s*2px solid/s);
 });
 
-test('renders each supplied place and navigates between clean URLs', async () => {
+test('renders each supplied place and navigates using shared page URLs', async () => {
   const places = data['data/madinah.json'];
   assert.deepEqual(places.map(place => place.name), [
     'Masjid Quba', 'Masjid Jummah', 'Masjid Qiblatain', 'Masjid Ghamama',
@@ -245,10 +246,17 @@ test('renders each supplied place and navigates between clean URLs', async () =>
     view.fields['[data-action="next"]'].events.click();
     const nextPlace = places[(index + 1) % places.length];
     assert.equal(content.children[0].fields['[data-field="name"]'].textContent, nextPlace.name);
-    assert.equal(historyEntries[1], `https://example.com/ziyarat/madinah/?place=${nextPlace.slug}`);
+    assert.equal(historyEntries[1], `https://example.com/ziyarat/place.html?destination=madinah&place=${nextPlace.slug}`);
     content.children[0].fields['[data-action="previous"]'].events.click();
     assert.equal(content.children[0].fields['[data-field="name"]'].textContent, place.name);
     assert.equal(navigations.length, 0);
+  }
+});
+
+test('Madinah place photos use their location codes and exist locally', () => {
+  for (const place of data['data/madinah.json'].filter(place => place.image)) {
+    assert.equal(place.image.src, `assets/images/${place.sourceCode}.jpg`);
+    assert.ok(fs.existsSync(place.image.src));
   }
 });
 
@@ -261,7 +269,7 @@ test('previous and next update place content in-page and honor browser history',
 
   assert.equal(content.children[0].fields['[data-field="name"]'].textContent, places[1].name);
   assert.equal(historyEntries.length, 2);
-  assert.equal(historyEntries[1], `https://example.com/ziyarat/madinah/?place=${places[1].slug}`);
+  assert.equal(historyEntries[1], `https://example.com/ziyarat/place.html?destination=madinah&place=${places[1].slug}`);
   assert.equal(navigations.length, 0);
   assert.equal(context.document.title, `${places[1].name} | Ziyarat`);
   assert.equal(breadcrumb.textContent, places[1].name);
@@ -283,6 +291,19 @@ test('previous and next update place content in-page and honor browser history',
   assert.equal(content.children[0].fields['[data-field="name"]'].textContent, places[1].name);
 });
 
+test('shared page defaults to the first place and rejects invalid destinations', async () => {
+  const {status, content, destinationBreadcrumb} = await loadPage('place');
+  assert.equal(status.textContent, '');
+  assert.equal(content.children[0].fields['[data-field="name"]'].textContent, 'Masjid Quba');
+  assert.equal(destinationBreadcrumb.textContent, 'Madinah');
+  assert.equal(destinationBreadcrumb.href, 'place.html?destination=madinah');
+  for (const destination of ['', '../madinah', 'Madinah']) {
+    const invalid = await loadPage('place', false, '', destination);
+    assert.match(invalid.status.textContent, /Unable to load content/);
+    assert.equal(invalid.requests.some(request => request.path.includes('data/')), false);
+  }
+});
+
 test('includes every named Madinah source site and supplied video URL without blank rows', () => {
   const places = data['data/madinah.json'];
   assert.equal(places.length, 28);
@@ -302,7 +323,6 @@ test('includes every named Madinah source site and supplied video URL without bl
     ['banu-unaif', 'https://www.youtube.com/shorts/u4c0VYG7mFI']
   ]);
   for (const place of places) {
-    assert.ok(fs.existsSync(`madinah/${place.slug}/index.html`), `Missing route for ${place.slug}`);
     assert.ok(place.mapUrl);
   }
 });
@@ -315,7 +335,7 @@ test('displays image attribution and rejects unsafe credit links', async () => {
     license: 'CC BY 4.0',
     licenseUrl: 'https://creativecommons.org/licenses/by/4.0/'
   };
-  context.container = new Element();
+  context.container = new Element(); context.container.dataset.destination = "madinah";
   context.places = [{...data['data/madinah.json'][0], image: {...data['data/madinah.json'][0].image, credit}}];
   vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context);
   const view = context.container.children[0];
@@ -364,24 +384,28 @@ test('Makkah and Badr load their own data, placeholders and local navigation', a
       assert.equal(view.fields['[data-field="name"]'].textContent, place.name);
       assert.equal(view.fields['[data-field="map"]'].href, place.mapUrl);
       assert.equal(new URL(place.mapUrl).searchParams.get('query'), `${place.name}, ${destination === 'makkah' ? 'Makkah' : 'Badr'}`);
-      assert.equal(view.fields['[data-field="image-placeholder"]'].hidden, false);
+      assert.equal(view.fields['[data-field="image-placeholder"]'].hidden, Boolean(place.image));
+      if (place.image) {
+        assert.equal(place.image.src, `assets/images/${place.sourceCode}.jpg`);
+        assert.ok(fs.existsSync(place.image.src));
+        assert.equal(view.fields['[data-field="image"]'].src, place.image.src);
+        assert.equal(view.fields['[data-field="image-source"]'].textContent, place.image.credit.description);
+        assert.equal(view.fields['[data-field="image-license"]'].href, place.image.credit.licenseUrl);
+      }
       assert.equal(view.fields['[data-field="description-empty"]'].hidden, false);
       view.fields['[data-action="next"]'].events.click();
       const nextPlace = places[(places.indexOf(place) + 1) % count];
       assert.equal(content.children[0].fields['[data-field="name"]'].textContent, nextPlace.name);
       assert.equal(
         historyEntries[1],
-        `https://example.com/ziyarat/${destination}/?place=${nextPlace.slug}`
+        `https://example.com/ziyarat/place.html?destination=${destination}&place=${nextPlace.slug}`
       );
       content.children[0].fields['[data-action="previous"]'].events.click();
       assert.equal(content.children[0].fields['[data-field="name"]'].textContent, place.name);
       assert.equal(navigations.length, 0);
-      const page = fs.readFileSync(`${destination}/${place.slug}/index.html`, 'utf8');
-      assert.ok(page.includes(`content="0;url=../?place=${place.slug}"`));
     }
     const {content} = await loadPage('place', false, '', destination);
     assert.equal(content.children[0].fields['[data-field="name"]'].textContent, places[0].name);
-    assert.ok(fs.readFileSync(`${destination}/index.html`, 'utf8').includes('<base href="../">'));
   }
   const {status} = await loadPage('place', false, '', '../unknown');
   assert.match(status.textContent, /Unable to load content/);
@@ -426,7 +450,7 @@ test('descriptions default to English and switch languages without changing text
 
 test('description previews expand after three lines and omit redundant controls', async () => {
   const {context} = await loadPage('place');
-  context.container = new Element();
+  context.container = new Element(); context.container.dataset.destination = "madinah";
   context.container.dataset = {placeSlug: 'quba', destination: 'madinah'};
   context.places = [{...data['data/madinah.json'][0], english: 'Long description. '.repeat(30), urdu: 'طویل تفصیل۔ '.repeat(30)}];
   vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context);
@@ -454,7 +478,7 @@ test('description previews expand after three lines and omit redundant controls'
   urduMore.events.click();
   assert.equal(urduMore.getAttribute('aria-label'), 'کم تفصیل دکھائیں');
 
-  context.container = new Element();
+  context.container = new Element(); context.container.dataset.destination = "madinah";
   context.container.dataset = {placeSlug: 'quba', destination: 'madinah'};
   context.places = [{...data['data/madinah.json'][0], english: 'Brief.', urdu: 'مختصر۔'}];
   vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context);
@@ -479,7 +503,7 @@ test('all supplied Urdu descriptions have English translations', () => {
 
 test('supports Urdu-only descriptions without inventing an English translation', async () => {
   const {context} = await loadPage('place');
-  context.container = new Element();
+  context.container = new Element(); context.container.dataset.destination = "madinah";
   context.container.dataset = {placeSlug: 'saqia', destination: 'madinah'};
   const urdu = 'اصل اردو متن۔';
   context.places = [{...data['data/madinah.json'][4], english: undefined, urdu}];
@@ -515,7 +539,7 @@ test('destination themes provide distinct validated controls', async () => {
 
 test('renders only validated optional YouTube video links', async () => {
   const {context} = await loadPage('place');
-  context.container = new Element();
+  context.container = new Element(); context.container.dataset.destination = "madinah";
   context.container.dataset = {placeSlug: 'saqia', destination: 'madinah'};
   context.places = [{
     ...data['data/madinah.json'][4],
@@ -536,7 +560,7 @@ test('renders only validated optional YouTube video links', async () => {
 test('shows the licensed Banu Unaif photo with its attribution', async () => {
   const {content} = await loadPage('place', false, 'banu-unaif');
   const view = content.children[0];
-  assert.equal(view.fields['[data-field="image"]'].src, 'assets/images/banu-unaif.jpg');
+  assert.equal(view.fields['[data-field="image"]'].src, 'assets/images/MED-BANU-UNAIF.jpg');
   assert.equal(view.fields['[data-field="image-credit"]'].hidden, false);
   assert.match(view.fields['[data-field="image-source"]'].textContent, /Ayman dhū alghiná/);
 });
@@ -544,7 +568,7 @@ test('shows the licensed Banu Unaif photo with its attribution', async () => {
 test('disables navigation for a single place', async () => {
   const {context} = await loadPage('place');
   context.places = [data['data/madinah.json'][0]];
-  context.container = new Element();
+  context.container = new Element(); context.container.dataset.destination = "madinah";
   vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context);
   const view = context.container.children[0];
   assert.equal(view.fields['[data-action="previous"]'].disabled, true);
@@ -555,7 +579,7 @@ test('rejects unknown, unsafe or duplicate place slugs', async () => {
   const {status} = await loadPage('place', false, 'missing');
   assert.match(status.textContent, /Unable to load content/);
   const {context} = await loadPage('place');
-  context.container = new Element();
+  context.container = new Element(); context.container.dataset.destination = "madinah";
   for (const places of [
     [{...data['data/madinah.json'][0], slug: '../quba'}],
     [data['data/madinah.json'][0], data['data/madinah.json'][0]]
@@ -577,7 +601,7 @@ test('shows an error when content cannot be loaded', async () => {
 test('rejects unsafe map URLs before rendering', async () => {
   const {context} = await loadPage('place');
   context.places = [{...data['data/madinah.json'][0], mapUrl: 'javascript:alert(1)'}];
-  context.container = new Element();
+  context.container = new Element(); context.container.dataset.destination = "madinah";
   assert.throws(
     () => vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context),
     /Google Maps HTTPS link/
@@ -592,43 +616,38 @@ test('revalidates templates and data instead of using stale cached content', asy
 });
 
 test('all pages use the same versioned stylesheet and script', () => {
-  const pages = ['index.html', 'madinah.html', 'nearby/index.html',
-    ...['madinah', 'makkah', 'badr'].map(destination => `${destination}/index.html`)]
+  const pages = ['index.html', 'place.html', 'nearby/index.html']
     .map(path => fs.readFileSync(path, 'utf8'));
   for (const asset of ['styles.css', 'site.js']) {
     const versioned = pages.map(page => page.match(new RegExp(`${asset.replace('.', '\\.')}\\?v=[\\w-]+`))?.[0]);
     assert.ok(versioned[0]);
     assert.ok(versioned.every(version => version === versioned[0]));
   }
-  assert.ok(pages.every(page => page.includes('<link rel="icon" href="assets/favicon.svg?v=20261121-14" type="image/svg+xml">')));
+  for (const asset of ['favicon.svg', 'favicon-32.png', 'apple-touch-icon.png']) {
+    const references = pages.map(page => page.match(new RegExp(`assets/${asset.replace('.', '\\.')}\\?v=[\\w-]+`))?.[0]);
+    assert.ok(references[0]);
+    assert.ok(references.every(reference => reference === references[0]));
+    assert.ok(fs.existsSync(`assets/${asset}`));
+  }
   assert.match(fs.readFileSync('assets/favicon.svg', 'utf8'), /<svg\b/);
 });
 
-test('directory pages resolve resources and navigation from the project root', () => {
-  for (const [path, url, base] of [
-    ['madinah/index.html', 'https://example.com/ziyarat/madinah/', '../']
-  ]) {
-    const html = fs.readFileSync(path, 'utf8');
-    assert.ok(html.includes(`<base href="${base}">`));
-    const root = new URL(base, url);
-    for (const asset of ['styles.css', 'site.js', 'templates.html', 'data/madinah.json', 'assets/images/quba.jpg', 'assets/favicon.svg']) {
+test('shared page and nearby page resolve resources under a project path', () => {
+  const nearby = fs.readFileSync('nearby/index.html', 'utf8');
+  assert.ok(nearby.includes('<base href="../">'));
+  for (const root of [new URL('https://example.com/ziyarat/place.html?destination=madinah'),
+    new URL('../', 'https://example.com/ziyarat/nearby/')]) {
+    for (const asset of ['styles.css', 'site.js', 'templates.html', 'data/madinah.json', 'assets/images/MED-QUBA.jpg', 'assets/favicon.svg']) {
       assert.equal(new URL(asset, root).href, `https://example.com/ziyarat/${asset}`);
     }
-    assert.equal(new URL('./', root).href, 'https://example.com/ziyarat/');
-  }
-  for (const destination of ['madinah', 'makkah', 'badr']) {
-    for (const place of data[`data/${destination}.json`]) {
-      const page = fs.readFileSync(`${destination}/${place.slug}/index.html`, 'utf8');
-      assert.ok(page.includes(`content="0;url=../?place=${place.slug}"`));
-      assert.equal(new URL(`../?place=${place.slug}`, `https://example.com/ziyarat/${destination}/${place.slug}/`).href,
-        `https://example.com/ziyarat/${destination}/?place=${place.slug}`);
-    }
+    assert.equal(new URL('place.html?destination=madinah&place=quba', root).href,
+      'https://example.com/ziyarat/place.html?destination=madinah&place=quba');
   }
 });
 
 test('renders an English-only description with an Urdu placeholder', async () => {
   const {context} = await loadPage('place');
-  context.container = new Element();
+  context.container = new Element(); context.container.dataset.destination = "madinah";
   context.places = [{...data['data/madinah.json'][4], english: 'Example', urdu: undefined}];
   vm.runInContext("renderPlaces(container, {content: {kind: 'place'}}, places)", context);
   assert.equal(context.container.children[0].fields['[data-field="urdu"]'].textContent, 'اردو تفصیل جلد شامل کی جائے گی۔');

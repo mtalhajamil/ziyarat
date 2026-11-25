@@ -31,8 +31,9 @@
         <p class="nearby-privacy">Map tiles are provided by OpenStreetMap; viewing the map reveals the approximate viewed area to its tile provider. Selecting a map pin opens it in Google Maps. Opening a trip shares its starting location and stops with Google.</p>
         <div class="nearby-heading">
           <h2>Nearby places</h2>
-          <button type="button" data-action="trip">Trip to nearest 5 places</button>
+          <button type="button" data-action="trip">Trip to nearest 5 places <span class="trip-spinner" data-field="trip-spinner" aria-hidden="true" hidden></span></button>
         </div>
+        <span class="visually-hidden" data-field="trip-progress" role="status"></span>
         <p class="nearby-status" data-field="trip-status" role="status"></p>
         <p>The five closest places are ordered by straight-line distance. Select one to view its description.</p>
         <ul class="nearby-results" data-field="results"></ul>
