@@ -21,24 +21,33 @@ class Element {
     this.events = {};
     this.textContent = '';
     this.value = '';
+    this.attributes = {};
+    this.classes = new Set();
+    this.classList = {toggle: (name, enabled) => enabled ? this.classes.add(name) : this.classes.delete(name)};
   }
   append(node) { this.children.push(node); }
   replaceChildren(...nodes) { this.children = nodes; }
   addEventListener(type, handler) { this.events[type] = handler; }
+  setAttribute(name, value) { this.attributes[name] = value; }
+  removeAttribute(name) { delete this.attributes[name]; }
+  focus() { this.focused = true; }
+  querySelectorAll() { return []; }
 }
 
 function setup(geolocation) {
-  const fields = Object.fromEntries(['map', 'origin-status', 'tile-status', 'results']
+  const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'tile-status', 'results']
     .map(name => [`[data-field="${name}"]`, new Element()]));
   fields['[data-action="locate"]'] = new Element();
+  fields['[data-action="fullscreen"]'] = new Element();
   const container = new Element();
   container.querySelector = selector => fields[selector];
   const markers = [];
   const map = {
     events: {},
-    setView() { return this; },
+    setView(center, zoom) { this.lastView = {center, zoom}; return this; },
     getZoom() { return 12; },
     getCenter() { return {lat: 24.5, lng: 39.6}; },
+    invalidateSize() { this.resized = (this.resized || 0) + 1; },
     on(name, fn) { this.events[name] = fn; return this; },
     removeLayer() {}
   };
@@ -63,10 +72,13 @@ function setup(geolocation) {
     }
   };
   const opened = [];
+  const documentEvents = {};
   const context = vm.createContext({
     L, URLSearchParams, navigator: {geolocation},
     window: {open: (...args) => opened.push(args), requestAnimationFrame: callback => callback()},
     document: {
+      body: new Element(),
+      addEventListener: (type, handler) => { documentEvents[type] = handler; },
       importNode: () => new Element(),
       createElement: () => new Element(),
       createDocumentFragment: () => new Element()
@@ -74,7 +86,7 @@ function setup(geolocation) {
   });
   vm.runInContext(script, context);
   context.renderNearby(container, {content: {}}, places);
-  return {context, fields, map, tiles, markers, opened};
+  return {context, fields, map, tiles, markers, opened, documentEvents};
 }
 
 test('supplied locations exclude Tooba and validate coordinate pairs', () => {
@@ -144,6 +156,59 @@ test('overlapping place labels are hidden and reappear after moving apart', () =
   secondLeft = 100;
   map.events['zoomend moveend']();
   assert.equal(second.style.visibility, 'visible');
+});
+
+test('fullscreen fallback opens and Escape restores the map', async () => {
+  const {context, fields, map, documentEvents} = setup();
+  const button = fields['[data-action="fullscreen"]'];
+  const frame = fields['[data-field="map-frame"]'];
+  await button.events.click();
+  assert.equal(frame.classes.has('is-fullscreen'), true);
+  assert.equal(context.document.body.classes.has('nearby-fullscreen-open'), true);
+  assert.equal(button.textContent, 'Exit full screen');
+  assert.equal(button.attributes['aria-pressed'], 'true');
+  assert.equal(frame.attributes['aria-modal'], 'true');
+  assert.equal(map.resized, 1);
+  assert.deepEqual(map.lastView, {center: {lat: 24.5, lng: 39.6}, zoom: 12});
+  documentEvents.keydown({key: 'Escape', preventDefault() {}});
+  assert.equal(frame.classes.has('is-fullscreen'), false);
+  assert.equal(context.document.body.classes.has('nearby-fullscreen-open'), false);
+  assert.equal(button.textContent, 'Full screen');
+  assert.equal(button.attributes['aria-pressed'], 'false');
+  assert.equal(frame.attributes['aria-modal'], undefined);
+  assert.equal(button.focused, true);
+  assert.equal(map.resized, 2);
+  assert.deepEqual(map.lastView, {center: {lat: 24.5, lng: 39.6}, zoom: 12});
+});
+
+test('fullscreen falls back to viewport mode when the native request fails', async () => {
+  const {fields} = setup();
+  const button = fields['[data-action="fullscreen"]'];
+  const frame = fields['[data-field="map-frame"]'];
+  frame.requestFullscreen = async () => { throw new Error('Fullscreen unavailable'); };
+  await button.events.click();
+  assert.equal(frame.classes.has('is-fullscreen'), true);
+  assert.equal(button.textContent, 'Exit full screen');
+});
+
+test('native fullscreen enters and exits through fullscreenchange', async () => {
+  const {context, fields, map, documentEvents} = setup();
+  const button = fields['[data-action="fullscreen"]'];
+  const frame = fields['[data-field="map-frame"]'];
+  frame.requestFullscreen = async () => {
+    context.document.fullscreenElement = frame;
+    documentEvents.fullscreenchange();
+  };
+  context.document.exitFullscreen = async () => {
+    context.document.fullscreenElement = null;
+    documentEvents.fullscreenchange();
+  };
+  await button.events.click();
+  assert.equal(button.textContent, 'Exit full screen');
+  assert.equal(frame.classes.has('is-fullscreen'), false);
+  await button.events.click();
+  assert.equal(button.textContent, 'Full screen');
+  assert.equal(map.resized, 2);
 });
 
 test('geolocation errors preserve manual fallback and a stale response cannot override it', () => {
