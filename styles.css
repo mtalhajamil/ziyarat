@@ -276,6 +276,10 @@ h1 {
   gap: 0.75rem;
 }
 
+.nearby-controls button {
+  width: 100%;
+}
+
 .nearby-status:empty {
   display: none;
 }

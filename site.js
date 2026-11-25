@@ -420,6 +420,7 @@ function renderNearby(container, template, places) {
   const tripSpinner = field(container, 'map-trip-spinner');
   const tripButton = container.querySelector('[data-action="map-trip"]');
   const tripDialog = field(container, 'trip-dialog');
+  const tripOrigin = field(container, 'trip-origin');
   const tripStops = field(container, 'trip-stops');
   const tripDialogStatus = field(container, 'trip-dialog-status');
   const tripOpenProgress = field(container, 'trip-open-progress');
@@ -437,6 +438,7 @@ function renderNearby(container, template, places) {
     tileStatus.textContent = 'Some map tiles could not be loaded. Check your connection; the place list is still available.';
   });
   let origin = null;
+  let selectedOrigin = null;
   let originMarker = null;
   let locationRequest = 0;
   const placeMarkers = [];
@@ -520,6 +522,7 @@ function renderNearby(container, template, places) {
     }
     locationRequest++;
     origin = {latitude, longitude};
+    selectedOrigin = source === 'Selected location' ? origin : null;
     if (originMarker) map.removeLayer(originMarker);
     originMarker = L.circleMarker([latitude, longitude], {
       radius: 9, color: '#ffffff', weight: 3, fillColor: '#245c3e', fillOpacity: 1
@@ -611,13 +614,32 @@ function renderNearby(container, template, places) {
   document.addEventListener('visibilitychange', () => {
     if (handoffPending && document.visibilityState === 'hidden') resetTripOnLeave();
   });
+  function showTrip(start, selected) {
+    const stops = nearestTripPlaces(start, mappedPlaces);
+    const list = document.createDocumentFragment();
+    for (const stop of stops) {
+      const item = document.createElement('li');
+      item.textContent = placesByCode.get(stop.sourceCode).name;
+      list.append(item);
+    }
+    tripStops.replaceChildren(list);
+    resetTrip();
+    pendingTripUrl = tripDirectionsUrl(start, stops);
+    tripOrigin.textContent = selected ? 'Starting from your selected map location.' : 'Starting from your current location.';
+    tripDialogStatus.textContent = '';
+    tripDialog.showModal();
+  }
   function planTrip() {
+    setTripStatus('');
+    if (selectedOrigin) {
+      showTrip(selectedOrigin, true);
+      return;
+    }
     if (!navigator.geolocation) {
-      setTripStatus('Current location is unavailable. A trip requires your current location.');
+      setTripStatus('Current location is unavailable. Select a point on the map to plan a trip.');
       return;
     }
     const request = ++tripRequest;
-    setTripStatus('');
     tripButton.disabled = true;
     tripButton.setAttribute('aria-busy', 'true');
     tripSpinner.hidden = false;
@@ -625,29 +647,26 @@ function renderNearby(container, template, places) {
     navigator.geolocation.getCurrentPosition(position => {
       if (request !== tripRequest) return;
       const current = {latitude: position.coords.latitude, longitude: position.coords.longitude};
+      if (selectedOrigin) {
+        showTrip(selectedOrigin, true);
+        return;
+      }
       if (!validCoordinates(current.latitude, current.longitude)) {
         resetTrip();
         setTripStatus('Your current location is outside the supported map area.');
         return;
       }
-      const stops = nearestTripPlaces(current, mappedPlaces);
-      const list = document.createDocumentFragment();
-      for (const stop of stops) {
-        const item = document.createElement('li');
-        item.textContent = placesByCode.get(stop.sourceCode).name;
-        list.append(item);
-      }
-      tripStops.replaceChildren(list);
-      resetTrip();
-      pendingTripUrl = tripDirectionsUrl(current, stops);
-      tripDialogStatus.textContent = '';
-      tripDialog.showModal();
+      showTrip(current, false);
     }, error => {
       if (request !== tripRequest) return;
+      if (selectedOrigin) {
+        showTrip(selectedOrigin, true);
+        return;
+      }
       resetTrip();
       const reason = error.code === 1 ? 'Location permission was denied.' :
         error.code === 3 ? 'The location request timed out.' : 'Your current location could not be determined.';
-      setTripStatus(`${reason} A trip requires your current location.`);
+      setTripStatus(`${reason} Select a point on the map to plan a trip.`);
     }, {timeout: 10000, maximumAge: 0});
   }
   tripButton.addEventListener('click', planTrip);

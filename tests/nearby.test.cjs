@@ -39,7 +39,7 @@ class Element {
 }
 
 function setup(geolocation, sourcePlaces = places) {
-  const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'map-origin-status', 'origin-announcement', 'map-origin-announcement', 'tile-status', 'results', 'trip-status', 'map-trip-status', 'trip-progress', 'map-trip-progress', 'map-trip-spinner', 'trip-dialog', 'trip-stops', 'trip-dialog-status', 'trip-open-spinner', 'trip-open-progress']
+  const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'map-origin-status', 'origin-announcement', 'map-origin-announcement', 'tile-status', 'results', 'trip-status', 'map-trip-status', 'trip-progress', 'map-trip-progress', 'map-trip-spinner', 'trip-dialog', 'trip-origin', 'trip-stops', 'trip-dialog-status', 'trip-open-spinner', 'trip-open-progress']
     .map(name => [`[data-field="${name}"]`, new Element()]));
   fields['[data-action="locate"]'] = new Element();
   fields['[data-action="open-map"]'] = new Element();
@@ -228,8 +228,7 @@ test('trip previews ordered places before opening the route or cancelling', () =
   let success;
   let failure;
   let options;
-  const {fields, map, navigated, windowEvents, timers} = setup({getCurrentPosition(ok, fail, opts) { success = ok; failure = fail; options = opts; }});
-  map.events.click({latlng: {lat: 24.4, lng: 39.6}});
+  const {fields, navigated, windowEvents, timers} = setup({getCurrentPosition(ok, fail, opts) { success = ok; failure = fail; options = opts; }});
   fields['[data-action="open-map"]'].events.click();
   const button = fields['[data-action="map-trip"]'];
   const status = fields['[data-field="trip-status"]'];
@@ -245,6 +244,7 @@ test('trip previews ordered places before opening the route or cancelling', () =
   assert.equal(navigated.length, 0);
   const dialog = fields['[data-field="trip-dialog"]'];
   assert.equal(dialog.open, true);
+  assert.match(fields['[data-field="trip-origin"]'].textContent, /current location/);
   const names = fields['[data-field="trip-stops"]'].children[0].children.map(item => item.textContent);
   const expected = new Map(places.map(place => [place.sourceCode, place.name]));
   const candidates = places.filter(place => place.latitude !== undefined);
@@ -263,7 +263,6 @@ test('trip previews ordered places before opening the route or cancelling', () =
   assert.equal(route.searchParams.get('origin'), '24.5,39.7');
   assert.equal(route.searchParams.get('waypoints').split('|').length, 4);
   assert.equal(route.searchParams.get('destination'), '24.46761,39.62174');
-  assert.match(fields['[data-field="origin-announcement"]'].textContent, /24.40000, 39.60000/);
   windowEvents.pagehide();
   windowEvents.pageshow();
   assert.equal(button.disabled, false);
@@ -274,7 +273,7 @@ test('trip previews ordered places before opening the route or cancelling', () =
   failure({code: 1});
   assert.equal(button.disabled, false);
   assert.equal(fields['[data-field="map-trip-spinner"]'].hidden, true);
-  assert.match(status.textContent, /denied.*requires your current location/i);
+  assert.match(status.textContent, /denied.*select a point/i);
   assert.equal(fields['[data-field="map-trip-status"]'].textContent, status.textContent);
   assert.equal(navigated.length, 1);
   button.events.click();
@@ -284,6 +283,50 @@ test('trip previews ordered places before opening the route or cancelling', () =
   const unavailable = setup();
   unavailable.fields['[data-action="map-trip"]'].events.click();
   assert.match(unavailable.fields['[data-field="trip-status"]'].textContent, /unavailable/);
+});
+
+test('trip prioritizes a manual map selection and the location control switches back', () => {
+  const requests = [];
+  const {context, fields, map, navigated} = setup({
+    getCurrentPosition(ok, fail) { requests.push({ok, fail}); }
+  });
+  map.events.click({latlng: {lat: 24.4, lng: 39.6}});
+  requests[0].ok({coords: {latitude: 24.5, longitude: 39.7}});
+  fields['[data-action="map-trip"]'].events.click();
+  assert.equal(requests.length, 1);
+  assert.match(fields['[data-field="trip-origin"]'].textContent, /selected map location/);
+  const ordered = context.nearestTripPlaces({latitude: 24.4, longitude: 39.6}, places.filter(place => place.latitude !== undefined));
+  assert.deepEqual(fields['[data-field="trip-stops"]'].children[0].children.map(item => item.textContent),
+    Array.from(ordered, place => place.name));
+  fields['[data-action="open-trip"]'].events.click();
+  assert.equal(new URL(navigated[0]).searchParams.get('origin'), '24.4,39.6');
+  fields['[data-field="trip-dialog"]'].close();
+  fields['[data-action="locate"]'].events.click();
+  requests[1].ok({coords: {latitude: 24.5, longitude: 39.7}});
+  fields['[data-action="map-trip"]'].events.click();
+  assert.equal(requests.length, 3);
+  requests[2].ok({coords: {latitude: 24.5, longitude: 39.7}});
+  assert.match(fields['[data-field="trip-origin"]'].textContent, /current location/);
+  fields['[data-action="open-trip"]'].events.click();
+  assert.equal(new URL(navigated[1]).searchParams.get('origin'), '24.5,39.7');
+  const unavailable = setup();
+  unavailable.map.events.click({latlng: {lat: 24.4, lng: 39.6}});
+  unavailable.fields['[data-action="map-trip"]'].events.click();
+  assert.equal(unavailable.fields['[data-field="trip-dialog"]'].open, true);
+});
+
+test('manual selection made during a trip location request wins even if that request fails', () => {
+  for (const outcome of ['ok', 'fail']) {
+    const requests = [];
+    const {fields, map, navigated} = setup({getCurrentPosition(ok, fail) { requests.push({ok, fail}); }});
+    fields['[data-action="map-trip"]'].events.click();
+    map.events.click({latlng: {lat: 24.4, lng: 39.6}});
+    if (outcome === 'ok') requests[1].ok({coords: {latitude: 24.5, longitude: 39.7}});
+    else requests[1].fail({code: 1});
+    assert.match(fields['[data-field="trip-origin"]'].textContent, /selected map location/);
+    fields['[data-action="open-trip"]'].events.click();
+    assert.equal(new URL(navigated[0]).searchParams.get('origin'), '24.4,39.6');
+  }
 });
 
 test('trip loading resets on app switch or delayed handoff, without cancelling location prompts', () => {
