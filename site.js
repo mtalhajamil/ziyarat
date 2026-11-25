@@ -17,6 +17,18 @@ function requireText(value, field) {
   return value;
 }
 
+function validateMapUrl(value) {
+  const map = new URL(requireText(value, 'map URL'));
+  const isGoogleMaps = (
+    (['google.com', 'www.google.com', 'goo.gl'].includes(map.hostname) &&
+      (map.pathname === '/maps' || map.pathname.startsWith('/maps/'))) ||
+    ['maps.google.com', 'maps.app.goo.gl'].includes(map.hostname)
+  );
+  if (map.protocol !== 'https:' || !isGoogleMaps || map.username || map.password) {
+    throw new Error('Map URL must be a Google Maps HTTPS link.');
+  }
+}
+
 function validateImage(image) {
   if (!image || typeof image !== 'object' ||
       typeof image.src !== 'string' ||
@@ -172,15 +184,7 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
         throw new Error('Video URL must be a YouTube HTTPS link.');
       }
     }
-    const map = new URL(requireText(place.mapUrl, 'map URL'));
-    const isGoogleMaps = (
-      (['google.com', 'www.google.com', 'goo.gl'].includes(map.hostname) &&
-        (map.pathname === '/maps' || map.pathname.startsWith('/maps/'))) ||
-      ['maps.google.com', 'maps.app.goo.gl'].includes(map.hostname)
-    );
-    if (map.protocol !== 'https:' || !isGoogleMaps || map.username || map.password) {
-      throw new Error('Map URL must be a Google Maps HTTPS link.');
-    }
+    validateMapUrl(place.mapUrl);
   }
 
   const content = document.importNode(template.content, true);
@@ -337,15 +341,6 @@ function straightLineKm(origin, destination) {
   return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
 }
 
-function directionsUrl(origin, place) {
-  const params = new URLSearchParams({
-    api: '1',
-    origin: `${origin.latitude},${origin.longitude}`,
-    destination: `${place.latitude},${place.longitude}`
-  });
-  return `https://www.google.com/maps/dir/?${params}`;
-}
-
 function renderNearby(container, template, places) {
   if (!Array.isArray(places)) throw new Error('Invalid place data.');
   const mappedPlaces = places.filter(place => {
@@ -357,7 +352,10 @@ function renderNearby(container, template, places) {
     return hasLatitude;
   });
   if (!mappedPlaces.length) throw new Error('No places with coordinates.');
-  for (const place of mappedPlaces) requireText(place.name, 'place name');
+  for (const place of mappedPlaces) {
+    requireText(place.name, 'place name');
+    validateMapUrl(place.nearbyMapUrl ?? place.mapUrl);
+  }
   if (typeof L === 'undefined') throw new Error('Map library could not be loaded.');
 
   const content = document.importNode(template.content, true);
@@ -498,10 +496,10 @@ function renderNearby(container, template, places) {
     for (const {place, distance} of ordered.slice(0, 5)) {
       const item = document.createElement('li');
       const link = document.createElement('a');
-      link.href = directionsUrl(origin, place);
+      link.href = place.nearbyMapUrl ?? place.mapUrl;
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
-      link.textContent = `${place.name} — ${distance.toFixed(1)} km straight-line (directions)`;
+      link.textContent = `${place.name} — ${distance.toFixed(1)} km straight-line (open in Google Maps)`;
       item.append(link);
       list.append(item);
     }
@@ -521,7 +519,7 @@ function renderNearby(container, template, places) {
     }).addTo(map).bindTooltip('Your selected location', {
       permanent: true, direction: 'top', offset: [0, -8], className: 'nearby-origin-label'
     });
-    status.textContent = `${source}: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}. Select a place for directions.`;
+    status.textContent = `${source}: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}. Select a place to open it in Google Maps.`;
     map.setView([latitude, longitude], map.getZoom());
     showResults();
     scheduleLabels();
@@ -534,11 +532,7 @@ function renderNearby(container, template, places) {
       .addTo(map)
       .bindTooltip(label, {permanent: true, direction: 'top', offset: [0, -16], className: 'nearby-place-label'})
       .on('click', () => {
-        if (!origin) {
-          status.textContent = 'Choose a location first to open directions.';
-          return;
-        }
-        window.open(directionsUrl(origin, place), '_blank', 'noopener,noreferrer');
+        window.open(place.nearbyMapUrl ?? place.mapUrl, '_blank', 'noopener,noreferrer');
       });
     marker.on('mouseover', () => {
       const tooltip = marker.getTooltip()?.getElement();
