@@ -35,7 +35,7 @@ class Element {
 }
 
 function setup(geolocation, sourcePlaces = places) {
-  const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'tile-status', 'results', 'trip-status']
+  const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'tile-status', 'results', 'trip-status', 'trip-progress', 'trip-spinner']
     .map(name => [`[data-field="${name}"]`, new Element()]));
   fields['[data-action="locate"]'] = new Element();
   fields['[data-action="fullscreen"]'] = new Element();
@@ -75,9 +75,16 @@ function setup(geolocation, sourcePlaces = places) {
   const opened = [];
   const navigated = [];
   const documentEvents = {};
+  const windowEvents = {};
+  const timers = [];
   const context = vm.createContext({
     L, URL, URLSearchParams, navigator: {geolocation},
-    window: {open: (...args) => opened.push(args), location: {assign: url => navigated.push(url)}, requestAnimationFrame: callback => callback()},
+    window: {
+      open: (...args) => opened.push(args), location: {assign: url => navigated.push(url)},
+      requestAnimationFrame: callback => callback(),
+      addEventListener: (type, handler) => { windowEvents[type] = handler; },
+      setTimeout: callback => { timers.push(callback); }
+    },
     document: {
       body: new Element(),
       addEventListener: (type, handler) => { documentEvents[type] = handler; },
@@ -88,7 +95,7 @@ function setup(geolocation, sourcePlaces = places) {
   });
   vm.runInContext(script, context);
   context.renderNearby(container, {content: {}}, sourcePlaces);
-  return {context, fields, map, tiles, markers, opened, navigated, documentEvents};
+  return {context, fields, map, tiles, markers, opened, navigated, documentEvents, windowEvents, timers};
 }
 
 test('supplied locations exclude Tooba and validate coordinate pairs', () => {
@@ -143,8 +150,8 @@ test('pins open supplied maps links while nearby results open place descriptions
   assert.equal(results.children[0].children.length, 5);
   const first = results.children[0].children[0].children[0];
   assert.match(first.textContent, /Masjid Quba — 0.0 km straight-line/);
-  assert.equal(first.href, 'madinah/?place=quba');
-  assert.equal(new URL(first.href, 'https://example.com/ziyarat/').href, 'https://example.com/ziyarat/madinah/?place=quba');
+  assert.equal(first.href, 'place.html?destination=madinah&place=quba');
+  assert.equal(new URL(first.href, 'https://example.com/ziyarat/').href, 'https://example.com/ziyarat/place.html?destination=madinah&place=quba');
   assert.match(first.textContent, /view place/);
   const mapElement = fields['[data-field="map"]'];
   mapElement.events.keydown({target: mapElement, key: 'Enter', preventDefault() {}});
@@ -166,7 +173,7 @@ test('nearby place descriptions use unique location codes and stable slugs', () 
   const {fields, map} = setup(undefined, adjusted);
   map.events.click({latlng: {lat: 24.439391, lng: 39.617301}});
   const first = fields['[data-field="results"]'].children[0].children[0].children[0];
-  assert.equal(first.href, 'madinah/?place=renamed-place');
+  assert.equal(first.href, 'place.html?destination=madinah&place=renamed-place');
   assert.match(first.textContent, /^Renamed place/);
   assert.throws(() => setup(undefined, [{...places[0], sourceCode: undefined}]), /Missing location code/);
   assert.throws(() => setup(undefined, [places[0], {...places[1], sourceCode: places[0].sourceCode}]), /duplicate location code/);
@@ -181,7 +188,7 @@ test('current location is requested on entry and populates nearby results', () =
   assert.equal(options.maximumAge, 0);
   success({coords: {latitude: 24.439391, longitude: 39.617301}});
   assert.match(fields['[data-field="origin-status"]'].textContent, /Current location/);
-  assert.equal(fields['[data-field="results"]'].children[0].children[0].children[0].href, 'madinah/?place=quba');
+  assert.equal(fields['[data-field="results"]'].children[0].children[0].children[0].href, 'place.html?destination=madinah&place=quba');
 
   const pending = setup({getCurrentPosition(ok, fail) { success = ok; failure = fail; }});
   pending.map.events.click({latlng: {lat: 24.4, lng: 39.6}});
@@ -212,30 +219,65 @@ test('trip opens one route using actual location and handles denied access', () 
   let success;
   let failure;
   let options;
-  const {fields, map, navigated} = setup({getCurrentPosition(ok, fail, opts) { success = ok; failure = fail; options = opts; }});
+  const {fields, map, navigated, windowEvents, timers} = setup({getCurrentPosition(ok, fail, opts) { success = ok; failure = fail; options = opts; }});
   map.events.click({latlng: {lat: 24.4, lng: 39.6}});
   const button = fields['[data-action="trip"]'];
   const status = fields['[data-field="trip-status"]'];
   button.events.click();
   assert.equal(button.disabled, true);
+  assert.equal(fields['[data-field="trip-spinner"]'].hidden, false);
+  assert.match(fields['[data-field="trip-progress"]'].textContent, /opening Google Maps/i);
+  assert.equal(status.textContent, '');
   assert.equal(options.maximumAge, 0);
   success({coords: {latitude: 24.5, longitude: 39.7}});
-  assert.equal(button.disabled, false);
-  assert.match(status.textContent, /Opening Google Maps/);
+  assert.equal(button.disabled, true);
+  assert.equal(status.textContent, '');
   assert.equal(navigated.length, 1);
   const route = new URL(navigated[0]);
   assert.equal(route.searchParams.get('origin'), '24.5,39.7');
   assert.equal(route.searchParams.get('waypoints').split('|').length, 4);
   assert.equal(route.searchParams.get('destination'), '24.46761,39.62174');
   assert.match(fields['[data-field="origin-status"]'].textContent, /24.40000, 39.60000/);
+  windowEvents.pagehide();
+  windowEvents.pageshow();
+  assert.equal(button.disabled, false);
+  assert.equal(fields['[data-field="trip-spinner"]'].hidden, true);
+  assert.equal(fields['[data-field="trip-progress"]'].textContent, '');
+  timers[0]();
   button.events.click();
   failure({code: 1});
   assert.equal(button.disabled, false);
+  assert.equal(fields['[data-field="trip-spinner"]'].hidden, true);
   assert.match(status.textContent, /denied.*requires your current location/i);
+  assert.equal(navigated.length, 1);
+  button.events.click();
+  windowEvents.pagehide();
+  success({coords: {latitude: 24.5, longitude: 39.7}});
   assert.equal(navigated.length, 1);
   const unavailable = setup();
   unavailable.fields['[data-action="trip"]'].events.click();
   assert.match(unavailable.fields['[data-field="trip-status"]'].textContent, /unavailable/);
+});
+
+test('trip loading resets on app switch or delayed handoff, without cancelling location prompts', () => {
+  let success;
+  const {context, fields, documentEvents, timers} = setup({
+    getCurrentPosition(ok) { success = ok; }
+  });
+  const button = fields['[data-action="trip"]'];
+  button.events.click();
+  context.document.visibilityState = 'hidden';
+  documentEvents.visibilitychange();
+  assert.equal(button.disabled, true);
+  success({coords: {latitude: 24.5, longitude: 39.7}});
+  documentEvents.visibilitychange();
+  assert.equal(button.disabled, false);
+  assert.equal(fields['[data-field="trip-spinner"]'].hidden, true);
+  button.events.click();
+  success({coords: {latitude: 24.5, longitude: 39.7}});
+  timers.at(-1)();
+  assert.equal(button.disabled, false);
+  assert.equal(fields['[data-field="trip-spinner"]'].hidden, true);
 });
 
 function setupWithInvalidMapUrl() {

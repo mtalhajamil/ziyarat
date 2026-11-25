@@ -8,13 +8,13 @@
     "height": 720
   },
   "description": "The city of the Prophet’s migration and home to the Prophet’s Mosque.",
-  "page": "madinah/",
+  "page": "place.html?destination=madinah",
   "places": [
     {
       "slug": "quba",
       "name": "Masjid Quba",
       "image": {
-        "src": "assets/images/quba.jpg",
+        "src": "assets/images/MED-QUBA.jpg",
         "alt": "Quba Mosque in Madinah",
         "width": 1280,
         "height": 1013
@@ -31,7 +31,7 @@
       "slug": "jummah",
       "name": "Masjid Jummah",
       "image": {
-        "src": "assets/images/jummah.jpg",
+        "src": "assets/images/MED-JUMMA.jpg",
         "alt": "Masjid Jummah in Madinah",
         "width": 1280,
         "height": 843,
@@ -54,7 +54,7 @@
       "slug": "qiblatain",
       "name": "Masjid Qiblatain",
       "image": {
-        "src": "assets/images/qiblatain.jpg",
+        "src": "assets/images/MED-QIBLAT.jpg",
         "alt": "Masjid Qiblatain in Madinah",
         "width": 960,
         "height": 1280
@@ -71,7 +71,7 @@
       "slug": "ghamama",
       "name": "Masjid Ghamama",
       "image": {
-        "src": "assets/images/ghamama.jpg",
+        "src": "assets/images/MED-GHAMAMA.jpg",
         "alt": "Masjid Ghamama in Madinah",
         "width": 1280,
         "height": 960,
@@ -94,7 +94,7 @@
       "slug": "saqia",
       "name": "Masjid al-Saqia",
       "image": {
-        "src": "assets/images/saqia.jpg",
+        "src": "assets/images/MED-SAQIA.jpg",
         "alt": "Masjid al-Saqia in Madinah",
         "width": 1280,
         "height": 960,
@@ -138,7 +138,7 @@
       "slug": "shaykhain",
       "name": "Masjid-e-Shaykhain",
       "image": {
-        "src": "assets/images/shaykhain.jpg",
+        "src": "assets/images/MED-SHAYKHAIN.jpg",
         "alt": "Masjid al-Dir, also known as Masjid-e-Shaykhain",
         "width": 1280,
         "height": 960,
@@ -161,7 +161,7 @@
       "slug": "uhud",
       "name": "Jabal-e-Uhud",
       "image": {
-        "src": "assets/images/uhud.jpg",
+        "src": "assets/images/MED-UHUD.jpg",
         "alt": "Mount Uhud in Madinah",
         "width": 1280,
         "height": 720,
@@ -184,7 +184,7 @@
       "slug": "ruma",
       "name": "Jabal-e-Ruma",
       "image": {
-        "src": "assets/images/ruma.jpg",
+        "src": "assets/images/MED-RUMA.jpg",
         "alt": "Archers' Hill at Uhud",
         "width": 1280,
         "height": 853,
@@ -229,7 +229,7 @@
       "slug": "sabah",
       "name": "Masjid-e-Sab'ah",
       "image": {
-        "src": "assets/images/sabah.jpg",
+        "src": "assets/images/MED-SABA.jpg",
         "alt": "Mosque of Salman al-Farisi, one of the Seven Mosques in Madinah",
         "width": 1280,
         "height": 960,
@@ -252,7 +252,7 @@
       "slug": "fath",
       "name": "Masjid-e-Fath",
       "image": {
-        "src": "assets/images/fath.jpg",
+        "src": "assets/images/MED-FATAH.jpg",
         "alt": "Masjid al-Fath in Madinah",
         "width": 1280,
         "height": 960,
@@ -287,7 +287,7 @@
       "slug": "banu-unaif",
       "name": "Masjid Banu Unaif",
       "image": {
-        "src": "assets/images/banu-unaif.jpg",
+        "src": "assets/images/MED-BANU-UNAIF.jpg",
         "alt": "Masjid Banu Unaif in Madinah",
         "width": 1280,
         "height": 795,
@@ -311,7 +311,7 @@
       "slug": "mustarah",
       "name": "Masjid Al-Mustarāh (Masjid Bani Harisa)",
       "image": {
-        "src": "assets/images/mustarah.jpg",
+        "src": "assets/images/MED-MUSTARAH.jpg",
         "alt": "Masjid Bani Harisa in Madinah",
         "width": 1280,
         "height": 960,

@@ -84,7 +84,8 @@ function renderDestinations(container, template, destinations) {
     validateImage(destination.image);
     if (destination.page !== undefined &&
         (typeof destination.page !== 'string' ||
-          !/^(?:(?:[a-z0-9-]+\/)+|[a-z0-9-]+\.html)$/.test(destination.page))) {
+          destination.page !== `place.html?destination=${destination.id}` ||
+          !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(destination.id))) {
       throw new Error('Invalid destination page.');
     }
     if (destination.description !== undefined) {
@@ -116,8 +117,8 @@ function renderDestinations(container, template, destinations) {
 }
 
 function placeDestination(container) {
-  const destination = container?.dataset.destination || 'madinah';
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(destination)) {
+  const destination = container?.dataset.destination;
+  if (typeof destination !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(destination)) {
     throw new Error('Unsupported place destination.');
   }
   return destination;
@@ -211,7 +212,8 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
 
   function navigateTo(placeIndex) {
     const nextPlace = places[placeIndex];
-    const url = new URL(`${destination}/`, document.baseURI);
+    const url = new URL('place.html', document.baseURI);
+    url.searchParams.set('destination', destination);
     url.searchParams.set('place', nextPlace.slug);
     window.history.pushState({destination, slug: nextPlace.slug}, '', url.href);
     renderPlaces(container, template, places, nextPlace.slug, true);
@@ -405,6 +407,8 @@ function renderNearby(container, template, places) {
   const tileStatus = field(container, 'tile-status');
   const results = field(container, 'results');
   const tripStatus = field(container, 'trip-status');
+  const tripProgress = field(container, 'trip-progress');
+  const tripSpinner = field(container, 'trip-spinner');
   const tripButton = container.querySelector('[data-action="trip"]');
   const map = L.map(mapElement).setView([mappedPlaces[0].latitude, mappedPlaces[0].longitude], 12);
   const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -537,7 +541,7 @@ function renderNearby(container, template, places) {
       const details = placesByCode.get(place.sourceCode);
       const item = document.createElement('li');
       const link = document.createElement('a');
-      link.href = `madinah/?place=${encodeURIComponent(details.slug)}`;
+      link.href = `place.html?destination=madinah&place=${encodeURIComponent(details.slug)}`;
       link.textContent = `${details.name} — ${distance.toFixed(1)} km straight-line (view place)`;
       item.append(link);
       list.append(item);
@@ -609,25 +613,54 @@ function renderNearby(container, template, places) {
     }, {timeout: 10000, maximumAge: 0});
   }
   container.querySelector('[data-action="locate"]').addEventListener('click', requestCurrentLocation);
+  let tripRequest = 0;
+  let handoffPending = false;
+  function resetTrip() {
+    tripRequest++;
+    handoffPending = false;
+    tripButton.disabled = false;
+    tripButton.removeAttribute('aria-busy');
+    tripSpinner.hidden = true;
+    tripProgress.textContent = '';
+  }
+  window.addEventListener('pagehide', resetTrip);
+  window.addEventListener('pageshow', resetTrip);
+  document.addEventListener('visibilitychange', () => {
+    if (handoffPending && document.visibilityState === 'hidden') resetTrip();
+  });
   tripButton.addEventListener('click', () => {
     if (!navigator.geolocation) {
       tripStatus.textContent = 'Current location is unavailable. A trip requires your current location.';
       return;
     }
+    const request = ++tripRequest;
+    tripStatus.textContent = '';
     tripButton.disabled = true;
-    tripStatus.textContent = 'Requesting your current location for the trip…';
+    tripButton.setAttribute('aria-busy', 'true');
+    tripSpinner.hidden = false;
+    tripProgress.textContent = 'Requesting your current location and opening Google Maps.';
     navigator.geolocation.getCurrentPosition(position => {
-      tripButton.disabled = false;
+      if (request !== tripRequest) return;
       const current = {latitude: position.coords.latitude, longitude: position.coords.longitude};
       if (!validCoordinates(current.latitude, current.longitude)) {
+        resetTrip();
         tripStatus.textContent = 'Your current location is outside the supported map area.';
         return;
       }
       const stops = nearestTripPlaces(current, mappedPlaces);
-      tripStatus.textContent = 'Opening Google Maps…';
-      window.location.assign(tripDirectionsUrl(current, stops));
+      handoffPending = true;
+      try {
+        window.location.assign(tripDirectionsUrl(current, stops));
+        window.setTimeout(() => {
+          if (request === tripRequest) resetTrip();
+        }, 1500);
+      } catch {
+        resetTrip();
+        tripStatus.textContent = 'Google Maps could not be opened. Please try again.';
+      }
     }, error => {
-      tripButton.disabled = false;
+      if (request !== tripRequest) return;
+      resetTrip();
       const reason = error.code === 1 ? 'Location permission was denied.' :
         error.code === 3 ? 'The location request timed out.' : 'Your current location could not be determined.';
       tripStatus.textContent = `${reason} A trip requires your current location.`;
@@ -644,6 +677,10 @@ async function start() {
   const nearby = document.getElementById('nearby-content');
   status.textContent = 'Loading…';
   try {
+    if (places) {
+      places.dataset.destination = new URL(window.location.href).searchParams.get('destination') || '';
+      placeDestination(places);
+    }
     const [templateHtml, data] = await Promise.all([
       loadResource('templates.html', 'text'),
       destinations ? loadDestinations() :
@@ -659,6 +696,10 @@ async function start() {
       const template = getTemplate(templates, 'place-template');
       const destination = placeDestination(places);
       if (data.id !== destination) throw new Error('Invalid destination data.');
+      const breadcrumb = document.getElementById('destination-breadcrumb');
+      if (!breadcrumb) throw new Error('Missing destination breadcrumb.');
+      breadcrumb.textContent = requireText(data.name, 'destination name');
+      breadcrumb.href = `place.html?destination=${encodeURIComponent(destination)}`;
       applyDestinationTheme(data.theme);
       const selectedSlug = new URL(window.location.href).searchParams.get('place') || undefined;
       renderPlaces(places, template, data.places, selectedSlug);
@@ -668,12 +709,11 @@ async function start() {
         window.location.href
       );
       window.addEventListener('popstate', () => {
-        const basePath = new URL(document.baseURI).pathname;
         const currentPath = new URL(window.location.href).pathname;
-        if (!currentPath.startsWith(basePath)) return;
-        const relative = currentPath.slice(basePath.length);
-        if (relative !== `${destination}/` && !(destination === 'madinah' && relative === 'madinah.html')) return;
-        const slug = new URL(window.location.href).searchParams.get('place') || data.places[0].slug;
+        if (currentPath !== new URL('place.html', document.baseURI).pathname) return;
+        const params = new URL(window.location.href).searchParams;
+        if (params.get('destination') !== destination) return;
+        const slug = params.get('place') || data.places[0].slug;
         if (places.dataset.placeSlug === slug) return;
         if (!data.places.some(place => place.slug === slug)) {
           status.textContent = 'This place could not be found.';
