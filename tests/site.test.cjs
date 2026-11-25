@@ -623,7 +623,12 @@ test('all pages use the same versioned stylesheet and script', () => {
     assert.ok(versioned[0]);
     assert.ok(versioned.every(version => version === versioned[0]));
   }
-  assert.ok(pages.every(page => page.includes('<link rel="icon" href="assets/favicon.svg?v=20261121-14" type="image/svg+xml">')));
+  for (const asset of ['favicon.svg', 'favicon-32.png', 'apple-touch-icon.png']) {
+    const references = pages.map(page => page.match(new RegExp(`assets/${asset.replace('.', '\\.')}\\?v=[\\w-]+`))?.[0]);
+    assert.ok(references[0]);
+    assert.ok(references.every(reference => reference === references[0]));
+    assert.ok(fs.existsSync(`assets/${asset}`));
+  }
   assert.match(fs.readFileSync('assets/favicon.svg', 'utf8'), /<svg\b/);
 });
 

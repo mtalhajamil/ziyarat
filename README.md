@@ -23,7 +23,7 @@ Open `http://localhost:8000/`, or visit `http://localhost:8000/place.html?destin
 | `site.js` | Fetches and validates the data and templates, renders the page, and handles place navigation. |
 | `styles.css` | Shared responsive styles, destination themes and locally hosted Urdu font. |
 | `assets/vendor/leaflet/` | Leaflet 1.9.4 map library, distributed under its included BSD-2-Clause license; source: https://github.com/Leaflet/Leaflet/tree/v1.9.4. |
-| `assets/images/`, `assets/fonts/`, `assets/favicon.svg` | Local site assets. The Noto Naskh Arabic font license is `assets/fonts/OFL.txt`. |
+| `assets/images/`, `assets/fonts/`, `assets/favicon.svg`, `assets/favicon-32.png`, `assets/apple-touch-icon.png` | Local site assets. The Noto Naskh Arabic font license is `assets/fonts/OFL.txt`. |
 | `tests/*.test.cjs` | Node tests for rendering, validation, routes, nearby map behavior and asset versions. |
 
 The page shell loads `site.js`, which fetches `templates.html` and the relevant JSON with `cache: 'no-cache'`, clones a template and inserts text as text rather than HTML. Invalid data or failed requests produce an error message instead of partial content; inspect the browser console for details. All place entries for a destination are validated before a place is shown, so one invalid entry can prevent that destination's places from loading.
@@ -71,7 +71,7 @@ git diff --check
 
 The tests exercise the JSON renderer with a simulated DOM, validation, navigation and route files; they are not rendered browser or visual tests. When intentionally adding places, update the expected place names and map searches in `tests/site.test.cjs`. For UI changes, also check 320px and 375px mobile widths and desktop, including Urdu, image alignment, links and keyboard focus, when browser access is permitted. Report explicitly if visual checks cannot be performed.
 
-When changing `styles.css`, `site.js` or `assets/favicon.svg`, update that asset's `?v=` value in every HTML page that loads it. Compatibility redirects do not load these assets. JSON and templates are fetched with revalidation; HTML and static assets may still be cached.
+When changing `styles.css`, `site.js` or an icon asset, update that asset's `?v=` value in every HTML page that loads it. Regenerate the PNG icons from the original Kaaba SVG when changing it. JSON and templates are fetched with revalidation; HTML and static assets may still be cached.
 
 GitHub Pages is configured to publish the repository's `main` branch from `/` at [mtalhajamil.github.io/ziyarat/](https://mtalhajamil.github.io/ziyarat/). Follow the owner's instructions and repository protections when publishing. With an authorized `gh` session, check the latest build with:
 
