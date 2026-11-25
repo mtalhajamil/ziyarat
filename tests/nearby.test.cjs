@@ -74,7 +74,7 @@ function setup(geolocation) {
   const opened = [];
   const documentEvents = {};
   const context = vm.createContext({
-    L, URLSearchParams, navigator: {geolocation},
+    L, URL, URLSearchParams, navigator: {geolocation},
     window: {open: (...args) => opened.push(args), requestAnimationFrame: callback => callback()},
     document: {
       body: new Element(),
@@ -110,28 +110,39 @@ test('supplied locations exclude Tooba and validate coordinate pairs', () => {
     ['khaake-shifa', 24.448060, 39.623774]
   ];
   assert.deepEqual(mapped.map(({slug, latitude, longitude}) => [slug, latitude, longitude]), expected);
+  assert.deepEqual(mapped.slice(0, 17).map(place => place.nearbyMapUrl), [
+    'https://maps.app.goo.gl/SH9X9YQdMf5zYoNH7', 'https://maps.app.goo.gl/u8TGoWEyUQp3eMUp8',
+    'https://maps.app.goo.gl/FniuW7U3XhHsnriS9', 'https://maps.app.goo.gl/6FNSMnKMmpZGmiwS6',
+    'https://maps.app.goo.gl/4WcJY2xV8i1d1fHT9', 'https://maps.app.goo.gl/4a4qVUa49Le6cQnAA',
+    'https://maps.app.goo.gl/BCspXKzvBEVFChHy8', 'https://maps.app.goo.gl/Bvg6KFKvweJ4NaaU7',
+    'https://maps.app.goo.gl/9iXEReg7LvvTQdqU9', 'https://maps.app.goo.gl/SaisKPuBdzHKNkVr8',
+    'https://maps.app.goo.gl/A6F8JfAfKWPEUQxc6', 'https://maps.app.goo.gl/KcWNNMFRQTv7zPPo9',
+    'https://maps.app.goo.gl/iuy5qYSdj69uD7B6A', 'https://maps.app.goo.gl/FQccRvXhehsB4b8D7',
+    'https://maps.app.goo.gl/58oY6e86PCrm3BU66', 'https://maps.app.goo.gl/kAi9KiVJ9TmNNdgq6',
+    'https://maps.app.goo.gl/htubBMwxPwy3X4Ld8'
+  ]);
   const {context} = setup();
   assert.equal(context.validCoordinates(90, 0), false);
   assert.equal(context.validCoordinates(0, 181), false);
   assert.ok(Math.abs(context.straightLineKm({latitude: 0, longitude: 0}, {latitude: 0, longitude: 1}) - 111.2) < 0.1);
 });
 
-test('manual origin sorts results and both links and pins use that origin for directions', () => {
+test('pins and nearby results open supplied place links without starting directions', () => {
   const {fields, map, markers, opened} = setup();
   assert.equal(markers.length, 27);
   assert.equal(markers[0].tooltip.content.textContent, 'Masjid Quba');
   assert.equal(markers[0].tooltip.options.permanent, true);
   assert.equal(fields['[data-field="results"]'].children.length, 0);
   markers[0].events.click();
-  assert.match(fields['[data-field="origin-status"]'].textContent, /Choose a location first/);
+  assert.equal(opened[0][0], 'https://maps.app.goo.gl/SH9X9YQdMf5zYoNH7');
+  assert.deepEqual(opened[0].slice(1), ['_blank', 'noopener,noreferrer']);
   map.events.click({latlng: {lat: 24.439391, lng: 39.617301}});
   const results = fields['[data-field="results"]'];
   assert.equal(results.children[0].children.length, 5);
   const first = results.children[0].children[0].children[0];
   assert.match(first.textContent, /Masjid Quba — 0.0 km straight-line/);
-  const url = new URL(first.href);
-  assert.equal(url.searchParams.get('origin'), '24.439391,39.617301');
-  assert.equal(url.searchParams.get('destination'), '24.439391,39.617301');
+  assert.equal(first.href, 'https://maps.app.goo.gl/SH9X9YQdMf5zYoNH7');
+  assert.match(first.textContent, /open in Google Maps/);
   const mapElement = fields['[data-field="map"]'];
   mapElement.events.keydown({target: mapElement, key: 'Enter', preventDefault() {}});
   const nearest = places.filter(place => place.latitude !== undefined)
@@ -140,8 +151,18 @@ test('manual origin sorts results and both links and pins use that origin for di
     .slice(0, 5).map(({place}) => place.name);
   assert.deepEqual(results.children[0].children.map(item => item.children[0].textContent.split(' — ')[0]), nearest);
   markers[0].events.click();
-  assert.equal(new URL(opened[0][0]).searchParams.get('origin'), '24.5,39.6');
+  assert.equal(opened[1][0], opened[0][0]);
+  const mapped = places.filter(place => place.latitude !== undefined);
+  for (const [index, marker] of markers.entries()) marker.events.click();
+  assert.deepEqual(opened.slice(2).map(args => args[0]), mapped.map(place => place.nearbyMapUrl ?? place.mapUrl));
+  assert.throws(() => setupWithInvalidMapUrl(), /Google Maps HTTPS link/);
 });
+
+function setupWithInvalidMapUrl() {
+  const {context} = setup();
+  const container = new Element();
+  context.renderNearby(container, {content: {}}, [{...places[0], nearbyMapUrl: 'https://example.com/'}]);
+}
 
 test('overlapping place labels are hidden and reappear after moving apart', () => {
   const {map, markers} = setup();
