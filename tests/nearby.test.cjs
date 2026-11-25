@@ -12,6 +12,8 @@ test('nearby introduction stays available to assistive technology without taking
   assert.match(template, /id="nearby-title" class="visually-hidden"/);
   assert.match(template, /id="nearby-instructions" class="visually-hidden"/);
   assert.match(template, /aria-describedby="nearby-instructions"/);
+  assert.doesNotMatch(template, /data-action="trip"/);
+  assert.match(template, /data-action="map-trip"/);
   assert.match(css, /\.visually-hidden\s*\{[^}]*position:\s*absolute;[^}]*clip:\s*rect\(0, 0, 0, 0\)/s);
 });
 
@@ -37,13 +39,12 @@ class Element {
 }
 
 function setup(geolocation, sourcePlaces = places) {
-  const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'map-origin-status', 'origin-announcement', 'map-origin-announcement', 'tile-status', 'results', 'trip-status', 'map-trip-status', 'trip-progress', 'map-trip-progress', 'trip-spinner', 'map-trip-spinner', 'trip-dialog', 'trip-stops', 'trip-dialog-status', 'trip-open-spinner', 'trip-open-progress']
+  const fields = Object.fromEntries(['map', 'map-frame', 'origin-status', 'map-origin-status', 'origin-announcement', 'map-origin-announcement', 'tile-status', 'results', 'trip-status', 'map-trip-status', 'trip-progress', 'map-trip-progress', 'map-trip-spinner', 'trip-dialog', 'trip-stops', 'trip-dialog-status', 'trip-open-spinner', 'trip-open-progress']
     .map(name => [`[data-field="${name}"]`, new Element()]));
   fields['[data-action="locate"]'] = new Element();
   fields['[data-action="open-map"]'] = new Element();
   fields['[data-action="close-map"]'] = new Element();
   fields['[data-action="map-trip"]'] = new Element();
-  fields['[data-action="trip"]'] = new Element();
   fields['[data-action="cancel-trip"]'] = new Element();
   fields['[data-action="open-trip"]'] = new Element();
   const container = new Element();
@@ -229,13 +230,12 @@ test('trip previews ordered places before opening the route or cancelling', () =
   let options;
   const {fields, map, navigated, windowEvents, timers} = setup({getCurrentPosition(ok, fail, opts) { success = ok; failure = fail; options = opts; }});
   map.events.click({latlng: {lat: 24.4, lng: 39.6}});
-  const button = fields['[data-action="trip"]'];
+  fields['[data-action="open-map"]'].events.click();
+  const button = fields['[data-action="map-trip"]'];
   const status = fields['[data-field="trip-status"]'];
-  assert.equal(fields['[data-action="map-trip"]'].events.click, button.events.click);
-  button.events.click({currentTarget: button});
+  button.events.click();
   assert.equal(button.disabled, true);
-  assert.equal(fields['[data-action="map-trip"]'].disabled, true);
-  assert.equal(fields['[data-field="trip-spinner"]'].hidden, false);
+  assert.equal(fields['[data-field="map-trip-spinner"]'].hidden, false);
   assert.match(fields['[data-field="trip-progress"]'].textContent, /planning your trip/i);
   assert.equal(status.textContent, '');
   assert.equal(options.maximumAge, 0);
@@ -254,9 +254,7 @@ test('trip previews ordered places before opening the route or cancelling', () =
   assert.equal(dialog.open, false);
   assert.equal(button.focused, true);
   assert.equal(navigated.length, 0);
-  fields['[data-action="open-map"]'].events.click();
-  const mapTrip = fields['[data-action="map-trip"]'];
-  mapTrip.events.click({currentTarget: mapTrip});
+  button.events.click();
   success({coords: {latitude: 24.5, longitude: 39.7}});
   assert.equal(dialog.open, true);
   fields['[data-action="open-trip"]'].events.click();
@@ -269,22 +267,22 @@ test('trip previews ordered places before opening the route or cancelling', () =
   windowEvents.pagehide();
   windowEvents.pageshow();
   assert.equal(button.disabled, false);
-  assert.equal(fields['[data-field="trip-spinner"]'].hidden, true);
+  assert.equal(fields['[data-field="map-trip-spinner"]'].hidden, true);
   assert.equal(fields['[data-field="trip-progress"]'].textContent, '');
   timers[0]();
-  mapTrip.events.click({currentTarget: mapTrip});
+  button.events.click();
   failure({code: 1});
   assert.equal(button.disabled, false);
-  assert.equal(fields['[data-field="trip-spinner"]'].hidden, true);
+  assert.equal(fields['[data-field="map-trip-spinner"]'].hidden, true);
   assert.match(status.textContent, /denied.*requires your current location/i);
   assert.equal(fields['[data-field="map-trip-status"]'].textContent, status.textContent);
   assert.equal(navigated.length, 1);
-  button.events.click({currentTarget: button});
+  button.events.click();
   windowEvents.pagehide();
   success({coords: {latitude: 24.5, longitude: 39.7}});
   assert.equal(navigated.length, 1);
   const unavailable = setup();
-  unavailable.fields['[data-action="trip"]'].events.click();
+  unavailable.fields['[data-action="map-trip"]'].events.click();
   assert.match(unavailable.fields['[data-field="trip-status"]'].textContent, /unavailable/);
 });
 
@@ -293,8 +291,8 @@ test('trip loading resets on app switch or delayed handoff, without cancelling l
   const {context, fields, documentEvents, timers} = setup({
     getCurrentPosition(ok) { success = ok; }
   });
-  const button = fields['[data-action="trip"]'];
-  button.events.click({currentTarget: button});
+  const button = fields['[data-action="map-trip"]'];
+  button.events.click();
   context.document.visibilityState = 'hidden';
   documentEvents.visibilitychange();
   assert.equal(button.disabled, true);
@@ -305,8 +303,8 @@ test('trip loading resets on app switch or delayed handoff, without cancelling l
   documentEvents.visibilitychange();
   assert.equal(button.disabled, false);
   assert.equal(fields['[data-field="trip-dialog"]'].open, false);
-  assert.equal(fields['[data-field="trip-spinner"]'].hidden, true);
-  button.events.click({currentTarget: button});
+  assert.equal(fields['[data-field="map-trip-spinner"]'].hidden, true);
+  button.events.click();
   success({coords: {latitude: 24.5, longitude: 39.7}});
   fields['[data-action="open-trip"]'].events.click();
   timers.at(-1)();
@@ -332,6 +330,19 @@ test('map trip confirmation returns focus to the map and reports navigation erro
   dialog.close();
   assert.equal(frame.open, true);
   assert.equal(button.focused, true);
+});
+
+test('trip confirmation returns focus to the map opener if the map was closed during lookup', () => {
+  let success;
+  const {fields} = setup({getCurrentPosition(ok) { success = ok; }});
+  fields['[data-action="open-map"]'].events.click();
+  fields['[data-action="map-trip"]'].events.click();
+  fields['[data-action="close-map"]'].events.click();
+  success({coords: {latitude: 24.5, longitude: 39.7}});
+  const opener = fields['[data-action="open-map"]'];
+  opener.focused = false;
+  fields['[data-action="cancel-trip"]'].events.click();
+  assert.equal(opener.focused, true);
 });
 
 function setupWithInvalidMapUrl() {

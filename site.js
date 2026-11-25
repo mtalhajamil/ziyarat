@@ -417,8 +417,8 @@ function renderNearby(container, template, places) {
   const results = field(container, 'results');
   const tripStatuses = [field(container, 'trip-status'), field(container, 'map-trip-status')];
   const tripProgresses = [field(container, 'trip-progress'), field(container, 'map-trip-progress')];
-  const tripSpinners = [field(container, 'trip-spinner'), field(container, 'map-trip-spinner')];
-  const tripButtons = [container.querySelector('[data-action="trip"]'), container.querySelector('[data-action="map-trip"]')];
+  const tripSpinner = field(container, 'map-trip-spinner');
+  const tripButton = container.querySelector('[data-action="map-trip"]');
   const tripDialog = field(container, 'trip-dialog');
   const tripStops = field(container, 'trip-stops');
   const tripDialogStatus = field(container, 'trip-dialog-status');
@@ -583,12 +583,12 @@ function renderNearby(container, template, places) {
   let tripRequest = 0;
   let handoffPending = false;
   let pendingTripUrl = null;
-  let tripTrigger = null;
   function resetTrip() {
     tripRequest++;
     handoffPending = false;
-    for (const button of tripButtons) { button.disabled = false; button.removeAttribute('aria-busy'); }
-    for (const spinner of tripSpinners) spinner.hidden = true;
+    tripButton.disabled = false;
+    tripButton.removeAttribute('aria-busy');
+    tripSpinner.hidden = true;
     for (const progress of tripProgresses) progress.textContent = '';
     openTrip.disabled = false;
     openTrip.removeAttribute('aria-busy');
@@ -603,7 +603,7 @@ function renderNearby(container, template, places) {
   tripDialog.addEventListener('close', () => {
     pendingTripUrl = null;
     resetTrip();
-    const target = tripTrigger === tripButtons[1] && mapFrame.open ? tripButtons[1] : tripButtons[0];
+    const target = mapFrame.open ? tripButton : openMapButton;
     target.focus();
   });
   window.addEventListener('pagehide', resetTripOnLeave);
@@ -611,16 +611,16 @@ function renderNearby(container, template, places) {
   document.addEventListener('visibilitychange', () => {
     if (handoffPending && document.visibilityState === 'hidden') resetTripOnLeave();
   });
-  function planTrip(event) {
+  function planTrip() {
     if (!navigator.geolocation) {
       setTripStatus('Current location is unavailable. A trip requires your current location.');
       return;
     }
     const request = ++tripRequest;
-    tripTrigger = event.currentTarget;
     setTripStatus('');
-    for (const button of tripButtons) { button.disabled = true; button.setAttribute('aria-busy', 'true'); }
-    for (const spinner of tripSpinners) spinner.hidden = false;
+    tripButton.disabled = true;
+    tripButton.setAttribute('aria-busy', 'true');
+    tripSpinner.hidden = false;
     for (const progress of tripProgresses) progress.textContent = 'Requesting your current location and planning your trip.';
     navigator.geolocation.getCurrentPosition(position => {
       if (request !== tripRequest) return;
@@ -650,7 +650,7 @@ function renderNearby(container, template, places) {
       setTripStatus(`${reason} A trip requires your current location.`);
     }, {timeout: 10000, maximumAge: 0});
   }
-  for (const button of tripButtons) button.addEventListener('click', planTrip);
+  tripButton.addEventListener('click', planTrip);
   openTrip.addEventListener('click', () => {
     if (!pendingTripUrl) return;
     handoffPending = true;
