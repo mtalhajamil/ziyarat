@@ -33,6 +33,7 @@ class Element {
   setAttribute(name, value) { this.attributes[name] = value; }
   getAttribute(name) { return this.attributes[name] ?? null; }
   querySelector(selector) { return this.fields[selector] || null; }
+  querySelectorAll() { return []; }
   append(node) { this.children.push(node); }
   replaceChildren(...nodes) { this.children = nodes; }
   addEventListener(type, handler) { this.events[type] = handler; }
@@ -43,6 +44,7 @@ function fragment(kind) {
   const node = new Element();
   const fields = kind === 'destination'
     ? ['name', 'image', 'status']
+    : kind === 'city' ? ['name', 'status']
     : ['name', 'image', 'map', 'map-unavailable', 'english', 'urdu', 'image-credit', 'image-source', 'image-license',
       'image-placeholder', 'descriptions', 'description-empty',
       'english-panel', 'urdu-panel', 'language-en', 'language-ur',
@@ -59,7 +61,7 @@ function fragment(kind) {
   return node;
 }
 
-async function loadPage(mode, fail = false, slug = '', destination = 'madinah') {
+async function loadPage(mode, fail = false, slug = '', destination = 'madinah', savedLanguage = null) {
   const status = new Element();
   const content = new Element();
   content.dataset.placeSlug = slug;
@@ -72,13 +74,28 @@ async function loadPage(mode, fail = false, slug = '', destination = 'madinah') 
   let historyIndex = 0;
   const breadcrumb = new Element();
   const destinationBreadcrumb = new Element();
+  const countrySelector = new Element();
+  const languageMenu = new Element();
+  const languageSummary = new Element();
+  const languageButtons = ['en', 'ur'].map(language => {
+    const button = new Element();
+    button.dataset.language = language;
+    return button;
+  });
+  languageMenu.querySelector = selector => selector === 'summary' ? languageSummary : null;
+  languageMenu.querySelectorAll = selector => selector === '[data-language]' ? languageButtons : [];
+  const saved = {};
   const document = {
     baseURI: mode === 'home' ? 'https://example.com/ziyarat/' : initialUrl,
     title: '',
     body: {style: {setProperty() {}}},
+    documentElement: {},
+    querySelectorAll() { return []; },
     getElementById(id) {
       if (id === 'load-status') return status;
       if (id === 'destination-breadcrumb') return destinationBreadcrumb;
+      if (id === 'country-select' && mode === 'home') return countrySelector;
+      if (id === 'language-menu' && mode === 'home') return languageMenu;
       return id === (mode === 'home' ? 'destination-list' : 'place-content') ? content : null;
     },
     querySelector(selector) {
@@ -93,13 +110,14 @@ async function loadPage(mode, fail = false, slug = '', destination = 'madinah') 
       return {
         getElementById: id => ({
           tagName: 'TEMPLATE',
-          content: {kind: id === 'destination-template' ? 'destination' : 'place'}
+          content: {kind: id === 'destination-template' ? 'destination' : id === 'city-template' ? 'city' : 'place'}
         })
       };
     }
   }
   const window = {
-    location: {href: initialUrl, assign: url => navigations.push(url)},
+    location: {href: initialUrl, assign: url => navigations.push(url), reload: () => { saved.reloaded = true; }},
+    localStorage: {getItem: key => key === 'ziyarat-language' ? savedLanguage : null, setItem: (key, value) => { saved[key] = value; }},
     history: {
       state: null,
       pushState(state, _title, url) {
@@ -133,7 +151,9 @@ async function loadPage(mode, fail = false, slug = '', destination = 'madinah') 
       return {
         ok: !fail, status: 503,
         text: async () => fs.readFileSync(path, 'utf8'),
-        json: async () => path === 'data/destinations.json' ? destinationIds : configs[path]
+        json: async () => path === 'data/destinations.json' ? destinationIds :
+          path.startsWith('locales/') || path === 'data/countries.json'
+            ? JSON.parse(fs.readFileSync(path, 'utf8')) : configs[path]
       };
     }
   });
@@ -145,7 +165,7 @@ async function loadPage(mode, fail = false, slug = '', destination = 'madinah') 
     window.history.state = historyStates[index];
     window.events.popstate?.({state: historyStates[index]});
   }
-  return {context, status, content, requests, navigations, historyEntries, goToHistory, breadcrumb, destinationBreadcrumb};
+  return {context, status, content, requests, navigations, historyEntries, goToHistory, breadcrumb, destinationBreadcrumb, countrySelector, languageMenu, languageSummary, languageButtons, saved};
 }
 
 test('homepage provides a reachable social preview without JavaScript', () => {
@@ -174,7 +194,7 @@ test('renders destination data and links only available pages', async () => {
     const name = card.fields['[data-field="name"]'];
     return name.children[0]?.textContent || name.textContent;
   }),
-    ['Makkah', 'Madinah', 'Badr', 'Taif', 'Turkiye']);
+    ['Makkah', 'Madinah', 'Badr', 'Taif']);
   const link = cards[1].fields['[data-field="name"]'].children[0];
   assert.equal(link.href, 'place.html?destination=madinah');
   assert.equal(link.textContent, 'Madinah');
@@ -183,9 +203,74 @@ test('renders destination data and links only available pages', async () => {
     assert.equal(cards[index].fields['[data-field="status"]'].textContent, data['data/destinations.json'][index].description);
     assert.equal(cards[index].fields['[data-field="name"]'].children[0].href, data['data/destinations.json'][index].page);
   }
-  for (const card of [cards[3], cards[4]]) {
+  for (const card of [cards[3]]) {
     assert.equal(card.fields['[data-field="status"]'].textContent, 'Coming soon');
     assert.equal(card.fields['[data-field="name"]'].children.length, 0);
+  }
+});
+
+test('country selection shows requested cities as coming soon without links', async () => {
+  const {countrySelector, content} = await loadPage('home');
+  const expected = {
+    turkiye: ['Istanbul', 'Bursa'],
+    jordan: ['Amman', 'Karak'],
+    syria: ['Damascus', 'Aleppo'],
+    spain: ['Granada (Gharnata)']
+  };
+  assert.deepEqual(countrySelector.children.map(option => option.value),
+    ['saudi-arabia', ...Object.keys(expected)]);
+  assert.match(countrySelector.children[1].textContent, /Coming soon/);
+  for (const [country, cities] of Object.entries(expected)) {
+    countrySelector.value = country;
+    countrySelector.events.change();
+    const cards = content.children[0].children;
+    assert.deepEqual(cards.map(card => card.fields['[data-field="name"]'].textContent), cities);
+    for (const card of cards) {
+      assert.equal(card.fields['[data-field="status"]'].textContent, 'Coming soon');
+      assert.equal(card.fields['[data-field="name"]'].children.length, 0);
+    }
+  }
+});
+
+test('Urdu preference persists across pages, uses RTL, and selects Urdu descriptions', async () => {
+  const home = await loadPage('home', false, '', 'madinah', 'ur');
+  assert.equal(home.context.document.documentElement.lang, 'ur');
+  assert.equal(home.context.document.documentElement.dir, 'rtl');
+  assert.equal(home.languageButtons[1].getAttribute('aria-pressed'), 'true');
+  assert.equal(home.content.children[0].children[1].fields['[data-field="name"]'].children[0].textContent, 'مدینہ منورہ');
+  home.countrySelector.value = 'turkiye';
+  home.countrySelector.events.change();
+  assert.deepEqual(home.content.children[0].children.map(card => card.fields['[data-field="name"]'].textContent), ['استنبول', 'برصہ']);
+  assert.equal(home.content.children[0].children[0].fields['[data-field="status"]'].textContent, 'جلد دستیاب');
+  home.languageMenu.open = true;
+  home.languageMenu.events.keydown({key: 'Escape'});
+  assert.equal(home.languageMenu.open, false);
+  assert.equal(home.languageSummary.focused, true);
+  home.languageButtons[0].events.click();
+  assert.equal(home.saved['ziyarat-language'], 'en');
+  assert.equal(home.saved.reloaded, true);
+
+  const place = await loadPage('place', false, 'quba', 'madinah', 'ur');
+  assert.equal(place.destinationBreadcrumb.textContent, 'مدینہ منورہ');
+  assert.equal(place.content.children[0].fields['[data-field="name"]'].textContent, 'مسجد قبا');
+  assert.equal(place.content.children[0].fields['[data-field="urdu-panel"]'].hidden, false);
+  assert.equal(place.content.children[0].fields['[data-field="language-ur"]'].ariaPressed, 'true');
+});
+
+test('locale files contain matching nonempty interface keys', () => {
+  const en = JSON.parse(fs.readFileSync('locales/en.json'));
+  const ur = JSON.parse(fs.readFileSync('locales/ur.json'));
+  assert.deepEqual(Object.keys(ur).sort(), Object.keys(en).sort());
+  for (const key of Object.keys(en)) {
+    assert.ok(en[key].trim() && ur[key].trim(), key);
+    assert.deepEqual([...en[key].matchAll(/\{\w+\}/g)].map(match => match[0]).sort(),
+      [...ur[key].matchAll(/\{\w+\}/g)].map(match => match[0]).sort(), key);
+  }
+  for (const path of ['index.html', 'place.html', 'nearby/index.html', 'templates.html']) {
+    const markup = fs.readFileSync(path, 'utf8');
+    for (const match of markup.matchAll(/data-i18n(?:-aria-label|-title)?="([^"]+)"/g)) {
+      assert.ok(en[match[1]] && ur[match[1]], `${path}: ${match[1]}`);
+    }
   }
 });
 
@@ -382,7 +467,7 @@ test('Makkah and Badr load their own data, placeholders and local navigation', a
       const {status, content, requests, navigations, historyEntries} =
         await loadPage('place', false, place.slug, destination);
       assert.equal(status.textContent, '');
-      assert.equal(requests[1].path, `data/${destination}.json`);
+      assert.ok(requests.some(request => request.path === `data/${destination}.json`));
       const view = content.children[0];
       assert.equal(view.fields['[data-field="name"]'].textContent, place.name);
       assert.equal(view.fields['[data-field="map"]'].href, place.mapUrl);
@@ -614,7 +699,7 @@ test('rejects unsafe map URLs before rendering', async () => {
 
 test('revalidates templates and data instead of using stale cached content', async () => {
   const {requests} = await loadPage('place');
-  assert.deepEqual(requests.map(request => request.path), ['templates.html', 'data/madinah.json']);
+  assert.deepEqual(requests.map(request => request.path), ['locales/en.json', 'templates.html', 'data/madinah.json']);
   assert.ok(requests.every(request => request.cache === 'no-cache'));
 });
 
@@ -659,8 +744,8 @@ test('renders an English-only description with an Urdu placeholder', async () =>
 test('missing content messages remain visible without displaying empty fields', () => {
   const template = fs.readFileSync('templates.html', 'utf8');
   const css = fs.readFileSync('styles.css', 'utf8');
-  assert.match(template, /data-field="image-placeholder" hidden>Image coming soon/);
-  assert.match(template, /data-field="description-empty" hidden>Description coming soon/);
+  assert.match(template, /data-field="image-placeholder" hidden data-i18n="imageSoon">Image coming soon/);
+  assert.match(template, /data-field="description-empty" hidden data-i18n="descriptionSoon">Description coming soon/);
   assert.match(css, /\.place-image\[hidden\],[\s\S]*?\.description-grid\[hidden\]\s*\{\s*display:\s*none/);
 });
 

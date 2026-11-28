@@ -1,6 +1,71 @@
 'use strict';
 
 let placeResizeHandler = null;
+let locale = {};
+let language = 'en';
+
+function t(key, values = {}) {
+  const message = requireText(locale[key], `locale key ${key}`);
+  return message.replace(/\{(\w+)\}/g, (match, name) =>
+    Object.prototype.hasOwnProperty.call(values, name) ? values[name] : match);
+}
+
+function translate(root) {
+  for (const element of root.querySelectorAll('[data-i18n]')) {
+    element.textContent = t(element.dataset.i18n);
+  }
+  for (const attribute of ['aria-label', 'title']) {
+    for (const element of root.querySelectorAll(`[data-i18n-${attribute}]`)) {
+      element.setAttribute(attribute, t(element.getAttribute(`data-i18n-${attribute}`)));
+    }
+  }
+}
+
+function localizedName(item) {
+  return language === 'ur' && item.urduName ? item.urduName : item.name;
+}
+
+async function setupLocale() {
+  try {
+    const saved = window.localStorage.getItem('ziyarat-language');
+    if (saved === 'en' || saved === 'ur') language = saved;
+  } catch (error) {
+    console.warn('Language preference could not be read:', error);
+  }
+  locale = await loadResource(`locales/${language}.json`, 'json');
+  document.documentElement.lang = language;
+  document.documentElement.dir = language === 'ur' ? 'rtl' : 'ltr';
+  translate(document);
+  const menu = document.getElementById('language-menu');
+  if (menu) {
+    const summary = menu.querySelector('summary');
+    for (const button of menu.querySelectorAll('[data-language]')) {
+      const selectedLanguage = button.dataset.language;
+      button.setAttribute('aria-pressed', String(selectedLanguage === language));
+      button.addEventListener('click', () => {
+        if (!['en', 'ur'].includes(selectedLanguage)) return;
+        if (selectedLanguage === language) {
+          menu.open = false;
+          summary.focus();
+          return;
+        }
+        try {
+          window.localStorage.setItem('ziyarat-language', selectedLanguage);
+          window.location.reload();
+        } catch (error) {
+          console.error('Language preference could not be saved:', error);
+          document.getElementById('load-status').textContent = t('preferenceError');
+        }
+      });
+    }
+    menu.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && menu.open) {
+        menu.open = false;
+        summary.focus();
+      }
+    });
+  }
+}
 
 async function loadResource(path, type) {
   const response = await fetch(path, {cache: 'no-cache'});
@@ -94,22 +159,23 @@ function renderDestinations(container, template, destinations) {
 
     const card = document.importNode(template.content, true);
     const name = field(card, 'name');
-    name.textContent = destination.name;
+    name.textContent = localizedName(destination);
     setImage(field(card, 'image'), destination.image);
     const status = field(card, 'status');
     if (destination.page) {
       const link = document.createElement('a');
       link.className = 'destination-link';
       link.href = destination.page;
-      link.textContent = destination.name;
+      link.textContent = localizedName(destination);
       name.replaceChildren(link);
       if (destination.description) {
-        status.textContent = destination.description;
+        status.textContent = language === 'ur' && destination.urduDescription
+          ? destination.urduDescription : destination.description;
       } else {
         status.hidden = true;
       }
     } else {
-      status.textContent = 'Coming soon';
+      status.textContent = t('comingSoon');
     }
     cards.append(card);
   }
@@ -158,6 +224,69 @@ async function loadDestinations() {
   }));
 }
 
+function setupCountries(container, templates, destinations, countries) {
+  const selector = document.getElementById('country-select');
+  if (!selector || !Array.isArray(countries) || !countries.length) throw new Error('Invalid country data.');
+  const ids = new Set();
+  for (const country of countries) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(country.id) || ids.has(country.id)) {
+      throw new Error('Invalid or duplicate country.');
+    }
+    ids.add(country.id);
+    requireText(country.name, 'country name');
+    requireText(country.urduName, 'Urdu country name');
+    if (Boolean(country.destinations) === Boolean(country.cities)) throw new Error('Invalid country cities.');
+    const option = document.createElement('option');
+    option.value = country.id;
+    option.textContent = country.cities
+      ? `${localizedName(country)} — ${t('comingSoon')}` : localizedName(country);
+    selector.append(option);
+  }
+  function renderCountry() {
+    const country = countries.find(item => item.id === selector.value);
+    if (!country) throw new Error('Unknown country.');
+    if (country.destinations) {
+      if (!Array.isArray(country.destinations) || !country.destinations.length ||
+          new Set(country.destinations).size !== country.destinations.length) throw new Error('Invalid country destinations.');
+      const selected = country.destinations.map(id => {
+        const destination = destinations.find(item => item.id === id);
+        if (!destination) throw new Error(`Unknown country destination: ${id}.`);
+        return destination;
+      });
+      renderDestinations(container, getTemplate(templates, 'destination-template'), selected);
+    } else {
+      if (!Array.isArray(country.cities) || !country.cities.length) throw new Error('Invalid country cities.');
+      const cards = document.createDocumentFragment();
+      const template = getTemplate(templates, 'city-template');
+      for (const city of country.cities) {
+        requireText(city.name, 'city name');
+        requireText(city.urduName, 'Urdu city name');
+        const card = document.importNode(template.content, true);
+        field(card, 'name').textContent = localizedName(city);
+        field(card, 'status').textContent = t('comingSoon');
+        cards.append(card);
+      }
+      container.replaceChildren(cards);
+    }
+  }
+  let savedCountry;
+  try {
+    savedCountry = window.localStorage.getItem('ziyarat-country');
+  } catch (error) {
+    console.warn('Country preference could not be read:', error);
+  }
+  selector.value = ids.has(savedCountry) ? savedCountry : countries[0].id;
+  selector.addEventListener('change', () => {
+    try {
+      window.localStorage.setItem('ziyarat-country', selector.value);
+    } catch (error) {
+      console.warn('Country preference could not be saved:', error);
+    }
+    renderCountry();
+  });
+  renderCountry();
+}
+
 function renderPlaces(container, template, places, slug = container.dataset.placeSlug, animate = false) {
   const destination = placeDestination(container);
   if (!Array.isArray(places) || places.length === 0) {
@@ -189,6 +318,7 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
   }
 
   const content = document.importNode(template.content, true);
+  translate(content);
   const name = field(content, 'name');
   const image = field(content, 'image');
   const imagePlaceholder = field(content, 'image-placeholder');
@@ -222,10 +352,10 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
 
   const place = places[index];
   container.dataset.placeSlug = place.slug;
-  document.title = `${place.name} | Ziyarat`;
+  document.title = `${localizedName(place)} | Ziyarat`;
   const currentBreadcrumb = document.querySelector('.breadcrumbs [aria-current="page"]');
-  if (currentBreadcrumb) currentBreadcrumb.textContent = place.name;
-  name.textContent = place.name;
+  if (currentBreadcrumb) currentBreadcrumb.textContent = localizedName(place);
+  name.textContent = localizedName(place);
   if (place.image) {
     setImage(image, place.image);
   } else {
@@ -255,13 +385,13 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
   }
   const hasDescriptions = place.english !== undefined || place.urdu !== undefined;
   if (hasDescriptions) {
-    english.textContent = place.english ?? 'English translation coming soon.';
-    urdu.textContent = place.urdu ?? 'اردو تفصیل جلد شامل کی جائے گی۔';
+    english.textContent = place.english ?? t('englishSoon');
+    urdu.textContent = place.urdu ?? t('urduSoon');
     const englishPanel = field(content, 'english-panel');
     const urduPanel = field(content, 'urdu-panel');
     const englishButton = field(content, 'language-en');
     const urduButton = field(content, 'language-ur');
-    function preparePreview(panel, paragraph, button, moreLabel, lessLabel) {
+    function preparePreview(panel, paragraph, button, moreLabel, lessLabel, moreText, lessText) {
       if (panel.hidden) return;
       const expanded = button.getAttribute('aria-expanded') === 'true';
       paragraph.dataset.collapsed = 'false';
@@ -273,21 +403,23 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
       button.hidden = !needsToggle;
       const keepExpanded = needsToggle && expanded;
       paragraph.dataset.collapsed = String(needsToggle && !keepExpanded);
-      button.textContent = keepExpanded ? 'Show less' : 'Show more';
+      button.textContent = keepExpanded ? lessText : moreText;
       button.setAttribute('aria-expanded', String(keepExpanded));
       button.setAttribute('aria-label', keepExpanded ? lessLabel : moreLabel);
     }
-    function bindPreview(paragraph, button, moreLabel, lessLabel) {
+    function bindPreview(paragraph, button, moreLabel, lessLabel, moreText, lessText) {
       button.addEventListener('click', () => {
         const expanded = button.getAttribute('aria-expanded') === 'true';
         paragraph.dataset.collapsed = String(expanded);
         button.setAttribute('aria-expanded', String(!expanded));
-        button.textContent = expanded ? 'Show more' : 'Show less';
+        button.textContent = expanded ? moreText : lessText;
         button.setAttribute('aria-label', expanded ? moreLabel : lessLabel);
       });
     }
-    bindPreview(english, englishMore, 'Show more description', 'Show less description');
-    bindPreview(urdu, urduMore, 'مزید تفصیل دکھائیں', 'کم تفصیل دکھائیں');
+    const enLabels = [t('showMoreDescription'), t('showLessDescription'), t('showMore'), t('showLess')];
+    const urLabels = [t('urduShowMoreDescription'), t('urduShowLessDescription'), t('urduShowMore'), t('urduShowLess')];
+    bindPreview(english, englishMore, ...enLabels);
+    bindPreview(urdu, urduMore, ...urLabels);
     function setLanguage(language) {
       const isEnglish = language === 'en';
       englishPanel.hidden = !isEnglish;
@@ -298,8 +430,7 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
         isEnglish ? englishPanel : urduPanel,
         isEnglish ? english : urdu,
         isEnglish ? englishMore : urduMore,
-        isEnglish ? 'Show more description' : 'مزید تفصیل دکھائیں',
-        isEnglish ? 'Show less description' : 'کم تفصیل دکھائیں'
+        ...(isEnglish ? enLabels : urLabels)
       );
     }
     englishButton.addEventListener('click', () => setLanguage('en'));
@@ -307,13 +438,13 @@ function renderPlaces(container, template, places, slug = container.dataset.plac
     if (placeResizeHandler) window.removeEventListener('resize', placeResizeHandler);
     placeResizeHandler = () => {
       if (englishPanel.hidden) {
-        preparePreview(urduPanel, urdu, urduMore, 'مزید تفصیل دکھائیں', 'کم تفصیل دکھائیں');
+        preparePreview(urduPanel, urdu, urduMore, ...urLabels);
       } else {
-        preparePreview(englishPanel, english, englishMore, 'Show more description', 'Show less description');
+        preparePreview(englishPanel, english, englishMore, ...enLabels);
       }
     };
     window.addEventListener('resize', placeResizeHandler);
-    initializeDescriptions = () => setLanguage('en');
+    initializeDescriptions = () => setLanguage(language);
   } else {
     descriptions.hidden = true;
     descriptionEmpty.hidden = false;
@@ -405,6 +536,7 @@ function renderNearby(container, template, places) {
   if (typeof L === 'undefined') throw new Error('Map library could not be loaded.');
 
   const content = document.importNode(template.content, true);
+  translate(content);
   container.replaceChildren(content);
   const mapElement = field(container, 'map');
   const mapFrame = field(container, 'map-frame');
@@ -435,7 +567,7 @@ function renderNearby(container, template, places) {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
   tiles.on('tileerror', () => {
-    tileStatus.textContent = 'Some map tiles could not be loaded. Check your connection; the place list is still available.';
+    tileStatus.textContent = t('tileError');
   });
   let origin = null;
   let selectedOrigin = null;
@@ -512,7 +644,7 @@ function renderNearby(container, template, places) {
       const item = document.createElement('li');
       const link = document.createElement('a');
       link.href = `place.html?destination=madinah&place=${encodeURIComponent(details.slug)}`;
-      link.textContent = `${details.name} — ${distance.toFixed(1)} km straight-line (view place)`;
+      link.textContent = t('distance', {name: localizedName(details), distance: distance.toFixed(1)});
       item.append(link);
       list.append(item);
     }
@@ -521,7 +653,7 @@ function renderNearby(container, template, places) {
 
   function setOrigin(latitude, longitude, source) {
     if (!validCoordinates(latitude, longitude)) {
-      setOriginStatus('That location is outside the supported map area. Please select another location.');
+      setOriginStatus(t('invalidLocation'));
       return;
     }
     locationRequest++;
@@ -530,12 +662,15 @@ function renderNearby(container, template, places) {
     if (originMarker) map.removeLayer(originMarker);
     originMarker = L.circleMarker([latitude, longitude], {
       radius: 9, color: '#ffffff', weight: 3, fillColor: '#245c3e', fillOpacity: 1
-    }).addTo(map).bindTooltip('Your selected location', {
+    }).addTo(map).bindTooltip(t('selectedLocationLabel'), {
       permanent: true, direction: 'top', offset: [0, -8], className: 'nearby-origin-label'
     });
     setOriginStatus('');
     for (const announcement of originAnnouncements) {
-      announcement.textContent = `${source}: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}. Nearby places updated.`;
+      announcement.textContent = t('locationAnnouncement', {
+        source: t(source === 'Selected location' ? 'selectedLocation' : 'currentLocation'),
+        latitude: latitude.toFixed(5), longitude: longitude.toFixed(5)
+      });
     }
     map.setView([latitude, longitude], map.getZoom(), {animate: false});
     showResults();
@@ -545,8 +680,8 @@ function renderNearby(container, template, places) {
   for (const place of mappedPlaces) {
     const details = placesByCode.get(place.sourceCode);
     const label = document.createElement('span');
-    label.textContent = details.name;
-    const marker = L.marker([place.latitude, place.longitude], {icon: pin, title: details.name, alt: details.name})
+    label.textContent = localizedName(details);
+    const marker = L.marker([place.latitude, place.longitude], {icon: pin, title: localizedName(details), alt: localizedName(details)})
       .addTo(map)
       .bindTooltip(label, {permanent: true, direction: 'top', offset: [0, -16], className: 'nearby-place-label'})
       .on('click', () => {
@@ -572,18 +707,18 @@ function renderNearby(container, template, places) {
   function requestCurrentLocation() {
     const request = ++locationRequest;
     if (!navigator.geolocation) {
-      setOriginStatus('Location is unavailable. Select a point on the map instead.');
+      setOriginStatus(t('locationUnavailable'));
       return;
     }
-    setOriginStatus('Requesting your location…');
+    setOriginStatus(t('requestingLocation'));
     navigator.geolocation.getCurrentPosition(position => {
       if (request !== locationRequest) return;
       setOrigin(position.coords.latitude, position.coords.longitude, 'Current location');
     }, error => {
       if (request !== locationRequest) return;
-      const reason = error.code === 1 ? 'Location permission was denied.' :
-        error.code === 3 ? 'The location request timed out.' : 'Your location could not be determined.';
-      setOriginStatus(`${reason} Select a point on the map instead.`);
+      const reason = error.code === 1 ? t('permissionDenied') :
+        error.code === 3 ? t('locationTimeout') : t('locationFailed');
+      setOriginStatus(t('selectOnMap', {reason}));
     }, {timeout: 10000, maximumAge: 0});
   }
   container.querySelector('[data-action="locate"]').addEventListener('click', requestCurrentLocation);
@@ -623,13 +758,13 @@ function renderNearby(container, template, places) {
     const list = document.createDocumentFragment();
     for (const stop of stops) {
       const item = document.createElement('li');
-      item.textContent = placesByCode.get(stop.sourceCode).name;
+      item.textContent = localizedName(placesByCode.get(stop.sourceCode));
       list.append(item);
     }
     tripStops.replaceChildren(list);
     resetTrip();
     pendingTripUrl = tripDirectionsUrl(start, stops);
-    tripOrigin.textContent = selected ? 'Starting from your selected map location.' : 'Starting from your current location.';
+    tripOrigin.textContent = t(selected ? 'tripSelectedOrigin' : 'tripCurrentOrigin');
     tripDialogStatus.textContent = '';
     tripDialog.showModal();
   }
@@ -640,14 +775,14 @@ function renderNearby(container, template, places) {
       return;
     }
     if (!navigator.geolocation) {
-      setTripStatus('Current location is unavailable. Select a point on the map to plan a trip.');
+      setTripStatus(t('tripLocationUnavailable'));
       return;
     }
     const request = ++tripRequest;
     tripButton.disabled = true;
     tripButton.setAttribute('aria-busy', 'true');
     tripSpinner.hidden = false;
-    for (const progress of tripProgresses) progress.textContent = 'Requesting your current location and planning your trip.';
+    for (const progress of tripProgresses) progress.textContent = t('tripProgress');
     navigator.geolocation.getCurrentPosition(position => {
       if (request !== tripRequest) return;
       const current = {latitude: position.coords.latitude, longitude: position.coords.longitude};
@@ -657,7 +792,7 @@ function renderNearby(container, template, places) {
       }
       if (!validCoordinates(current.latitude, current.longitude)) {
         resetTrip();
-        setTripStatus('Your current location is outside the supported map area.');
+        setTripStatus(t('tripInvalidLocation'));
         return;
       }
       showTrip(current, false);
@@ -668,9 +803,9 @@ function renderNearby(container, template, places) {
         return;
       }
       resetTrip();
-      const reason = error.code === 1 ? 'Location permission was denied.' :
-        error.code === 3 ? 'The location request timed out.' : 'Your current location could not be determined.';
-      setTripStatus(`${reason} Select a point on the map to plan a trip.`);
+      const reason = error.code === 1 ? t('permissionDenied') :
+        error.code === 3 ? t('locationTimeout') : t('currentLocationFailed');
+      setTripStatus(t('tripSelectOnMap', {reason}));
     }, {timeout: 10000, maximumAge: 0});
   }
   tripButton.addEventListener('click', planTrip);
@@ -681,7 +816,7 @@ function renderNearby(container, template, places) {
     openTrip.setAttribute('aria-busy', 'true');
     tripOpenSpinner.hidden = false;
     tripDialogStatus.textContent = '';
-    tripOpenProgress.textContent = 'Opening Google Maps.';
+    tripOpenProgress.textContent = t('openingMaps');
     const request = tripRequest;
     try {
       window.location.assign(pendingTripUrl);
@@ -693,7 +828,7 @@ function renderNearby(container, template, places) {
       }, 1500);
     } catch {
       resetTrip();
-      tripDialogStatus.textContent = 'Google Maps could not be opened. Please try again.';
+      tripDialogStatus.textContent = t('mapsError');
     }
   });
   showResults();
@@ -705,20 +840,22 @@ async function start() {
   const destinations = document.getElementById('destination-list');
   const places = document.getElementById('place-content');
   const nearby = document.getElementById('nearby-content');
-  status.textContent = 'Loading…';
   try {
+    await setupLocale();
+    status.textContent = t('loading');
     if (places) {
       places.dataset.destination = new URL(window.location.href).searchParams.get('destination') || '';
       placeDestination(places);
     }
-    const [templateHtml, data] = await Promise.all([
+    const [templateHtml, data, countries] = await Promise.all([
       loadResource('templates.html', 'text'),
       destinations ? loadDestinations() :
-        loadResource(`data/${nearby ? 'madinah' : placeDestination(places)}.json`, 'json')
+        loadResource(`data/${nearby ? 'madinah' : placeDestination(places)}.json`, 'json'),
+      destinations ? loadResource('data/countries.json', 'json') : null
     ]);
     const templates = new DOMParser().parseFromString(templateHtml, 'text/html');
     if (destinations) {
-      renderDestinations(destinations, getTemplate(templates, 'destination-template'), data);
+      setupCountries(destinations, templates, data, countries);
     } else if (nearby) {
       if (data.id !== 'madinah') throw new Error('Invalid Madinah data.');
       renderNearby(nearby, getTemplate(templates, 'nearby-template'), data.places);
@@ -728,7 +865,8 @@ async function start() {
       if (data.id !== destination) throw new Error('Invalid destination data.');
       const breadcrumb = document.getElementById('destination-breadcrumb');
       if (!breadcrumb) throw new Error('Missing destination breadcrumb.');
-      breadcrumb.textContent = requireText(data.name, 'destination name');
+      requireText(data.name, 'destination name');
+      breadcrumb.textContent = localizedName(data);
       breadcrumb.href = `place.html?destination=${encodeURIComponent(destination)}`;
       applyDestinationTheme(data.theme);
       const selectedSlug = new URL(window.location.href).searchParams.get('place') || undefined;
@@ -746,7 +884,7 @@ async function start() {
         const slug = params.get('place') || data.places[0].slug;
         if (places.dataset.placeSlug === slug) return;
         if (!data.places.some(place => place.slug === slug)) {
-          status.textContent = 'This place could not be found.';
+          status.textContent = t('notFound');
           return;
         }
         status.textContent = '';
@@ -758,7 +896,7 @@ async function start() {
     status.textContent = '';
   } catch (error) {
     console.error('Unable to load site content:', error);
-    status.textContent = 'Unable to load content. Please check your connection and try again.';
+    status.textContent = locale.loadError || 'Unable to load content. Please check your connection and try again.';
   }
 }
 
@@ -807,9 +945,9 @@ function setupInstall() {
     try {
       await event.prompt();
       const choice = await event.userChoice;
-      if (choice.outcome !== 'accepted') showHelp('Installation canceled. You can try your browser’s install menu.');
+      if (choice.outcome !== 'accepted') showHelp(t('installCanceled'));
     } catch {
-      showHelp('Could not open the install prompt. Use your browser’s install menu.');
+      showHelp(t('installError'));
     } finally {
       button.disabled = false;
     }

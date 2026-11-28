@@ -1,0 +1,43 @@
+[
+  {
+    "id": "saudi-arabia",
+    "name": "Saudi Arabia",
+    "urduName": "سعودی عرب",
+    "destinations": ["makkah", "madinah", "badr", "taif"]
+  },
+  {
+    "id": "turkiye",
+    "name": "Türkiye",
+    "urduName": "ترکیہ",
+    "cities": [
+      {"name": "Istanbul", "urduName": "استنبول"},
+      {"name": "Bursa", "urduName": "برصہ"}
+    ]
+  },
+  {
+    "id": "jordan",
+    "name": "Jordan",
+    "urduName": "اردن",
+    "cities": [
+      {"name": "Amman", "urduName": "عمان"},
+      {"name": "Karak", "urduName": "کرک"}
+    ]
+  },
+  {
+    "id": "syria",
+    "name": "Syria",
+    "urduName": "شام",
+    "cities": [
+      {"name": "Damascus", "urduName": "دمشق"},
+      {"name": "Aleppo", "urduName": "حلب"}
+    ]
+  },
+  {
+    "id": "spain",
+    "name": "Spain",
+    "urduName": "اسپین",
+    "cities": [
+      {"name": "Granada (Gharnata)", "urduName": "غرناطہ"}
+    ]
+  }
+]

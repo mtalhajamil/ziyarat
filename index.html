@@ -27,43 +27,54 @@
     <link rel="icon" href="assets/favicon-32.png?v=20261125-1" sizes="32x32" type="image/png">
     <link rel="icon" href="assets/favicon.svg?v=20261125-1" type="image/svg+xml">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20261125-1">
-    <link rel="stylesheet" href="styles.css?v=20261125-20">
-    <script src="site.js?v=20261125-16" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20261128-4">
+    <script src="site.js?v=20261128-4" defer></script>
   </head>
   <body>
     <header class="site-header">
       <div class="header-brand">
-        <a class="brand" href="./" aria-label="Ziyarat home">Ziyarat<span aria-hidden="true">.</span></a>
-        <button class="install-button" type="button" id="install-button" aria-label="Install app" title="Install app" aria-haspopup="dialog" aria-controls="install-dialog" hidden>
+        <a class="brand" href="./" aria-label="Ziyarat home" data-i18n-aria-label="homeLabel">Ziyarat<span aria-hidden="true">.</span></a>
+        <button class="install-button" type="button" id="install-button" aria-label="Install app" title="Install app" aria-haspopup="dialog" aria-controls="install-dialog" hidden data-i18n-aria-label="install" data-i18n-title="install">
           <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-5-5 5 5 5-5M4 17v3h16v-3"/></svg>
         </button>
       </div>
-      <span class="header-note">A place to begin</span>
+      <details class="language-menu" id="language-menu">
+        <summary aria-label="Language" title="Language" data-i18n-aria-label="language" data-i18n-title="language">
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+        </summary>
+        <div class="language-options" aria-label="Language" data-i18n-aria-label="language" role="group">
+          <button type="button" data-language="en" lang="en" dir="ltr" aria-pressed="true">English</button>
+          <button type="button" data-language="ur" lang="ur" dir="rtl" aria-pressed="false">اردو</button>
+        </div>
+      </details>
     </header>
     <dialog class="install-dialog" id="install-dialog" aria-labelledby="install-title" aria-describedby="install-help">
       <div class="install-dialog-heading">
-        <h2 id="install-title">Install Ziyarat</h2>
-        <form method="dialog"><button class="install-close" aria-label="Close install instructions" title="Close" autofocus>&times;</button></form>
+        <h2 id="install-title" data-i18n="installTitle">Install Ziyarat</h2>
+        <form method="dialog"><button class="install-close" aria-label="Close install instructions" title="Close" autofocus data-i18n-aria-label="installClose" data-i18n-title="close">&times;</button></form>
       </div>
-      <p id="install-help">On iPhone or iPad, open this site in Safari, tap Share, then Add to Home Screen. In Chrome, open the browser menu and choose Install app or Add to Home screen, if available. Other browsers may offer a similar menu option.</p>
+      <p id="install-help" data-i18n="installHelp">On iPhone or iPad, open this site in Safari, tap Share, then Add to Home Screen. In Chrome, open the browser menu and choose Install app or Add to Home screen, if available. Other browsers may offer a similar menu option.</p>
       <p id="install-status" role="status"></p>
     </dialog>
 
     <main>
       <section class="destinations" aria-labelledby="page-title">
-        <p class="eyebrow">A journey of reflection</p>
-        <h1 id="page-title">Places of ziyarat</h1>
-        <p class="intro-text">A space for exploring places of ziyarat, thoughtfully and at your own pace.</p>
-        <a class="nearby-home-link" href="nearby/">Places near me <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></a>
+        <p class="eyebrow" data-i18n="eyebrow">A journey of reflection</p>
+        <h1 id="page-title" data-i18n="homeTitle">Places of ziyarat</h1>
+        <p class="intro-text" data-i18n="intro">A space for exploring places of ziyarat, thoughtfully and at your own pace.</p>
+        <a class="nearby-home-link" href="nearby/"><span data-i18n="nearby">Places near me</span> <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></a>
         <p id="load-status" role="status"></p>
         <noscript><p>JavaScript is required to load destinations.</p></noscript>
+        <label class="country-selector"><span data-i18n="country">Country</span>
+          <select id="country-select"></select>
+        </label>
         <div class="destination-grid" id="destination-list"></div>
       </section>
     </main>
 
     <footer class="site-footer">
       <span>Ziyarat</span>
-      <span>Made for meaningful journeys.</span>
+      <span data-i18n="footer">Made for meaningful journeys.</span>
     </footer>
   </body>
 </html>

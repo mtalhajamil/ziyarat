@@ -30,6 +30,8 @@ function setup({standalone = false, iosStandalone = false} = {}) {
     }
   });
   vm.runInContext(script, context);
+  context.testLocale = JSON.parse(fs.readFileSync('locales/en.json'));
+  vm.runInContext('locale = testLocale', context);
   context.setupInstall();
   return {elements, events, display};
 }

@@ -11,28 +11,36 @@
         </div>
       </article>
     </template>
+    <template id="city-template">
+      <article class="destination-card city-card">
+        <div class="card-content">
+          <h2 data-field="name"></h2>
+          <p class="card-status" data-field="status"></p>
+        </div>
+      </article>
+    </template>
     <template id="nearby-template">
       <section class="nearby-page" aria-labelledby="nearby-title">
-        <h1 id="nearby-title" class="visually-hidden">Places near me</h1>
+        <h1 id="nearby-title" class="visually-hidden" data-i18n="nearby">Places near me</h1>
         <div id="nearby-instructions" class="visually-hidden">
-          <p>Explore user-supplied locations in Madinah. Pin locations have not been independently verified.</p>
-          <p>Your current location is requested when the page opens. Tap the map to choose another origin. To choose with a keyboard, focus the map, use the arrow keys to move it, then press Enter to select the centre. Distances are straight-line, not travel distances.</p>
-          <p>Zoom in to reveal more place labels when pins are close together.</p>
+          <p data-i18n="nearbyIntro">Explore user-supplied locations in Madinah. Pin locations have not been independently verified.</p>
+          <p data-i18n="nearbyInstructions">Your current location is requested when the page opens. Tap the map to choose another origin. To choose with a keyboard, focus the map, use the arrow keys to move it, then press Enter to select the centre. Distances are straight-line, not travel distances.</p>
+          <p data-i18n="nearbyZoom">Zoom in to reveal more place labels when pins are close together.</p>
         </div>
         <div class="nearby-controls">
-          <button type="button" data-action="open-map">Open map view</button>
+          <button type="button" data-action="open-map" data-i18n="openMap">Open map view</button>
         </div>
-        <p class="nearby-status" data-field="origin-status" role="status">Choose a location to see nearby distances.</p>
+        <p class="nearby-status" data-field="origin-status" role="status" data-i18n="chooseLocation">Choose a location to see nearby distances.</p>
         <span class="visually-hidden" data-field="origin-announcement" role="status"></span>
-        <dialog class="nearby-map-frame" data-field="map-frame" aria-label="Map of nearby places" aria-describedby="nearby-instructions">
-          <div class="nearby-map" data-field="map" aria-label="Map of Madinah places" aria-describedby="nearby-instructions"></div>
+        <dialog class="nearby-map-frame" data-field="map-frame" aria-label="Map of nearby places" aria-describedby="nearby-instructions" data-i18n-aria-label="nearbyMap">
+          <div class="nearby-map" data-field="map" aria-label="Map of Madinah places" aria-describedby="nearby-instructions" data-i18n-aria-label="madinahMap"></div>
           <div class="nearby-map-controls">
-            <button type="button" data-action="close-map" aria-label="Close map view" title="Close map view" autofocus>&times;</button>
-            <button type="button" data-action="locate" aria-label="Use my current location" title="Use my current location">
+            <button type="button" data-action="close-map" aria-label="Close map view" title="Close map view" autofocus data-i18n-aria-label="closeMap" data-i18n-title="closeMap">&times;</button>
+            <button type="button" data-action="locate" aria-label="Use my current location" title="Use my current location" data-i18n-aria-label="useLocation" data-i18n-title="useLocation">
               <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
             </button>
           </div>
-          <button type="button" class="map-trip" data-action="map-trip">Plan trip <span class="trip-spinner" data-field="map-trip-spinner" aria-hidden="true" hidden></span></button>
+          <button type="button" class="map-trip" data-action="map-trip"><span data-i18n="planTrip">Plan trip</span> <span class="trip-spinner" data-field="map-trip-spinner" aria-hidden="true" hidden></span></button>
           <div class="nearby-map-feedback">
             <p data-field="map-origin-status" role="status"></p>
             <p data-field="tile-status" role="status"></p>
@@ -43,61 +51,61 @@
         </dialog>
         <dialog class="trip-dialog" data-field="trip-dialog" aria-labelledby="trip-title" aria-describedby="trip-description">
           <div class="trip-dialog-heading">
-            <h2 id="trip-title">Your nearest places trip</h2>
-            <button type="button" class="trip-close" data-action="close-trip" aria-label="Close trip preview" title="Close trip preview" autofocus>&times;</button>
+            <h2 id="trip-title" data-i18n="tripTitle">Your nearest places trip</h2>
+            <button type="button" class="trip-close" data-action="close-trip" aria-label="Close trip preview" title="Close trip preview" autofocus data-i18n-aria-label="closeTrip" data-i18n-title="closeTrip">&times;</button>
           </div>
-          <p id="trip-description"><span data-field="trip-origin"></span> We select the five closest places and visit the nearest remaining stop each time. This uses straight-line distances, not road optimization. Google Maps may omit stops on some devices.</p>
+          <p id="trip-description"><span data-field="trip-origin"></span> <span data-i18n="tripDescription">We select the five closest places and visit the nearest remaining stop each time. This uses straight-line distances, not road optimization. Google Maps may omit stops on some devices.</span></p>
           <ol data-field="trip-stops"></ol>
           <p class="trip-dialog-status" data-field="trip-dialog-status" role="status"></p>
           <span class="visually-hidden" data-field="trip-open-progress" role="status"></span>
           <div class="trip-dialog-actions">
-            <button type="button" class="trip-open" data-action="open-trip">Open Google Maps <span class="trip-spinner" data-field="trip-open-spinner" aria-hidden="true" hidden></span></button>
+            <button type="button" class="trip-open" data-action="open-trip"><span data-i18n="openGoogleMaps">Open Google Maps</span> <span class="trip-spinner" data-field="trip-open-spinner" aria-hidden="true" hidden></span></button>
           </div>
         </dialog>
         <div class="nearby-heading">
-          <h2>Nearby places</h2>
+          <h2 data-i18n="nearbyPlaces">Nearby places</h2>
         </div>
         <span class="visually-hidden" data-field="trip-progress" role="status"></span>
         <p class="nearby-status" data-field="trip-status" role="status"></p>
-        <p>The five closest places are ordered by straight-line distance. Select one to view its description.</p>
+        <p data-i18n="nearbyResults">The five closest places are ordered by straight-line distance. Select one to view its description.</p>
         <ul class="nearby-results" data-field="results"></ul>
       </section>
     </template>
     <template id="place-template">
-      <div class="place-preview" role="region" aria-label="Place details">
+      <div class="place-preview" role="region" aria-label="Place details" data-i18n-aria-label="placeDetails">
         <div class="place-heading">
           <h1 class="place-title" data-field="name" aria-live="polite" tabindex="-1"></h1>
         </div>
         <div class="place-slider">
-          <button class="slider-arrow" type="button" aria-label="Previous place" data-action="previous">&larr;</button>
+          <button class="slider-arrow" type="button" aria-label="Previous place" data-action="previous" data-i18n-aria-label="previous">&larr;</button>
           <div class="place-image-wrap">
             <img class="place-image" data-field="image" alt="">
-            <div class="image-placeholder" data-field="image-placeholder" hidden>Image coming soon</div>
+            <div class="image-placeholder" data-field="image-placeholder" hidden data-i18n="imageSoon">Image coming soon</div>
           </div>
-          <button class="slider-arrow" type="button" aria-label="Next place" data-action="next">&rarr;</button>
+          <button class="slider-arrow" type="button" aria-label="Next place" data-action="next" data-i18n-aria-label="next">&rarr;</button>
         </div>
         <div class="place-actions">
-          <a class="map-link" data-field="map">View on Google Maps <span aria-hidden="true">&rarr;</span></a>
-          <span class="map-unavailable" data-field="map-unavailable" hidden>Google Maps location unavailable</span>
-          <a class="video-link" data-field="video" target="_blank" rel="noopener noreferrer" hidden>Watch place video</a>
+          <a class="map-link" data-field="map"><span data-i18n="viewMap">View on Google Maps</span> <span aria-hidden="true">&rarr;</span></a>
+          <span class="map-unavailable" data-field="map-unavailable" hidden data-i18n="mapUnavailable">Google Maps location unavailable</span>
+          <a class="video-link" data-field="video" target="_blank" rel="noopener noreferrer" hidden data-i18n="watchVideo">Watch place video</a>
         </div>
         <div class="place-details">
-          <p class="image-credit" data-field="image-credit" hidden>Photo: <a data-field="image-source"></a> · <a data-field="image-license"></a></p>
+          <p class="image-credit" data-field="image-credit" hidden><span data-i18n="photo">Photo:</span> <a data-field="image-source"></a> · <a data-field="image-license"></a></p>
           <div class="description-grid" data-field="descriptions">
-            <div class="language-toggle" role="group" aria-label="Description language">
-              <button type="button" data-field="language-en" aria-label="Show English description" aria-pressed="true" aria-controls="english-description">EN</button>
-              <button type="button" data-field="language-ur" aria-label="Show Urdu description" aria-pressed="false" aria-controls="urdu-description">UR</button>
+            <div class="language-toggle" role="group" aria-label="Description language" data-i18n-aria-label="descriptionLanguage">
+              <button type="button" data-field="language-en" aria-label="Show English description" aria-pressed="true" aria-controls="english-description" data-i18n-aria-label="showEnglish">EN</button>
+              <button type="button" data-field="language-ur" aria-label="Show Urdu description" aria-pressed="false" aria-controls="urdu-description" data-i18n-aria-label="showUrdu">UR</button>
             </div>
-            <section id="english-description" data-field="english-panel" lang="en" aria-label="English description">
+            <section id="english-description" data-field="english-panel" lang="en" dir="ltr" aria-label="English description" data-i18n-aria-label="englishDescription">
               <p id="english-description-text" data-field="english"></p>
-              <button class="description-more" type="button" data-field="english-more" aria-label="Show more description" aria-expanded="false" aria-controls="english-description-text" hidden>Show more</button>
+              <button class="description-more" type="button" data-field="english-more" aria-label="Show more description" aria-expanded="false" aria-controls="english-description-text" hidden data-i18n="showMore" data-i18n-aria-label="showMoreDescription">Show more</button>
             </section>
-            <section id="urdu-description" data-field="urdu-panel" lang="ur" dir="rtl" aria-label="Urdu description" hidden>
+            <section id="urdu-description" data-field="urdu-panel" lang="ur" dir="rtl" aria-label="Urdu description" hidden data-i18n-aria-label="urduDescription">
               <p id="urdu-description-text" data-field="urdu" lang="ur" dir="rtl"></p>
-              <button class="description-more" type="button" data-field="urdu-more" lang="ur" dir="rtl" aria-label="مزید تفصیل دکھائیں" aria-expanded="false" aria-controls="urdu-description-text" hidden>مزید دکھائیں</button>
+              <button class="description-more" type="button" data-field="urdu-more" lang="ur" dir="rtl" aria-label="مزید تفصیل دکھائیں" aria-expanded="false" aria-controls="urdu-description-text" hidden data-i18n="urduShowMore" data-i18n-aria-label="urduShowMoreDescription">مزید دکھائیں</button>
             </section>
           </div>
-          <p class="description-empty" data-field="description-empty" hidden>Description coming soon</p>
+          <p class="description-empty" data-field="description-empty" hidden data-i18n="descriptionSoon">Description coming soon</p>
         </div>
       </div>
     </template>

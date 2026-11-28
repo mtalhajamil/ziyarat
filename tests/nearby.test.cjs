@@ -121,6 +121,8 @@ function setup(geolocation, sourcePlaces = places, options = {}) {
     }
   });
   vm.runInContext(script, context);
+  context.testLocale = JSON.parse(fs.readFileSync('locales/en.json'));
+  vm.runInContext('locale = testLocale', context);
   context.renderNearby(container, {content: {}}, sourcePlaces);
   return {context, fields, map, tiles, markers, opened, navigated, documentEvents, windowEvents, timers, animationFrames};
 }

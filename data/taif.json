@@ -1,6 +1,7 @@
 {
   "id": "taif",
   "name": "Taif",
+  "urduName": "طائف",
   "image": {
     "src": "assets/images/taif.jpg",
     "alt": "Buildings in Taif, Saudi Arabia",

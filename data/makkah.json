@@ -1,8 +1,10 @@
 {
   "id": "makkah",
   "name": "Makkah",
+  "urduName": "مکہ مکرمہ",
   "page": "place.html?destination=makkah",
   "description": "Home to the Kaaba and the sacred destination of Hajj and Umrah.",
+  "urduDescription": "خانہ کعبہ کا شہر اور حج و عمرہ کی مقدس منزل۔",
   "image": {
     "src": "assets/images/makkah.jpg",
     "alt": "The Kaaba in Makkah at night",
@@ -14,6 +16,7 @@
       "slug": "hudaybiyyah",
       "sourceCode": "MAK-HUDAYBIYYAH",
       "name": "Masjid Al-Hudaybiyyah (Al-Shumaisi)",
+      "urduName": "مسجد حدیبیہ (الشمائسی)",
       "image": {
         "src": "assets/images/MAK-HUDAYBIYYAH.jpg",
         "alt": "Exterior of Masjid Al-Hudaybiyyah",
@@ -32,6 +35,7 @@
       "slug": "thawr",
       "sourceCode": "MAK-THAWR",
       "name": "Ghar Thawr (Cave of Thawr / جبل ثور)",
+      "urduName": "غار ثور",
       "image": {
         "src": "assets/images/MAK-THAWR.jpg",
         "alt": "Entrance to the Cave of Thawr",
@@ -50,48 +54,56 @@
       "slug": "hijrah",
       "sourceCode": "MAK-HIJRAH",
       "name": "Masjid Al-Hijrah",
+      "urduName": "مسجد ہجرت",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Al-Hijrah%2C%20Makkah"
     },
     {
       "slug": "abu-bakr",
       "sourceCode": "MAK-ABU-BAKR",
       "name": "Masjid Abu Bakr As-Siddiq (Makkah)",
+      "urduName": "مسجد ابوبکر صدیق (مکہ)",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Abu%20Bakr%20As-Siddiq%20%28Makkah%29%2C%20Makkah"
     },
     {
       "slug": "ibn-zubair",
       "sourceCode": "MAK-IBN-ZUBAIR",
       "name": "Maqam e Abdullah Ibn Zubair RA",
+      "urduName": "مقام عبداللہ بن زبیر رضی اللہ عنہ",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Maqam%20e%20Abdullah%20Ibn%20Zubair%20RA%2C%20Makkah"
     },
     {
       "slug": "asma-abi-bakr",
       "sourceCode": "MAK-ASMA-ABI-BAKR",
       "name": "Maqam e Asma Binte Abi Bakr RA",
+      "urduName": "مقام اسماء بنت ابوبکر رضی اللہ عنہا",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Maqam%20e%20Asma%20Binte%20Abi%20Bakr%20RA%2C%20Makkah"
     },
     {
       "slug": "ibn-umar",
       "sourceCode": "MAK-IBN-UMAR",
       "name": "Grave of Abdullah Ibn Umar RA",
+      "urduName": "قبر عبداللہ بن عمر رضی اللہ عنہ",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Grave%20of%20Abdullah%20Ibn%20Umar%20RA%2C%20Makkah"
     },
     {
       "slug": "bayah",
       "sourceCode": "MAK-BAYAH",
       "name": "Masjid Al-Bay'ah (مسجد البيعة / عقبة)",
+      "urduName": "مسجد بیعہ (عقبہ)",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Al-Bay%27ah%20%28%D9%85%D8%B3%D8%AC%D8%AF%20%D8%A7%D9%84%D8%A8%D9%8A%D8%B9%D8%A9%20%2F%20%D8%B9%D9%82%D8%A8%D8%A9%29%2C%20Makkah"
     },
     {
       "slug": "khubayb",
       "sourceCode": "MAK-KHUBAYB",
       "name": "Masjid Khubayb Bin Adiy RA (Tan'im)",
+      "urduName": "مسجد خبیب بن عدی رضی اللہ عنہ (تنعیم)",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Masjid%20Khubayb%20Bin%20Adiy%20RA%20%28Tan%27im%29%2C%20Makkah"
     },
     {
       "slug": "maimoona",
       "sourceCode": "MAK-MAIMOONA",
       "name": "Grave of Hazrat Maimoona RA (Saraf)",
+      "urduName": "قبر حضرت میمونہ رضی اللہ عنہا (سرف)",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Grave%20of%20Hazrat%20Maimoona%20RA%20%28Saraf%29%2C%20Makkah"
     }
   ],

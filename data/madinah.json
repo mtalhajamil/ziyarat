@@ -1,6 +1,7 @@
 {
   "id": "madinah",
   "name": "Madinah",
+  "urduName": "مدینہ منورہ",
   "image": {
     "src": "assets/images/madinah.jpg",
     "alt": "The Prophet's Mosque in Madinah",
@@ -8,11 +9,13 @@
     "height": 720
   },
   "description": "The city of the Prophet’s migration and home to the Prophet’s Mosque.",
+  "urduDescription": "نبی کریم ﷺ کی ہجرت کا شہر، جہاں مسجد نبوی واقع ہے۔",
   "page": "place.html?destination=madinah",
   "places": [
     {
       "slug": "quba",
       "name": "Masjid Quba",
+      "urduName": "مسجد قبا",
       "image": {
         "src": "assets/images/MED-QUBA.jpg",
         "alt": "Quba Mosque in Madinah",
@@ -29,6 +32,7 @@
     {
       "slug": "jummah",
       "name": "Masjid Jummah",
+      "urduName": "مسجد جمعہ",
       "image": {
         "src": "assets/images/MED-JUMMA.jpg",
         "alt": "Masjid Jummah in Madinah",
@@ -51,6 +55,7 @@
     {
       "slug": "qiblatain",
       "name": "Masjid Qiblatain",
+      "urduName": "مسجد قبلتین",
       "image": {
         "src": "assets/images/MED-QIBLAT.jpg",
         "alt": "Masjid Qiblatain in Madinah",
@@ -67,6 +72,7 @@
     {
       "slug": "ghamama",
       "name": "Masjid Ghamama",
+      "urduName": "مسجد غمامہ",
       "image": {
         "src": "assets/images/MED-GHAMAMA.jpg",
         "alt": "Masjid Ghamama in Madinah",
@@ -89,6 +95,7 @@
     {
       "slug": "saqia",
       "name": "Masjid al-Saqia",
+      "urduName": "مسجد السقیہ",
       "image": {
         "src": "assets/images/MED-SAQIA.jpg",
         "alt": "Masjid al-Saqia in Madinah",
@@ -112,6 +119,7 @@
     {
       "slug": "umar",
       "name": "Masjid Umar (R.A)",
+      "urduName": "مسجد عمر رضی اللہ عنہ",
       "mapUrl": "https://maps.app.goo.gl/4a4qVUa49Le6cQnAA",
       "sourceCode": "MED-UMAR",
       "latitude": 24.464259,
@@ -120,6 +128,7 @@
     {
       "slug": "kab-ashraf",
       "name": "Ka'b bin Ashraf Ka Qila",
+      "urduName": "کعب بن اشرف کا قلعہ",
       "mapUrl": "https://maps.app.goo.gl/BCspXKzvBEVFChHy8",
       "sourceCode": "MED-KAB-ASHRAF",
       "english": "The source describes Ka'b ibn al-Ashraf as a hostile Jewish figure in Madinah. Although the Jews of Madinah had an alliance with the Muslims, after the defeat at Badr he went to Makkah, mourned those of the polytheists who had been killed and incited the people of Makkah against the Muslims. He returned to Madinah and, to express his hostility, made a practice of mentioning Muslim women in love poetry; he also composed verses insulting the Messenger of Allah ﷺ. Once he invited the Prophet ﷺ to his home under a pretext and appointed men to attack him on arrival. After the Prophet ﷺ arrived and sat down, Jibril informed him of Ka'b's intention, and he immediately left under the protection of the Trustworthy Spirit.\n\nWhen his actions reached their height, the Prophet ﷺ said: “Ka'b ibn al-Ashraf has hurt Allah and His Messenger; who will deal with him?” Muhammad ibn Maslamah, may Allah be pleased with him, offered to take responsibility.\n\nMuhammad ibn Maslamah went to Ka'b and asked to borrow grain. Ka'b demanded that their women be left with him as security; Muhammad refused. Ka'b then asked for their children, but Muhammad said that would bring lasting shame and that people would reproach their children. He offered their weapons as security instead. Ka'b agreed, and a time at night was arranged.\n\nMuhammad ibn Maslamah, Abu Na'ilah and Abbad ibn Bishr, may Allah be pleased with them, set out. The Prophet ﷺ accompanied them as far as Baqi', then sent them on their way with prayers. Near the fort they called Ka'b, and he came down. Muhammad told his companions that he would get hold of him by a pretext and they should finish the task. After they walked and talked for a while, Muhammad complimented Ka'b's fragrance. Ka'b replied that he had the most beautiful and most fragrant woman in Arabia. Muhammad asked if he could smell it; Ka'b agreed. Under that pretext Muhammad grasped his hair firmly, and his companions beheaded him. Late that night they returned to the Messenger ﷺ, who said on seeing them: “These faces have prospered.” They replied: “And yours first of all, O Messenger of Allah.” The account dates this to Rabi' al-Awwal 3 AH. (Sahih al-Bukhari with Fath al-Bari; Sirat Ibn Ishaq.)\n\nThe fort is described as a remaining reminder: southeast of Madinah, on the right of the road towards the Buthan dam. Built of strong stones, its ruins and a nearby well are said still to remain after centuries.",
@@ -130,6 +139,7 @@
     {
       "slug": "shaykhain",
       "name": "Masjid-e-Shaykhain",
+      "urduName": "مسجد شیخین",
       "image": {
         "src": "assets/images/MED-SHAYKHAIN.jpg",
         "alt": "Masjid al-Dir, also known as Masjid-e-Shaykhain",
@@ -152,6 +162,7 @@
     {
       "slug": "uhud",
       "name": "Jabal-e-Uhud",
+      "urduName": "جبل احد",
       "image": {
         "src": "assets/images/MED-UHUD.jpg",
         "alt": "Mount Uhud in Madinah",
@@ -174,6 +185,7 @@
     {
       "slug": "ruma",
       "name": "Jabal-e-Ruma",
+      "urduName": "جبل رماۃ",
       "image": {
         "src": "assets/images/MED-RUMA.jpg",
         "alt": "Archers' Hill at Uhud",
@@ -196,6 +208,7 @@
     {
       "slug": "fasih",
       "name": "Masjid Fasih",
+      "urduName": "مسجد فسیح",
       "mapUrl": "https://maps.app.goo.gl/A6F8JfAfKWPEUQxc6",
       "sourceCode": "MED-FASIH",
       "english": "At the foot of the mountain, beneath [unclear], is a mosque. Some damaged traces of its mihrab and walls remain; [the source is unclear here about its construction]. The rest has been demolished. Umar ibn Abd al-Aziz, may Allah have mercy on him, had this mosque built. Narrations say that after the intensity of the fighting on the day of Uhud, the Prophet ﷺ offered the noon prayer here. Another narration says that because of exhaustion and weakness, he led the prayer seated and the Companions followed him seated. The source notes that at the time it was permitted for followers to pray seated behind an imam leading seated, and that this ruling was later abrogated.\n\nAnother narration says that the Quranic verse “O you who believe, when you are told to make room in gatherings, make room; Allah will make room for you” (Surah al-Mujadilah 58:11) was revealed here, and therefore it is called Masjid [unclear].\n\nThis small damaged mosque stands in ruins [unclear] ... near the presence of the Messenger of Allah ﷺ ...\n\nThere are other mosques near Uhud where the Prophet ﷺ prayed, but no traces of them remain. (Summary from al-Liwa', Jad al-Ma'ati and al-Bidayah wa al-Nihayah, account of the Battle of Uhud.)",
@@ -206,6 +219,7 @@
     {
       "slug": "rayah",
       "name": "Masjid-e-Rayah",
+      "urduName": "مسجد رایہ",
       "mapUrl": "https://maps.app.goo.gl/KcWNNMFRQTv7zPPo9",
       "sourceCode": "MED-RAYA",
       "english": "After the exile of Banu Nadir, an army of ten thousand, made up of the disbelievers of Makkah, Banu Ghatafan, the Jews of Khaybar and several other tribes, set out under Abu Sufyan to destroy Madinah. On Salman al-Farisi's advice, may Allah be pleased with him, the Prophet ﷺ had a trench dug outside the city to protect it. Most authorities place this in 5 AH. He marked the trench's boundaries himself and assigned each group of ten men ten yards to dig. He personally supervised the entire trench, going from side to side. A tent for him was set up on the hill of Jabal Dhubab.\n\nA mosque was later built at the place of his tent and became known as Masjid Rayah. From a distance it is not apparent that a mosque is there; on climbing the hill, one can see its whitewashed building. The neighbourhood is accordingly called Hayy al-Rayah, and Jabal Dhubab is also called Jabal Rayah. The source gives directions north-west from the Prophet's Mosque along the road by Maktabah Abdulaziz, past a roundabout near the Pakistan House building and onto Uthman ibn Affan Street (Ayyun Street). Jabal Dhubab is on the left of this street, with Masjid Rayah on the hill. It describes a small white neighbourhood mosque where the five daily prayers are offered. There is also a Masjid Rayah in Makkah, discussed in the source's account of the conquest of Makkah. (Tarikh Madinah Munawwarah by Dr Shaykh Muhammad Ilyas, p. 92.)",
@@ -216,6 +230,7 @@
     {
       "slug": "sabah",
       "name": "Masjid-e-Sab'ah",
+      "urduName": "مسجد سبعہ",
       "image": {
         "src": "assets/images/MED-SABA.jpg",
         "alt": "Mosque of Salman al-Farisi, one of the Seven Mosques in Madinah",
@@ -238,6 +253,7 @@
     {
       "slug": "fath",
       "name": "Masjid-e-Fath",
+      "urduName": "مسجد فتح",
       "image": {
         "src": "assets/images/MED-FATAH.jpg",
         "alt": "Masjid al-Fath in Madinah",
@@ -260,6 +276,7 @@
     {
       "slug": "utban",
       "name": "Masjid-e-Utban bin Malik (R.A)",
+      "urduName": "مسجد عتبان بن مالک رضی اللہ عنہ",
       "mapUrl": "https://maps.app.goo.gl/58oY6e86PCrm3BU66",
       "sourceCode": "MED-UTBAN",
       "videoUrl": "https://www.youtube.com/shorts/GNv5tLUf9yo",
@@ -271,6 +288,7 @@
     {
       "slug": "banu-unaif",
       "name": "Masjid Banu Unaif",
+      "urduName": "مسجد بنو انیف",
       "image": {
         "src": "assets/images/MED-BANU-UNAIF.jpg",
         "alt": "Masjid Banu Unaif in Madinah",
@@ -294,6 +312,7 @@
     {
       "slug": "mustarah",
       "name": "Masjid Al-Mustarāh (Masjid Bani Harisa)",
+      "urduName": "مسجد المستراح (مسجد بنی حارثہ)",
       "image": {
         "src": "assets/images/MED-MUSTARAH.jpg",
         "alt": "Masjid Bani Harisa in Madinah",
@@ -317,6 +336,7 @@
       "slug": "abuzar-ghifari",
       "sourceCode": "MED-ABUZAR",
       "name": "Masjid Abuzar Ghifari (Masjid Sajdah)",
+      "urduName": "مسجد ابوذر غفاری (مسجد سجدہ)",
       "mapUrl": "https://maps.app.goo.gl/DM47iRnR1nqCc9jz5",
       "english": "Abd al-Rahman ibn Awf, may Allah be pleased with him, relates that the Prophet ﷺ once came to a garden, performed ablution, offered two units of prayer and made a long prostration. Abd al-Rahman began to fear that the Prophet's soul had been taken. When the Prophet ﷺ raised his head, he asked what was wrong. Abd al-Rahman said: “May my parents be sacrificed for you; your prostration was so long that I feared Allah had called you to Him.” The Prophet ﷺ said: “Jibril brought Allah's message that whoever sends blessings and peace upon you, Allah will send mercy and peace upon that person.” Another narration says that whoever sends blessings upon him once will receive ten mercies from Allah. He had prostrated in gratitude for this gift.\n\nA mosque was later built here and named Masjid Sajdah. It is also called Masjid Abu Dharr and Masjid Safilah. The northern part of Madinah is called Safilah, while the southern part, towards the qiblah, is called Aliyah or Awali; the mosque stands in Safilah.\n\nAfter passing through various historical periods, the mosque was attractively rebuilt by the Saudi government in 1423 AH, with a basement and two upper storeys. It stands north of the Prophet's Mosque on Abu Dharr Street, and visitors often come to this commemorative site. Nearby is a stop for vehicles travelling to major Saudi cities. (Musnad Ahmad; Khulasat al-Wafa bi-Akhbar Dar al-Mustafa; Tarikh Madinah Munawwarah by Dr Shaykh Muhammad Ilyas, p. 6 [citation incomplete in source].)",
       "urdu": "عبدالرحمن بن عوف رضی اللہ عنہ کہتے ہیں کہ ایک بار نبی رحمت صلی اللہ علیہ وسلم ایک باغ میں تشریف لائے اور وضو کر کے دو رکعت نماز ادا کی اور ایک لمبا سجدہ کیا، میرے دل میں خیال آنے لگا کہ کہیں آپ صلی اللہ علیہ وسلم کی روح قبض نہ ہو گئی ہو، جب آپ صلی اللہ علیہ وسلم نے سجدہ سے سر اٹھایا تو پوچھا: ”کیا بات ہے؟“ میں نے کہا: میرے ماں باپ آپ پہ قربان ہوں ، آپ نے اتنا طویل سجدہ کیا ، میں ڈر گیا کہ کہیں اللہ تعالیٰ نے آپ کو اپنے پاس بلا نہ لیا ہو، آپ صلی اللہ علیہ وسلم نے فرمایا: ”جبریل امین اللہ تعالیٰ کا پیغام لائے تھے کہ جو آپ پر درود و سلام بھیجے گا ، اللہ تعالیٰ اس پر رحمت و سلامتی نازل فرمائے گا“ (ایک روایت میں ہے کہ جو مجھ پر ایک بار درود بھیجے گا ، اللہ تعالیٰ اس پہ دس رحمتیں نازل فرمائے گا) اس عنایت پر میں نے سجدہ شکر ادا کیا۔\n\nبعد میں اس جگہ مسجد بنا دی گئی اور اس کا نام ”مسجد سجدہ“ رکھا گیا، اس کو ”مسجد ابوذر، مسجد سافلہ“ بھی کہا جاتا ہے....... ”مسجد سافلہ“ کہنے کی وجہ یہ ہے کہ مدینہ منورہ کی شمالی جانب کو سافلہ اور جنوبی یعنی قبلہ کی جانب کو عالیہ یا عوالی کہا جاتا ہے، تو یہ سافلہ میں واقع ہے۔\n\nیہ مسجد مختلف تاریخی ادوار سے گزری، تا آنکہ سعودی حکومت نے ۱۴۲۳ھ میں اس کو خوبصورت انداز میں تعمیر کیا، جو ایک تہہ خانہ اور دو بالائی منزلوں پر مشتمل ہے، مسجد نبوی سے شمال کی جانب شارع ابوذر رضی اللہ عنہ پر یہ مسجد واقع ہے، اکثر زائرین اس یادگار مقام کی زیارت کو جاتے رہتے ہیں، اس مسجد کے قریب ہی سعودی عرب کے بڑے بڑے شہروں کو جانے والی گاڑیوں کا اسٹاپ ہے۔ (مسند احمد، خلاصۃ الوفا باخبار دار المصطفیٰ، تاریخ مدینہ منورہ لدکتور شیخ محمد الیاس ص ۶",
@@ -327,6 +347,7 @@
       "slug": "ijaba",
       "sourceCode": "MED-IJABA",
       "name": "Masjid-e-Ijaba (Mubaahila)",
+      "urduName": "مسجد اجابہ (مباہلہ)",
       "mapUrl": "https://maps.app.goo.gl/fynkguSA1672jjsD7",
       "english": "[The opening word is truncated in the source.] One day, returning from Awali Madinah, the Prophet ﷺ passed the mosque of Banu Mu'awiyah and offered two units of prayer there; the Companions prayed with him. He made a lengthy supplication, then said: “I asked my Lord for three things. Two were granted: that my community would not be destroyed by famine, and that it would not be destroyed by drowning. My third request was that my community be protected from fighting among themselves; that request was not granted.”\n\nAfter these prayers the mosque became known as Masjid Ijabah. The source places it 385 metres from Baqi' beside Faisal Street (Sixty Street). It was rebuilt and expanded during King Fahd's reign. Banu Mu'awiyah were a branch of the Aws, whose settlement lay about half a kilometre north of Baqi'. The mosque was attributed to them before becoming known as Masjid Ijabah. (Tarikh Madinah Munawwarah by Dr Shaykh Muhammad Ilyas, p. 68.)\n\nThe mosque is a place visited by devotees and pilgrims. Shaykh Abd al-Haqq Muhaddith Dehlawi, may Allah have mercy on him, reports from Muhammad ibn Talhah that the Prophet's place of prayer was two yards to the right of the mihrab. He describes the delight, light and absorption in worship, supplication and remembrance, and the sight of the blessed dome on leaving the mosque, saying their true quality cannot be known without experiencing them. (Jadhb al-Qulub ila Diyar al-Mahbub, p. 128.)",
       "urdu": "پ صلی اللہ علیہ وسلم ایک دن عوالی مدینہ سے واپس آتے ہوئے بنو معاویہ کی مسجد سے گزرے، اس میں دو رکعتیں ادا کیں، اصحاب رضی اللہ عنہم نے بھی آپ صلی اللہ علیہ وسلم کے ساتھ نماز ادا کی، آپ صلی اللہ علیہ وسلم نے طویل دعا فرمائی اور پھر فرمایا: ”میں نے اپنے رب سے تین دعائیں مانگیں، جن میں سے دو قبول ہو گئیں وہ یہ ہیں: (۱) میری امت قحط سالی کی وجہ سے تباہ نہ ہو، (۲) میری امت غرق ہو کر تباہ نہ ہو، یہ دونوں قبول ہو گئیں، تیسری دعا یہ تھی کہ میری امت آپس کے لڑائی جھگڑے سے محفوظ رہے، یہ دعا قبول نہ ہوئی“۔\n\nان دعاؤں کے بعد بنو معاویہ کی یہ مسجد ”مسجد اجابہ“ کے نام سے مشہور ہو گئی، یہ بقیع سے ۳۸۵ میٹر دور شارع فیصل (شارع ستین) کے کنارے واقع ہے، شاہ فہد کے زمانہ میں اس کی تعمیر و توسیع ہوئی، بنو معاویہ قبیلہ اوس کی ایک شاخ ہے، ان کی بستی بقیع کے شمال میں تقریبا نصف کلومیٹر کے فاصلہ پہ واقع تھی، اسی قبیلہ کی طرف یہ مسجد منسوب تھی، جو بعد میں مسجد اجابہ سے مشہور ہو گئی۔ (تاریخ مدینہ منورہ لدکتور شیخ محمد الیاس ص ۶۸)\n\nیہ مسجد عشاق وزائرین کی زیارت کا مرکز ہے، شیخ عبدالحق محدث دہلوی رحمہ اللہ فرماتے ہیں: ’محمد ابن طلحہ کی روایت ہے کہ سرور انبیاء صلی اللہ علیہ وسلم کا مصلی محراب کے دائیں جانب دو گز کے فاصلے پر تھا، جو ذوق، لذت اور نور و مشغولی عبادت کے بعد دعا، استغراق، حضور صلی اللہ علیہ وسلم کے ذکر اور اس مسجد سے باہر آنے پر یکا یک قبہ شریف پر نظر پڑ جانے سے اس کے مشتاقوں کو حاصل ہوتا ہے، اس کی صحیح کیفیت کا علم اس میں مبتلا ہوئے بغیر نہیں ہو سکتا‘۔ (جذب القلوب الی دیار المحبوب ص ۱۲۸)",
@@ -337,6 +358,7 @@
       "slug": "banu-zafar",
       "sourceCode": "MED-BANU-ZAFAR",
       "name": "Masjid banu zafar",
+      "urduName": "مسجد بنو ظفر",
       "mapUrl": "https://maps.app.goo.gl/mqCjupjqLKMXPzvn8",
       "english": "The Prophet ﷺ once came to the area of Banu Zafar and sat on a rock at the site of their mosque. He told Ibn Mas'ud, may Allah be pleased with him: “I have been commanded to listen to the Quran from you.” Ibn Mas'ud replied: “O Messenger of Allah, the Quran is revealed to you; shall I recite it to you?” The Prophet ﷺ said he wished to hear it from someone else. Ibn Mas'ud began Surah al-Nisa'; when he reached “How will it be when We bring a witness from every community and bring you as a witness over these?” (Surah al-Nisa' 4:41), the Prophet ﷺ told him to stop. Ibn Mas'ud saw tears flowing from his eyes. (Kanz al-Ummal, Surah al-Nisa', Fada'il al-Sahabah.)\n\nThe Banu Zafar settlement was in Harrah Sharqiyyah, east of Baqi', and their mosque was there. The source says the mosque has long been demolished but its site can be identified: on the right when travelling along King Abdulaziz Road, inside an enclosure adjoining the white building of the Commission for the Promotion of Virtue and Prevention of Vice. Some narrations establish that the Prophet ﷺ visited Masjid Banu Zafar and prayed there. (Madinah Munawwarah ki Tarikhi Masajid, p. 38.)",
       "urdu": "آپ صلی اللہ علیہ وسلم ایک بار بنو ظفر کے علاقے میں تشریف لائے، مسجد بنی ظفر والی جگہ پہ ایک چٹان پر بیٹھے، ابن مسعود رضی اللہ عنہ سے فرمایا: ”مجھے حکم ہوا ہے کہ آپ سے قرآن سنوں“....... ابن مسعود رضی اللہ عنہ کہتے ہیں میں نے عرض کیا: ”یا رسول اللہ! آپ پہ قرآن اترتا ہے، میں آپ کو قرآن سناؤں“....... آپ صلی اللہ علیہ وسلم نے فرمایا: ”میرا جی چاہتا ہے کہ میں کسی اور سے قرآن سنوں“....... ابن مسعود رضی اللہ عنہ کہتے ہیں میں نے سورۃ نساء پڑھنا شروع کی، جب اس آیت پہ پہنچا ﴿فَكَيْفَ إِذَا جِئْنَا مِنْ كُلِّ أُمَّةٍ بِشَهِيدٍ وَجِئْنَا بِكَ عَلَى هَؤُلَاءِ شَهِيدًا﴾ (سورۃ النساء، آیت ۴۱) تو آپ صلی اللہ علیہ وسلم نے فرمایا: ”بس کرو“....... میں نے دیکھا، تو آپ صلی اللہ علیہ وسلم کی آنکھوں سے آنسو جاری ہیں۔ (کنز العمال، سورۃ النساء، فضائل الصحابہ)\n\nبنو ظفر کا قبیلہ....... ان کی بستی حرہ شرقیہ میں بقیع کی مشرقی جانب تھی، وہیں ان کی مسجد تھی، یہ مسجد کافی عرصہ سے منہدم ہو چکی ہے، البتہ اس کی جگہ متعین کی جا سکتی ہے کہ یہ مسجد شارع ملک عبدالعزیز روڈ پہ جانے والے کے دائیں ہاتھ ہیئۃ الامر بالمعروف والنہی عن المنکر کی سفید عمارت سے متصل چار دیواری میں واقع تھی، بعض روایات کے مطابق مسجد بنو ظفر میں آپ صلی اللہ علیہ وسلم کا آنا جانا اور نماز پڑھنا ثابت ہے۔ (مدینہ منورہ کی تاریخی مساجد ص ۳۸)",
@@ -347,6 +369,7 @@
       "slug": "al-sabq",
       "sourceCode": "MED-SABQ",
       "name": "Masjid al-Sabq",
+      "urduName": "مسجد السبق",
       "mapUrl": "https://maps.app.goo.gl/8Cf44FcngkxwJETy5",
       "english": "At this place the Prophet ﷺ sat and identified the first to finish among riders racing as part of military training. It was near the northern Thaniyyat al-Wada'. There were two kinds of horse race. The first ran from Hafya to Thaniyyat al-Wada' and used horses prepared for battle, which were agile and fast. Hafya is outside Madinah, west of Uhud near Ghabah; the distance to Thaniyyat al-Wada' is six miles, approximately nine kilometres. The second ran from Thaniyyat al-Wada' to Masjid Banu Zurayq, using heavier horses, over about one mile. Masjid Banu Zurayq stood between Masjid Ghamama and the religious court. Ibn Umar, may Allah be pleased with them both, said that he too was among the riders and that his horse leapt onto a wall with him. (Sunan al-Tirmidhi, chapter on racing, adapted.)\n\nIn the ninth Islamic century, Qadi Allamah Muhyi al-Din al-Hanbali, may Allah have mercy on him, had a mosque built here; it was rebuilt during King Faisal's reign. The site of Masjid al-Sabq is half a kilometre northwest of the Prophet's Mosque. The source says the mosque had been demolished but construction work was underway and that it had been heard that the government ordered a mosque rebuilt on the site. (Madinah Munawwarah ki Tarikhi Masajid, p. 61, adapted.)",
       "urdu": "اس مقام پر آپ صلی اللہ علیہ وسلم تشریف فرما ہوتے تھے اور جہادی تربیت کے حوالے سے دوڑائے جانے والے گھڑ سواروں میں سے سبقت لے جانے والوں، اول آنے والوں کا انتخاب فرمایا کرتے تھے، یہ جگہ شمالی ثنیۃ الوداع کے قریب تھی....... گھڑ دوڑ کے مقابلے دو قسم کے ہوتے تھے، (اول) مقام حفیاء سے ثنیۃ الوداع تک، اس مقابلہ میں وہ گھوڑے ہوتے تھے جو جنگ کیلئے تیار کئے ہوئے ہوتے تھے، یہ گھوڑے پھرتیلے، خوب دوڑنے والے ہوتے تھے، مقام حفیاء مدینہ منورہ کے باہر جبل احد کی مغربی جانب غابہ کے قریب ایک جگہ ہے، حفیاء اور ثنیۃ الوداع کے درمیان فاصلہ چھ میل (تقریباً نو کلومیٹر) ہے....... (دوم) ثنیۃ الوداع سے مسجد بنی زریق تک، اس مقابلہ میں بھاری جسم والے گھوڑے ہوتے تھے، یہ فاصلہ تقریباً ایک میل بنتا ہے، مسجد بنو زریق کا محل وقوع مسجد غمامہ اور شرعی عدالت کے درمیان تھا۔ ابن عمر رضی اللہ عنہما فرماتے ہیں کہ میں بھی دوڑ کے شاہسواروں میں شامل تھا، میرا گھوڑا مجھ سمیت ایک دیوار پر جا گودا۔ (سنن الترمذی، باب ماجاء فی الرھان بتغییر)\n\nنویں صدی ہجری میں قاضی علامہ محی الدین حنبلی رحمہ اللہ نے یہاں مسجد تعمیر کروائی، شاہ فیصل مرحوم کے دور میں پھر اس کی تعمیر ہوئی، مسجد نبوی سے شمال مغرب میں نصف کلومیٹر کے فاصلہ پر مسجد السبق کا محل وقوع ہے، اس وقت یہ مسجد منہدم ہو چکی ہے، مگر وہاں تعمیری کام ہو رہا ہے، سننے میں آیا ہے کہ حکومت نے مسجد کی جگہ دوبارہ مسجد بنانے کا حکم دیا ہے۔ (مدینہ منورہ کی تاریخی مساجد ص ۶۱ بتغییر)",
@@ -357,6 +380,7 @@
       "slug": "saqifah-bani-saedah",
       "sourceCode": "MED-SAQIFAH",
       "name": "Saqifah Bani Saedah",
+      "urduName": "سقیفہ بنی ساعدہ",
       "mapUrl": "https://maps.app.goo.gl/7Zogpi26hxu3v4Kw7",
       "latitude": 24.470285,
       "longitude": 39.606793
@@ -365,6 +389,7 @@
       "slug": "tooba",
       "sourceCode": "MED-TOOBA",
       "name": "Masjid-e-tooba",
+      "urduName": "مسجد طوبیٰ",
       "english": "When the Companions migrated to Madinah, they stayed at Usbah. A narration in Sahih al-Bukhari says that before the Messenger of Allah ﷺ arrived, when the first migrants came to Usbah in Quba, Salim, the freedman of Abu Hudhayfah, may Allah be pleased with him, led them in prayer because he had memorised the most Quran.\n\nUsbah is an area with many wells and fields. An old mosque there is accordingly called Masjid Usbah, also known as Masjid Tawbah. It lies west of Masjid Quba; for someone arriving from Makkah on the migration route, it is inside a garden on the right.\n\nFulayh ibn Sa'd relates that the Messenger of Allah ﷺ prayed at Masjid Tawbah in Usbah beside the Bujaym well. (Madinah Munawwarah ki Tarikhi Masajid, pp. 36–37.)",
       "urdu": "حضرات صحابہ رضی اللہ عنہم ہجرت کر کے مدینہ منورہ پہنچے، تو مقام عصبہ میں تشریف فرما ہوئے، صحیح بخاری کی ایک روایت میں ہے کہ رسول اللہ صلی اللہ علیہ وسلم کی تشریف آوری سے قبل جب مہاجرین اولین عصبہ (قبا) میں آئے تو سالم مولی ابی حذیفہ رضی اللہ عنہ امام تھے، کیونکہ وہ سب سے زیادہ قرآن کے حافظ تھے....... عصبہ ایک علاقہ ہے، جہاں بہت کنویں اور کھیت ہیں، یہاں کی ایک قدیم مسجد کا نام بھی اس کی مناسبت سے ”مسجد عصبہ“ ہے، مسجد توبہ بھی اس کو کہا جاتا ہے، مسجد قبا سے مغرب میں واقع ہے، جو شخص مکہ مکرمہ سے طریق ہجرت روڈ پہ آئے تو دائیں ہاتھ پہ ایک باغ کے اندر واقع ہے۔\n\nفلیح بن سعد کا بیان ہے کہ رسول اللہ صلی اللہ علیہ وسلم نے عصبہ میں بجیم کنویں کے پاس مسجد توبہ میں نماز ادا فرمائی۔ (مدینہ منورہ کی تاریخی مساجد ص ۳۶، ۳۷)"
     },
@@ -372,6 +397,7 @@
       "slug": "minarteen",
       "sourceCode": "MED-MINARTEEN",
       "name": "Masjid MinarTeen",
+      "urduName": "مسجد مینارتین",
       "mapUrl": "https://maps.app.goo.gl/Dnp821SuW7B7PMZu9",
       "latitude": 24.455437,
       "longitude": 39.593489
@@ -380,6 +406,7 @@
       "slug": "ares-well",
       "sourceCode": "MED-ARES-WELL",
       "name": "Ares Well",
+      "urduName": "بئر اریس",
       "mapUrl": "https://maps.app.goo.gl/eK96DyGX7t2p58X19",
       "english": "Bi'r Aris is one of Madinah's well-known wells. Once the Prophet ﷺ came, uncovered his lower legs and sat with his feet hanging into the well. Abu Musa al-Ash'ari, may Allah be pleased with him, stood as gatekeeper. Abu Bakr, may Allah be pleased with him, asked permission to enter, and the Prophet ﷺ told Abu Musa to admit him and give him the good news of Paradise. Umar, may Allah be pleased with him, then arrived and was given the same news. When Uthman, may Allah be pleased with him, arrived, the Prophet ﷺ said to admit him, give him the good news of Paradise and tell him that a great trial would befall him.\n\nFollowing the Prophet ﷺ, the rightly guided caliphs also visited and sat here. One day Uthman was sitting on the rim, turning a ring in his hands, when it slipped into the well. The Companions said they searched thoroughly to the bottom but could not find it. For this reason it is also called Bi'r al-Khatam, the Well of the Ring: after the Prophet's passing, his ring passed to Abu Bakr, then Umar, then Uthman, and finally fell into this well.\n\nBi'r Aris (Bi'r al-Khatam) lay west of Masjid Quba and was buried for road widening at the end of the fourteenth Islamic century. (Sahih al-Bukhari, chapter beginning “If I were to take a close friend”; Tarikh Madinah Munawwarah by Dr Muhammad Ilyas, p. 130.)\n\nAn old picture of a dome built over Bi'r al-Khatam. An ancient picture of a dome built on “Ber-ul-Khatam”.\n\nAl-Mu'allim Ali Hafiz, a former chairman of the Madinah municipality who served until 1385 AH, writes in Abwab Tarikh al-Madinah al-Munawwarah that the well was exactly 32 metres west of the main entrance to Masjid Quba. According to Ibn al-Najjar, its depth was given as ۶۰،۳, its width as ۲،۲ metres, and its water level as ۳،۱ metres (apparently 3.60, 2.2, and 1.3 metres respectively). Steps to the bottom were built in 1335 AH (1917). Two domes built over it in the Ottoman period had become dilapidated and were close to collapse when the municipality demolished them during construction of the Quba Mosque square in 1383 AH (1964).\n\nAli Hafiz concludes that the well was buried but could still be found and preserved as a historic site. (Abwab Tarikh al-Madinah al-Munawwarah, p. 149.) The author places it near the decorative fountains by the square, between the pavement and the road, and disputes a claim that it stood in the triangular park southwest of Masjid Quba where stones have been placed.",
       "urdu": "بئر اریس مدینہ منورہ کے مشہور کنوؤں میں سے ہے، ایک بار نبی رحمت صلی اللہ علیہ وسلم تشریف لائے اور پنڈلی مبارک سے کپڑا ہٹا کر اس کنویں میں پاؤں لٹکا کر بیٹھ گئے ، ابو موسیٰ اشعری رضی اللہ عنہ بطور دربان کے کھڑے ہوئے ، ابو بکر رضی اللہ عنہ نے حاضر خدمت ہونے کی اجازت مانگی ، آپ صلی اللہ علیہ وسلم نے ابو موسیٰ رضی اللہ عنہ سے فرمایا: ”انہیں اندر آنے دو اور جنت کی خوشخبری سنادو“....... پھر عمر رضی اللہ عنہ پہنچے اندر آنے کی اجازت مانگی ، ان کیلئے بھی ایسا ہی ارشاد فرمایا ، تھوڑی دیر بعد عثمان رضی اللہ عنہ کی آمد ہوئی ، ان کے بارے میں ارشاد فرمایا: ”ان کو بھی اندر آنے دو، جنت کی بشارت دے دو، نیز بتا دو کہ ان پر ایک بڑی آزمائش آئے گی“۔\n\nآپ صلی اللہ علیہ وسلم کی اتباع میں خلفاء راشدین رضی اللہ عنہم بھی یہاں تشریف لاتے ، اور بیٹھے رہتے ، ایک دن سیدنا عثمان رضی اللہ عنہ اس کنویں کی منڈیر پر بیٹھے ہوئے انگوٹھی کو ہاتھوں میں گھما رہے تھے کہ اچانک انگوٹھی ہاتھ سے چھوٹ کر اس کنویں میں گر گئی ، صحابہ رضی اللہ عنہم فرماتے ہیں کہ ہم نے بہت کوشش کی ، اس کنویں کو تہہ تک چھان مارا مگر انگوٹھی نہ ملی ، اس وجہ سے اس کنویں کو بئر خاتم بھی کہتے ہیں، کیونکہ رسول اللہ صلی اللہ علیہ وسلم کی انگوٹھی انتقال کے بعد ابو بکر رضی اللہ عنہ ، پھر عمر رضی اللہ عنہ ، اور پھر عثمان رضی اللہ عنہ کے ہاتھ میں رہی ، اور پھر اچانک اس کنویں میں گر گئی۔\n\nبئر اریس (بئر خاتم) مسجد قبا کے قریب مغربی جانب واقع تھا، چودھویں صدی ہجری کے آخر میں سڑک کی توسیع کیلئے دفن کر دیا گیا ۔ (صحیح بخاری ، باب قول النبی الوكنت متخذا خلیلا ۔ تاریخ مدینہ منورہ لدکتور محمد الیاس ص ۱۳۰)\n\nبئر الخاتم پر بنے ہوئے گنبد کی ایک قدیم تصویر\n\nAn ancient picture of a dome built on \"Ber-ul-Khatam\".\n\nمدینہ منورہ میں مدینہ میونسپلٹی کے سابق چیئر مین المعلم علی حافظ (شیخ ۱۳۸۵ھ تک بلدیہ مدینہ طیبہ کے رئیس رہے ) اپنی کتاب ’ابواب تاریخ المدینۃ المنورۃ‘ میں لکھتے ہیں: یہ کنواں مسجد قبا کے مغرب میں مسجد کے صدر دروازے سے ٹھیک ۳۲ میٹر کے فاصلے پر واقع تھا، ابن النجار کے بیان کے مطابق کنویں کی گہرائی ۶۰،۳ اور چوڑائی ۲،۲ میٹر تھی ، جبکہ پانی کی سطح ۳،۱ میٹر تھی ، ۱۳۳۵ھ (1917ء) میں اس کنویں کی تہہ تک اترنے کیلئے سیڑھیاں تعمیر کر دی گئیں، عہد عثمانی میں اس کنویں پر دو گنبد تعمیر کیے گئے ، یہ دونوں گنبد شکستہ حالت میں ٹوٹ کر گرنے والے ہی تھے کہ جب ۱۳۸۳ھ 1964ء میں مسجد قبا کا چوک تعمیر کیا گیا تو مدینہ میونسپلٹی نے انہیں منہدم کرا دیا۔\n\n(آخر میں معلم علی حافظ لکھتے ہیں کہ ) وہ کنواں زمین میں دفن ہو گیا ، لیکن اب بھی دریافت کیا جا سکتا ہے، اور ایک تاریخی حیثیت سے محفوظ رکھا جا سکتا ہے۔ (ابواب تاریخ المدینۃ المنورۃ ص ۱۴۹) جہاں اب چوک کے قریب خوبصورتی کیلئے فوارے لگائے گئے ہیں ، اسی کے قریب ہی فٹ پاتھ اور سڑک کے درمیان اس کنویں کا محل وقوع تھا، بعض لوگ کہتے ہیں کہ مسجد قبا کے جنوب مغرب میں تکونے پارک میں جہاں کچھ پتھر رکھے ہوئے ہیں ، یہ مقام بئر اریس کا تھا، مگر یہ بات درست نہیں ہے",
@@ -390,6 +417,7 @@
       "slug": "uthman-farm-well",
       "sourceCode": "MED-UTHMAN-WELL",
       "name": "Uthman Ibn Affan's Farm & Well",
+      "urduName": "حضرت عثمان رضی اللہ عنہ کا باغ اور کنواں",
       "mapUrl": "https://maps.app.goo.gl/oNodQTQT3q7wQxkW9",
       "english": "The source relates that this well belonged to a Jewish man who sold drinking water. The Prophet ﷺ said: “Whoever buys this well and gives it in charity, I announce Paradise for him.” Uthman, may Allah be pleased with him, bought it for 200 dinars and dedicated it as a charitable endowment. When the Prophet ﷺ heard, he prayed: “O Allah, grant him Paradise.” He asked for a bucket of its water, drank from it and said that its water would be abundant in the valley and sweet.\n\nThe source adds that some historians consider the well to have belonged instead to a Companion from Banu Ghifar, from whom Uthman bought it and endowed it.\n\nOnce the Prophet ﷺ passed the well when cold water was kept in a waterskin in a nearby tent. In intense heat he was given the water and described it as very sweet, clear water.\n\nThe author says this reminder of Uthman remains and is visited by pilgrims, although many see only the sign outside its boundary wall. The well still has clear water, with a garden and farm nearby. The source says the garden and well are in the custody of the Prophet's Mosque endowments, which leased them to the Ministry of Agriculture and Irrigation. The agriculture department uses the site for agricultural experiments and research into varieties of date palms; an animal hospital is nearby. Ancient remains of the well survive, and its clear water flows into a reservoir and then through channels and pipes to irrigate the farm. The author recounts visiting the well, giving a worker a gift, and being allowed to drink after the worker operated the machine. Remains of an old room-like structure beside the rim once allowed people to descend and draw water nearby. The author says guides generally stop at the sign outside, though access through the main gate and a closer visit may be possible, and that after the afternoon prayer there is little crowding.\n\nThe source reports that scholars recommended visiting wells associated with the Prophet ﷺ—where he performed ablution or bathed, or whose water he drank—and using their water for healing and blessing. The author laments that no such well remains in their time except Bi'r Rumah, and says visitors are not permitted inside even here. (Subul al-Huda wa al-Rashad, account of the wells of Madinah, summarised and adapted; Abwab Tarikh al-Madinah al-Munawwarah, p. 140; Justuju-ye Madinah, p. 762.)",
       "urdu": "یہ ایک یہودی کا کنواں تھا، جو لوگوں کو پینے کا پانی فروخت کرتا تھا، آپ صلی اللہ علیہ وسلم نے فرمایا: ”جو کوئی اس کنویں کو خرید کر صدقہ کرے ، تو میں اس کیلئے جنت کا اعلان کرتا ہوں“....... عثمان رضی اللہ عنہ نے اسے ۲۰۰ دینار میں خرید کر وقف کر دیا....... آپ صلی اللہ علیہ وسلم کو اطلاع ملی تو دعا دیتے ہوئے فرمایا ((اللھم اوجب لہ الجنۃ)) اے اللہ! عثمان پر جنت واجب کر دے۔ اس سے ایک ڈول پانی منگوا کر اس سے پیا اور فرمایا: ”اس وادی میں اس کے پانی کی کثرت ہو گی ، اس کا پانی میٹھا ہو گا“۔\n\nالبتہ بعض مؤرخین کا خیال ہے کہ یہ کنواں ایک صحابی رضی اللہ عنہ کی ملکیت میں تھا، جس کا تعلق بنی غفار سے تھا، عثمان رضی اللہ عنہ نے ان سے خرید کر وقف کر دیا۔\n\nایک بار اس کنویں پہ آپ صلی اللہ علیہ وسلم کا گزر ہوا، اس کے قریب خیمہ میں مشکیزہ میں ٹھنڈا پانی تھا، گرمی عروج پر تھی ، آپ صلی اللہ علیہ وسلم کو ٹھنڈا پانی پلایا گیا ، تو فرمایا ((ھذا العذاب الزلال)) یہ تو بہت ہی میٹھا پانی ہے۔\n\nسیدنا عثمان رضی اللہ عنہ کی یہ یادگار آج بھی موجود ہے، زائرین مدینہ منورہ کے مقدس مقامات کی زیارت کے وقت اس کی زیارت کو بھی آتے ہیں، اکثر زائرین کو باہر کی چار دیواری پہ لگے بورڈ تک ہی اکتفا کرنا پڑتا ہے، اس کنویں کا پانی آج بھی صاف شفاف شکل میں موجود ہے، قریب ہی باغ اور مزرعہ ہے، یہ باغ اور کنواں اوقاف حرم نبوی شریف کی تحویل میں ہیں ، جنہوں نے اسے وزارت زراعت و آبپاشی کو پٹے پر دیا ہوا ہے، محکمہ زراعت نے اس کو زرعی تجربات کا سینٹر بنا رکھا ہے، مختلف انواع و اقسام کے کھجوروں کے درختوں پر ریسرچ ہوتی ہے، قریب ہی ایک جانوروں کا ہسپتال بھی ہے، کنویں کے قدیم کھنڈرات اب بھی باقی ہیں ، کنویں کا پانی صاف شفاف ، جاری ساری ہے، کنویں کے قریب ہی ایک خزان (حوض) ہے، جس میں پانی جمع کیا جاتا ہے، پھر نالیوں اور پائپوں کے ذریعے پورے مزرعے کو سیراب کیا جاتا ہے، ہم نے اس تاریخی کنویں پر حاضری دی، کام کرنے والے مزدور کو کچھ ہدیہ دیا تو انہوں نے خوش ہو کر مشین چلائی اور ہمیں کنویں کا پانی نوش کرنے کا موقع ہاتھ آ گیا، کنویں کی منڈیر کے متصل پرانے زمانے کی کمرہ نما عمارت کے کھنڈرات بھی باقی ہیں ، جس میں اتر کر قریب سے پانی بھرا جاتا تھا، عموماً زیارتیں کروانے والے زائرین کو مزرعہ سے باہر لگے بورڈ کی زیارت کروا کے واپس لے آتے ہیں ، حالانکہ مرکزی دروازہ سے اندر جانے کا راستہ بھی ہے، اور قریب جا کر کنویں کی زیارت کی جا سکتی ہے، پانی بھی نوش کیا جا سکتا ہے، عصر کے بعد اگر زیارت کے لئے جائیں تو کوئی رش نہیں ہوتا۔\n\nعلماء نے فرمایا: ”جن کنوؤں کی نسبت رسول اللہ صلی اللہ علیہ وسلم کی طرف ہے کہ آقا صلی اللہ علیہ وسلم نے یہاں وضو یا غسل فرمایا، یا یہاں کا پانی نوش فرمایا ، وہاں شفا اور تبرک کیلئے جانا چاہئے ، وہاں کا پانی استعمال کرنا چاہئے“....... لیکن افسوس ہمارے زمانے میں کوئی کنواں بھی باقی نہیں رہا، سوائے اس بئر رومہ کے ، یہاں بھی زائرین کو اندر تک نہیں جانے دیا جاتا۔ (سبل الہدی والرشاد ، ذکر آبار المدینۃ المنورۃ بتلخیص وتغیر۔ ابواب تاریخ المدینۃ المنورۃ ص ۱۴۰۔ جستجوئے مدینہ ص ۷۶۲)",
@@ -400,6 +428,7 @@
       "slug": "ghars-well",
       "sourceCode": "MED-GHARS-WELL",
       "name": "Ghars well",
+      "urduName": "بئر غرس",
       "mapUrl": "https://maps.app.goo.gl/HWghDSW3XnnSTmWm8",
       "latitude": 24.445028,
       "longitude": 39.627196
@@ -408,6 +437,7 @@
       "slug": "khaake-shifa",
       "sourceCode": "MED-KHAAKE-SHIFA",
       "name": "Khaake Shifa",
+      "urduName": "خاک شفا",
       "mapUrl": "https://maps.app.goo.gl/sj6GjPCsvNyqRb2q6",
       "latitude": 24.44806,
       "longitude": 39.623774
